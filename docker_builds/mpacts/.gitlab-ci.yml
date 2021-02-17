@@ -1,0 +1,45 @@
+image: docker:latest
+
+variables:
+  DOCKER_DRIVER: overlay2
+  PYTHON_VERSION_LATEST: "3.7.3"
+
+stages:
+  - build
+
+before_script:
+  - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+
+# Build images push them to GitLab Container Registry
+.build:
+  stage: build
+  script:
+    - echo "Build image for Python $PYTHON_VERSION_TAG"
+    # Try to pull image from the registry for use as cache
+    - docker pull ${CI_REGISTRY_IMAGE}:${PYTHON_VERSION_TAG} || true
+    # Build the image
+    - docker build --pull --build-arg PYTHON_VERSION_TAG=${PYTHON_VERSION_TAG}
+        -t ${CI_REGISTRY_IMAGE}:${PYTHON_VERSION_TAG} .
+    # Push built image
+    - echo "Push ${CI_REGISTRY_IMAGE}:${PYTHON_VERSION_TAG}"
+    - docker push ${CI_REGISTRY_IMAGE}:${PYTHON_VERSION_TAG}
+    - if [ ${PYTHON_VERSION_TAG} == ${PYTHON_VERSION_LATEST} ]; then
+        docker tag ${CI_REGISTRY_IMAGE}:${PYTHON_VERSION_TAG} ${CI_REGISTRY_IMAGE}:latest;
+        docker push ${CI_REGISTRY_IMAGE}:latest;
+      fi
+  only:
+    refs:
+      - master    
+  tags:
+    - mpacts
+
+build-latest:
+  extends: .build
+  variables:
+    PYTHON_VERSION_TAG: ${PYTHON_VERSION_LATEST}
+
+build-3.6.8:
+  extends: .build
+  variables:
+    PYTHON_VERSION_TAG: "3.6.8"
+  when: manual

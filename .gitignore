@@ -1,0 +1,13 @@
+builds/
+DATA/OUTPUT/*
+_OLD/
+!DATA/OUTPUT/.gitkeep 
+copy_and_push.sh
+rerun.sh
+pull_scripts_and_build.sh
+run_test.sh
+*.ffs_batch
+copy_fix_build_test.sh
+push_to_git.sh
+post_sync_alterations.sh
+**/TL1_emb1.tif

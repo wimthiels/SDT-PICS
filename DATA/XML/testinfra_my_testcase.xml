@@ -1,0 +1,2420 @@
+<body>
+
+<RUN>
+	<modules value="SDT_MAIN.py,sphere_meshing_CGAL.py,mpacts_PiCS.py,mpacts_pics_enrich.py,mpacts_pics_select.py" />
+	<modules_snapshot value="None" />
+	<backupIC value="FALSE" />
+	<INIT_FOLDER value="default">
+		<description>this folder will be initialized before running (except with checkpoint restart)</description>
+		<dtype>path</dtype>
+		<default>body+MAIN+paths+OUTPUT_FOLDER_ROOT</default>
+	</INIT_FOLDER>
+</RUN>
+
+<MAIN>
+	<paths>
+
+		<img_raw_file value="/home/docker/DATA/INPUT/my_testcase/TL15_emb3_t1_cleaned.tif">
+			<description>the filename of the raw 4D image. If this is a directory every file in the directory will be processed</description>
+			<default>C:\Users\wimth\Documents\THESIS\baseimages\MAIN_INPUT_IMAGES\TL2_crop_1ch_emb1of3.tif</default>
+			<dtype>path</dtype>
+		</img_raw_file>
+
+		<img_exterior_outline value="">
+			<description>optional,  a binary image marking the inside/outside boundary.  Can be used instead of active contour approach (see preProcess.py option 41). 
+				must have the same dimensions as img_raw_file</description>
+			<dtype>path</dtype>
+			<default>/home/wth/Downloads/baseimages/MAIN_INPUT_IMAGES/GT_membrane/TL1_t1_membrane.tif</default>
+		</img_exterior_outline>
+		
+		<OUTPUT_FOLDER_ROOT value="/home/docker/DATA/OUTPUT/my_testcase">
+			<description>all output will be placed here. invoke with ROOT_OUTPUT </description>
+			<dtype>path</dtype>
+			<default>E:\Downloads\@tiffhandling\MAIN\</default>
+		</OUTPUT_FOLDER_ROOT>
+		
+		<OUTPUT_FOLDER_ROOT_SUB value="">
+			<description>extra subfolder to the output root.  invoke with SUB_FOLDER </description>
+			<dtype>string</dtype>
+			<default />
+		</OUTPUT_FOLDER_ROOT_SUB>
+		
+		<ic_timestamp_subfolder value="default">
+			<description>True will create a timestamped subfolder under OUTPUT_FOLDER_ROOT.  
+			remark : if multiple files are processed (= IMG_RAW_FILE is blanc) they will automatically get a subfolder based on their filename (=not parameterized)
+			</description>
+			<dtype>bool</dtype>
+			<default>False</default>
+		</ic_timestamp_subfolder>
+		
+	</paths>
+	
+	<flowcontrol>
+		<l_execution_blocks value="1;2;5">
+			<description>list which indicates which blocks will be executed(1=preprocessing,2=spheresDT,3=Lineager_feeder,4=CTC_TRA).
+			If steps are skipped, the locations of the intermediate files should be filled in accordingly</description>
+			<dtype>list;string</dtype>
+			<default>1;2;3;4</default>
+		</l_execution_blocks>
+
+		<ix_restart value="0">
+			<description>used for quick restarting from an index in l_execution_blocks when rerunning. blanc or zero will have no effect</description>
+			<dtype>int</dtype>
+			<default>0</default>
+		</ix_restart>
+
+	</flowcontrol>
+</MAIN>
+
+<preprocessing>	
+	<paths>
+		<output_folder value="&lt;ROOT_OUTPUT&gt;/002_preprocessing/">
+			<description>outputfolder</description>
+			<dtype>path</dtype>
+			<file_frangi value="frangi.tif" />
+			<file_threshold value="threshold.tif" />
+			<file_membranes_blend_z value="membranes_blend_z.tif" />
+			<file_exterior_outline value="exterior_outline.tif" />
+			<file_exterior_mask value="exterior_mask.tif" />
+			<file_frangi_vesselness_scores value="frangi_vesselness_scores.csv" />
+			<default>&lt;ROOT_OUTPUT&gt;/002_preprocessing/</default>
+		</output_folder>
+		
+	</paths>
+	<flowcontrol>
+		<filter_order value="0;25;4;37;99;39;38;28;27;18;99;31;98;34;98;35;99;43;98">
+			<description> filters used in series.  refer to SDT_modules/PreProcess.py.  uses skikit image filters
+			0:'ORIGINAL',  # loading in the file , 
+			1:'otsu',    # otsu threshold :
+			2:'median',  #                 
+			3:'laplace',
+			4:'frangi',  
+			5:'RmSmObj',  #remove small objects
+			6:'RmSmHol',  #remove small holes
+			7:'thrli',    #threshold li
+			8:'thrloc',    #threshold local 
+			9:'thrmin',    #threshold minimum
+			10:'bineros',    #binary erosion
+			11:'bindila',    #binary dilation
+			12:'invert',      #invert a binary image 
+			13:'resint',    #rescale intensity
+			14:'subtract',   #subtract image from another image
+			15:'kuwahara',   #kuwahara filtering
+			16:'gaussian',
+			17:'binclos', #binary closing
+			18:'RmSmObj3D',
+			19:'RmSmHol3D',
+			20:'scale',
+			21:'HPassOtsu',  # otsu filtering that sets everything below the threshold to zero
+			22:'binopen',
+			23:'tryallthr',
+			24:'thrtriangle',
+			25:'flip',
+			26:'asint',
+			27:'thrabs',
+			28:'reconstruction',
+			29:'cornerthr',
+			30:'frangi3d',
+			31:'skeletonize',
+			32:'skeletonize3d',
+			33:'medial_axis'
+			34:'active_contour',
+			35:'exterior_mask',
+			36:'scale_constant',
+			37:'scale_max',
+			38:'collect_stats',
+			39:'collect_Otsu',
+			98:'write_output_no_signal_filtered',
+			99:'write_output'
+			</description>
+			<default>0;25;4;37;99;39;38;28;27;99;18;31;98;34;98;35;99;43;98</default>
+			<dtype>list;int</dtype>
+		</filter_order>
+		
+		<l_stack_number value="1">
+			<description>indicates which stacks of the image need to be processed.  format =&gt; list (eg '1;2;4') or 'all' to process all stacks in the image (=numbers , not indices)</description>
+			<dtype value="list;int">list;int</dtype>
+			<default>all</default>
+		</l_stack_number>
+		
+		<l_output_f_names value="frangi;threshold;membranes;exterior_outline;exterior_mask;membranes_blend_z">
+			<description>list of filenames used for 'write output'. So, for every 99 or 98 in filter_order, you should provide a name here. Beware that 'membranes' and 'exterior_mask' will be used further on by the spheresDT algorithm, so these names should not be changed !</description>
+			<dtype>list;string</dtype>
+			<default>frangi;threshold;membranes;exterior_outline;exterior_mask;membranes_blend_z</default>
+		</l_output_f_names>	
+	</flowcontrol>
+		
+	<filter_parms>
+		<frangi>  
+			<sigmas value="default">
+				<description>Sigmas used as scales of filter, i.e., np.arange(scale_range[0], scale_range[1], scale_step) </description>
+				<dtype>int</dtype>
+				<default>1</default>
+			</sigmas>
+			
+			<scale_range value="default">
+				<description>2-tuple. The range of sigmas used. = related to width of the vessels. To calibrate, measure the XY distance of piece of membrane in number of pixels </description>
+				<dtype>tuple;int</dtype>
+				<default>5;6</default>
+			</scale_range>
+			
+			<scale_step value="default">
+				<description>Step size between sigmas when checking for the vessel width per pixel that amount to the highest vesselness measure.  If 1 then every vessel width will be checked </description>
+				<dtype>int</dtype>
+				<default>1</default>
+			</scale_step>			
+			
+			<alpha value="default">
+				<description> </description>
+				<dtype>float</dtype>
+				<default>0.5</default>
+			</alpha>
+			
+			<beta value="default">
+				<description>this is parameter 'beta' in the original Frangi paper  (code : filtered = np.exp(-rb / beta1) * (np.ones(np.shape(image)) - np.exp(-s2 / beta2))
+				increasing 'beta' will increase tolerance for blobs </description>
+				<dtype>float</dtype>
+				<default>1</default>
+			</beta>
+			
+			<gamma value="default">
+				<description>this is parameter 'c' in the original frangi paper.  Increase if you feel the interior noise gets too high frangi output </description>
+				<dtype>float</dtype>
+				<default>0.0005</default>
+			</gamma>
+			
+			<beta1 value="default">
+				<description>this is parameter 'beta' in the original Frangi paper  (code : filtered = np.exp(-rb / beta1) * (np.ones(np.shape(image)) - np.exp(-s2 / beta2))
+				increasing 'beta' will increase tolerance for blobs </description>
+				<dtype>float</dtype>
+				<default>1</default>
+			</beta1>
+			
+			<beta2 value="default">
+				<description>this is parameter 'c' in the original frangi paper.  Increase if you feel the interior noise gets too high frangi output </description>
+				<dtype>float</dtype>
+				<default>0.0005</default>
+			</beta2>
+			
+			
+			<black_ridges value="default">
+				<description>When True, the filter detects black ridges; when False, it detects white ridges.</description>
+				<dtype>bool</dtype>
+				<default>True</default>
+			</black_ridges>
+		</frangi>
+		
+		<frangi3d>
+			
+			<sigmas value="default">
+				<description>Sigmas used as scales of filter, i.e., np.arange(scale_range[0], scale_range[1], scale_step) </description>
+				<dtype>int</dtype>
+				<default>1</default>
+			</sigmas>
+			
+			
+			<alpha value="default">
+				<description>this is parameter 'beta' in the original Frangi paper  (code : filtered = np.exp(-rb / beta1) * (np.ones(np.shape(image)) - np.exp(-s2 / beta2))
+				increasing 'beta' will increase tolerance for blobs </description>
+				<dtype>float</dtype>
+				<default>1</default>
+			</alpha>
+			
+			<beta value="default">
+				<description>this is parameter 'beta' in the original Frangi paper  (code : filtered = np.exp(-rb / beta1) * (np.ones(np.shape(image)) - np.exp(-s2 / beta2))
+				increasing 'beta' will increase tolerance for blobs </description>
+				<dtype>float</dtype>
+				<default>1</default>
+			</beta>
+			
+			<gamma value="default">
+				<description>this is parameter 'c' in the original frangi paper.  Increase if you feel the interior noise gets too high frangi output </description>
+				<dtype>float</dtype>
+				<default>0.0005</default>
+			</gamma>
+			
+			<black_ridges value="default">
+				<description>When True, the filter detects black ridges; when False, it detects white ridges.  
+				warning : a bug made detecting white ridges not work correctly (workaround: invert image and detect black edges)</description>
+				<dtype>bool</dtype>
+				<default>True</default>
+			</black_ridges>
+		</frangi3d>
+		
+
+		
+		<collect_stats>
+			<SEED_THR_DIVIDE_FACTOR value="default">
+				<description>the seed threshold determined by automatic thresholding (e.g. Otsu) will be divided by this factor.  Use in case not enough seed signal is picked up</description>
+				<dtype>float</dtype>
+				<default>1.0</default>
+			</SEED_THR_DIVIDE_FACTOR>
+
+			<MEMBRANE_ACCEPTANCE_LEVEL value="3">
+				<description>this will determine the bottom threshold and is used a fraction of the otsu threshold for that slice(Otsu itself will provide the seed threshold).
+				higher values will drive down the bottom treshold.  If set to 1 then seeds will not be extended.  If set lower than 1 threshold will be higher than seed threshold, so seeds will be reduced or even erased.
+				This is considered a user parameter (referred to as alpha1 in paper)
+				</description>
+				<dtype>float</dtype>
+				<default>4</default>
+			</MEMBRANE_ACCEPTANCE_LEVEL>
+			
+			<NO_SIGNAL_THRESH value="300">
+				<description>if the seed threshold falls below this level, the slice is assumed to have no signal, only noise</description>
+				<dtype>float</dtype>
+				<default>50</default>
+			</NO_SIGNAL_THRESH>
+		</collect_stats>
+		
+		<active_contour>
+			<alpha value="default">
+				<description>Snake length shape parameter. Higher values makes snake contract faster</description>
+				<dtype>float</dtype>
+				<default>0.1</default>
+			</alpha>
+			
+			<beta value="default">
+				<description>Snake smoothness shape parameter. Higher values makes snake smoother.</description>
+				<dtype>float</dtype>
+				<default>1</default>
+			</beta>
+			
+			<gamma value="default">
+				<description>Explicit time stepping parameter.</description>
+				<dtype>float</dtype>
+				<default>0.001</default>
+			</gamma>
+			
+			<w_line value="default">
+				<description>Controls attraction to brightness. Use negative values to attract toward dark regions</description>
+				<dtype>float</dtype>
+				<default>500000</default>
+			</w_line>
+			
+			<w_edge value="default">
+				<description>Controls attraction to edges. Use negative values to repel snake from edges</description>
+				<dtype>float</dtype>
+				<default>500000</default>
+			</w_edge>
+			
+			<use_deprecated value="default">
+				<description>deprecated approach is to use membrane binary image with a wide ellipse init shape.
+				The new approach uses blurring of the original with a box init shape</description>
+				<dtype>bool</dtype>
+				<default>True</default>
+			</use_deprecated>
+			
+			<init_shape value="default">
+				<description>preferred = box, deprecated = wide_ellips also possible = fitted_ellips</description>
+				<dtype>string</dtype>
+				<default>wide_ellips</default>
+			</init_shape>
+			
+		</active_contour>
+
+		<chan_vese>
+			<mu value="default">
+				<description>&#8216;edge length&#8217; weight parameter. Higher mu values will produce a &#8216;round&#8217; edge, while values closer to zero will detect smaller objects.
+				Typical values for mu are between 0 and 1, though higher values can be used when dealing with shapes with very ill-defined contours.</description>
+				<dtype>float</dtype>
+				<default>0.25</default>
+			</mu>
+			
+			<lambda1 value="default">
+				<description>#difference from average&#8217; weight parameter for the output region with value &#8216;True&#8217;. If it is lower than lambda2, this region will have a larger range of values than the other.
+				Typical values for lambda1 and lambda2 are 1. If the &#8216;background&#8217; is very different from the segmented object in terms of distribution (for example, a uniform black image with figures of varying intensity), then these values should be different from each other.</description>
+				<dtype>float</dtype>
+				<default>0.0001</default>
+			</lambda1>
+			
+			<lambda2 value="default">
+				<description>difference from average&#8217; weight parameter for the output region with value &#8216;False&#8217;. If it is lower than lambda1, this region will have a larger range of values than the other.</description>
+				<dtype>float</dtype>
+				<default>1.0</default>
+			</lambda2>
+			
+			<max_iter value="default">
+				<description>Maximum number of iterations allowed before the algorithm interrupts itself</description>
+				<dtype>int</dtype>
+				<default>200</default>
+			</max_iter>
+
+			<tol value="default">
+				<description>Level set variation tolerance between iterations. (=to know when a solution is reached)</description>
+				<dtype>float</dtype>
+				<default>1e-3</default>
+			</tol>
+			
+			<init_level_set value="default">
+				<description>Defines the starting level set used by the algorithm. If a string is inputted, a level set that matches the image size will automatically be generated. Alternatively, it is possible to define a custom level set, which should be an array of float values, with the same shape as &#8216;image&#8217;.</description>
+				<dtype>string</dtype>
+				<default>disk</default>
+			</init_level_set>
+			
+		</chan_vese>
+
+		<morphological_chan_vese>
+			<smoothing value="default">
+				<description>Number of times the smoothing operator is applied per iteration. Reasonable values are around 1-4. Larger values lead to smoother segmentations</description>
+				<dtype>int</dtype>
+				<default>1</default>
+			</smoothing>
+			
+			<lambda1 value="default">
+				<description>#difference from average&#8217; weight parameter for the output region with value &#8216;True&#8217;. If it is lower than lambda2, this region will have a larger range of values than the other.
+				Typical values for lambda1 and lambda2 are 1. If the &#8216;background&#8217; is very different from the segmented object in terms of distribution (for example, a uniform black image with figures of varying intensity), then these values should be different from each other.</description>
+				<dtype>float</dtype>
+				<default>1</default>
+			</lambda1>
+			
+			<lambda2 value="default">
+				<description>difference from average&#8217; weight parameter for the output region with value &#8216;False&#8217;. If it is lower than lambda1, this region will have a larger range of values than the other.</description>
+				<dtype>float</dtype>
+				<default>1000</default>
+			</lambda2>
+			
+			<iterations value="default">
+				<description>Maximum number of iterations allowed before the algorithm interrupts itself</description>
+				<dtype>int</dtype>
+				<default>100</default>
+			</iterations>
+			
+			<init_level_set value="default">
+				<description>Defines the starting level set used by the algorithm. Accepted values are &#8216;checkerboard&#8217; and &#8216;circle&#8217;. </description>
+				<dtype>string</dtype>
+				<default>circle</default>
+			</init_level_set>
+			
+		</morphological_chan_vese>
+
+		<RmSmObj3D>
+			<min_size value="default">
+				<description>The smallest allowable connected component size</description>
+				<dtype>int</dtype>
+				<default>5000</default>
+			</min_size>
+			<connectivity value="default">
+				<description>The connectivity defining the neighborhood of a pixel.</description>
+				<dtype>int</dtype>
+				<default>1</default>
+			</connectivity>
+		</RmSmObj3D>
+
+		<blend_z_membrane>
+			<sigma_ddz_smoothing value="default">
+				<description>the sigma used in gaussian smoothing of the ddz values (in X and Y). Increasing this will lower the number of detected local maxima and centered pixels will gain in strength.
+					Makes sense to set this in the order of a normal cell radius</description>
+				<dtype>int</dtype>
+				<default>7</default>
+			</sigma_ddz_smoothing>
+			
+			<min_dist_peak_membrane value="default">
+				<description>the minimum distance of a detected z-membrane pixel and the membrane.  Increasing this will limit detection to large cross sections. In nb of (XY)pixels</description>
+				<dtype>int</dtype>
+				<default>6</default>
+			</min_dist_peak_membrane>
+
+			<min_dist_between_peaks value="default">
+				<description>the minimum distance of a detected zmembrane peaks (cfr peak_local_max(min_distance). In nb of (XY)pixels</description>
+				<dtype>int</dtype>
+				<default>3</default>
+			</min_dist_between_peaks>
+
+			<peak_thresh_rel value="default">
+				<description>Minimum intensity of peaks, calculated as max(image) * peak_thresh_rel.  Make smaller to increase nb of peaks
+					This is considered a user parameter</description>
+				<dtype>float</dtype>
+				<default>0.4</default>
+			</peak_thresh_rel>
+
+			<peak_thresh_rel_slice value="default">
+				<description>Minimum intensity of peaks, calculated as max(slice) * peak_thresh_rel_slice .  Make smaller to increase nb of peaks.  If left 0, threshold will be determined automatically to include all peaks detected at image level (cfr peak_thresh_rel)</description>
+				<dtype>float</dtype>
+				<default>0</default>
+			</peak_thresh_rel_slice>
+
+			<SN_thresh value="default">
+				<description>SN is used as a metric to see whether the image quality is good enough for z-membrane detection.  The SN-ratio of the slice representing the start of the z-metric (ix-min) must be above this threshold value (so this slice is used to gauge the quality for the whole stack). If the threshold is not met, no z-membrane will be used for this stack.  Otherwise, the normal logic of selecting a range of slice will apply</description>
+				<dtype>float</dtype>
+				<default>2.0</default>
+			</SN_thresh>
+
+			<z_metric_mode value="default">
+				<description>values : "top-bottom","bottom","off". 
+					If top-bottom the z-metric will be used to determine the z-interval between which the peaks are reliable. If the intensity of the microscopy is already z-corrected, it is better to turn this off.  'bottom' will only switch off bottom slices</description>
+				<dtype>string</dtype>
+				<default>top-bottom</default>
+			</z_metric_mode>
+
+		</blend_z_membrane>
+
+	</filter_parms>
+</preprocessing>
+
+<spheresDT>
+	
+	<paths>
+		<DIR_MEMBRANE value="">
+			<description>the directory of the binary membrane file. Leave blank if you want to use the one outputted by preprocessing</description>
+			<default>E:\Downloads\@tiffhandling\preprocessing\UseAsInput4(TL2)</default>
+		</DIR_MEMBRANE>
+		
+		<FILE_MEMBRANE value="membranes_blend_z.tif">
+			<description>the filename of the binary membrane file.</description>
+			<default>membranes.tif</default>
+		</FILE_MEMBRANE>
+		
+		<DIR_EXTERIOR_MASK value="">
+			<description>the directory of the binary exterior file. Leave blank if you want to use the one outputted by preprocessing</description>
+			<default>E:\Downloads\@tiffhandling\preprocessing\UseAsInput4(TL2)</default>
+		</DIR_EXTERIOR_MASK>
+		
+		<FILE_EXTERIOR_MASK value="exterior_mask.tif">
+			<description>the filename of the exterior mask file.</description>
+			<default>exterior_mask.tif</default>
+		</FILE_EXTERIOR_MASK>
+	
+		<FILE_VALIDATION value="/home/docker/DATA/INPUT/my_testcase/TL15_emb3_t1.csv">
+			<description>the filename of the validation file. Leave blank if you do not want to validate. 
+			The program will also automatically check this location: IMG_RAW_DIR/validation_files/IMG_RAW_FILE[0:-4].csv </description>
+			<dtype>path</dtype>
+			<default>E:\Downloads\@tiffhandling\3DseedsDT\validation9(TL2)\lineage_files_v2(corrected)</default>
+		</FILE_VALIDATION>
+		
+		<DIR_EXTRA_CHANNEL value="">
+			<description>the directory of the image that will be used a the second channel in the clusterview.  If blank, then an RGB of the raw image will be used.</description>
+			<default>E:\Downloads\@tiffhandling\preprocessing\UseAsInput2(TL2)</default>
+		</DIR_EXTRA_CHANNEL>	
+		
+		<FILE_EXTRA_CHANNEL value="">
+			<description>the filename of the image that will be used a the second channel in the clusterview.  If blank, then an RGB of the raw image will be used.</description>
+			<default>TL2_crop_1ch_emb1of3_RGB.tif</default>
+		</FILE_EXTRA_CHANNEL>
+		
+		<output_folder value="&lt;ROOT_OUTPUT&gt;/003_spheresDT/">
+			<description>outputfolder</description>
+			<dtype>path</dtype>
+			<file_cluster value="cluster_summary.csv" />
+			<file_clusterview value="raw_clusterview.tif" />
+			<file_summary4D value="summary4D.csv" />
+			<default>&lt;ROOT_OUTPUT&gt;/003_spheresDT/</default>
+		</output_folder>
+		
+	</paths>
+	
+	<flowcontrol>
+		<lnb_stack value="default">
+			<description>a list of stacks that will be processed.  'all' will process the whole time-lapse</description>
+			<dtype>list;int</dtype>
+			<default>all</default>
+		</lnb_stack>
+		
+		<lnb_GT_stack value="default">
+			<description>a list of stacks that must be forced by GT taken from the validation file.  'all' will process the whole time-lapse</description>
+			<dtype>list;int</dtype>
+			<default>0</default>
+		</lnb_GT_stack>
+		
+		<validation_start_time value="default">
+			<description>the validation input often refers to the original stack , while the nb stack refers to the preprocessed stack. So the validation file can be shifted in time.  This parameters allows you to sync the GT.  e.g. 9 will match timepoint 9 from validation to the first stack. </description>
+			<dtype>int</dtype>
+			<default>1</default>
+		</validation_start_time>
+		
+		<reset_seeds value="default">
+			<description>'all' will restore all the seeds clusters after sphere expansion.  
+						 'wipeout' will only restore the seed clusters that were wiped out be sphere expansion.  
+						  'no_reset' will do nothing. 
+			</description>
+			<dtype>string</dtype>
+			<default>no_reset</default>
+		</reset_seeds>
+		
+	</flowcontrol>
+	
+	<parms>
+		
+		<dxyz value="default">
+			<description>pixelwidth dx,dy,dz in micron. check raw image specs </description>
+			<dtype>list;float</dtype>
+			<default>0.1294751;0.1294751;1</default>
+			<OD70_Airyscan_Processing_emb1of2.tif>0.0490758;0.0490758;1</OD70_Airyscan_Processing_emb1of2.tif>
+			<OD70_Airyscan_Processing_emb2of2.tif>0.0490758;0.0490758;1</OD70_Airyscan_Processing_emb2of2.tif>
+			<TL1_emb1.tif>0.1294751;0.1294751;1.1</TL1_emb1.tif>
+			<frangi_raw_mask_threshold_TL1.tif>0.1294751;0.1294751;1.1</frangi_raw_mask_threshold_TL1.tif>
+			<TL6_crop_1ch_emb1of2.tif>0.1294751;0.1294751;1.2</TL6_crop_1ch_emb1of2.tif>
+			<TL6_crop_1ch_emb2of2.tif>0.1294751;0.1294751;1.2</TL6_crop_1ch_emb2of2.tif>
+			<frangi_raw_mask_threshold_TL2_emb3.tif>0.1294751;0.1294751;1</frangi_raw_mask_threshold_TL2_emb3.tif>
+			<frangi_raw_mask_threshold_TL2_emb1.tif>0.1294751;0.1294751;1</frangi_raw_mask_threshold_TL2_emb1.tif>
+			<TL11_crop_1ch_emb1of1.tif>0.1083474;0.1083474;1</TL11_crop_1ch_emb1of1.tif>
+		</dxyz>
+		
+		
+		<ALGO_SWITCHES>
+			<FILTER_SPHERE_TOUCH_EXTERIOR_FRAME value="default">
+				<default>False</default>
+				<dtype>bool</dtype>
+				<description>A sphere that touches the exterior frame will be filtered.  The z-axis is excluded from this test, because the embryo is compressed in the z-axis, so touching the frame in that axis can occur quite often. </description>
+			</FILTER_SPHERE_TOUCH_EXTERIOR_FRAME>
+			
+			<FILTER_SPHERE_TOO_MUCH_OVERLAP_WITH_MASK value="default">
+				<default>False</default>
+				<dtype>bool</dtype>
+				<description>A sphere that overlaps too much with the exterior mask will be filtered (uses FILTER_SPHERE_OVERLAP_MASK_PC)</description>
+			</FILTER_SPHERE_TOO_MUCH_OVERLAP_WITH_MASK>
+			
+			<FILTER_SPHERE_SMALL_RADIUS value="default">
+				<default>True</default>
+				<dtype>bool</dtype>
+				<description>A small cell with no overlap will be filtered (uses MIN_SEED_RADIUS and MIN_CELL_RADIUS)</description>
+			</FILTER_SPHERE_SMALL_RADIUS>
+			
+			<FILTER_SPHERE_SEED_TOP_OR_BOTTOM value="default">
+				<default>True</default>
+				<dtype>bool</dtype>
+				<description>a sphere with its centre on the top or bottom slice will be filtered.  The top and bottom slice is defined as the first slice that has membrane signal </description>
+			</FILTER_SPHERE_SEED_TOP_OR_BOTTOM>
+			
+			<FILTER_CLUSTER_SEED_TOP_OR_BOTTOM value="default">
+				<default>True</default>
+				<dtype>bool</dtype>
+				<description>a cluster with its seed sphere centre on the top or bottom slice will be filtered.  The top and bottom slice is defined as the first slice that has membrane signal </description>
+			</FILTER_CLUSTER_SEED_TOP_OR_BOTTOM>
+			
+			<FILTER_CLUSTER_TOUCH_EXTERIOR_FRAME value="default">
+				<default>False</default>
+				<dtype>bool</dtype>
+				<description>A cluster that touches the exterior frame will be filtered.  The z-axis is excluded from this test, because the embryo is compressed in the z-axis, so touching the frame in that axis can occur quite often. </description>
+			</FILTER_CLUSTER_TOUCH_EXTERIOR_FRAME>
+			
+			<THRESHOLD_CELL_OVERLAP_TOO_MUCH_WITH_MASK value="default">
+				<default>False</default>
+				<dtype>bool</dtype>
+				<description>If the seed sphere of a cluster overlaps too much with the mask it can not turn into a cell (uses THRESHOLD_CELL_OVERLAP_MASK_PC).  If there are a lot of gaps between the embryo cells and the exterior (embryo does not fill up the shell) you may want to turn this on too avoid false positive cells from forming in these empty spaces </description>
+			</THRESHOLD_CELL_OVERLAP_TOO_MUCH_WITH_MASK>
+			
+		</ALGO_SWITCHES>
+		
+		<FRAGMENTATION_LEVEL value="default">
+			<description>This influences the overlap threshold used in cluster and cell creation.  Increasing it, will increase the overlap required for 2 spheres or clusters to group together, and therefore boosting cell division.  
+			The value lies between 0 and 1.  It reflects a percentage of the radius of the sphere (the seed sphere in case of cluster) involved.
+			#0 = every overlap will cause clusters to be fused, 
+			#0.75 = fuse if you can move the smallest cluster to the other if you shrink its radius to 75% its original size
+			#1 = only fuse if the overlap hole (=maximum DT value in the overlap zone) is so big the smallest cluster can move to the other cluster without shrinking it
+			This is considered a user parameter
+		</description>
+			<dtype>float</dtype>
+			<default>0.9</default>
+		</FRAGMENTATION_LEVEL>
+		
+		<z_span_max value="default">
+			<description>if a cell has a z-range that exceeds this value, clustering will be made less likely (refinement of oversegmentation booster.  default is set very high = set off</description>
+			<dtype>float</dtype>
+			<default>99</default>	
+		</z_span_max>
+
+		<radius_zspan value="default">
+			<description>determines the threshold above which zspan logic will be activated. defined as a ratio.  eg 0.6 will select all radii &gt; max-radius-stack * 0.6 for zspan logic 
+				default set to 1 to shortcircuit zspan logic</description>
+			<dtype>float</dtype>
+			<default>1</default>	
+		</radius_zspan>
+		
+
+		<FILTER_SPHERE_OVERLAP_MASK_PC value="default">
+			<description>if a sphere has a bigger overlap with the exterior mask, it will be filtered</description>
+			<dtype>float</dtype>
+			<default>0.4</default>	
+		</FILTER_SPHERE_OVERLAP_MASK_PC>
+		
+		
+		<MIN_SPHERE_RADIUS value="default">
+			<description>threshold for sphere creation. The lower, the higher the resolution and computation time</description>
+			<dtype>int</dtype>
+			<default>10</default>
+		</MIN_SPHERE_RADIUS>
+		
+		<MIN_SEED_RADIUS value="default">
+			<description>threshold for cluster creation.  A sphere with a radius smaller than this can not be the seed of a new cluster. This does not apply to the first stack, there MIN_CELL_RADIUS is used, given that in the first stack </description>
+			<dtype>int</dtype>
+			<default>14</default>
+		</MIN_SEED_RADIUS>
+
+		<MIN_CELL_RADIUS value="20">
+			<description>threshold for cell creation (used in first stack and cell division).  This is defined as the radius the volume of a sphere that can harbor all pixels of the clusters.  
+			This is considered a user parameter</description>
+			<dtype>int</dtype>
+			<default>14</default>
+		</MIN_CELL_RADIUS>
+
+		<SEEDING_Z_RANGE value="default">
+			<description>limits the z range of the seed movement across timesteps (height of seeding disk). 1 is default and leads to a disk of z height=3 which is usually fine. set to 2 if large cell body movements occur (due to cell division often)</description>
+			<dtype>int</dtype>
+			<default>1</default>
+		</SEEDING_Z_RANGE>
+		
+		<CLUSTER_THRESHOLD_OVERLAP_MASK_PC value="default">
+			<description>a non seeded sphere that overlaps heavily with the exterior but does have some overlap with a cluster should never start a new cluster</description>
+			<dtype>float</dtype>
+			<default>0.5</default>
+		</CLUSTER_THRESHOLD_OVERLAP_MASK_PC>
+		
+		<THRESHOLD_CELL_DIVISION_MIN_RADIUS_RATIO value="default">
+			<description>threshold for cell creation through cell division.  It expresses the min radius ratio needed between 2 daughter cells. 
+			2 daughter cells can be assumed to have a similar size.</description>
+			<dtype>float</dtype>
+			<default>.4</default>
+		</THRESHOLD_CELL_DIVISION_MIN_RADIUS_RATIO>
+		
+		<THRESHOLD_CELL_OVERLAP_MASK_PC value="default">
+			<description>if a seed sphere of a cluster has a bigger overlap with the exterior mask, it will not receive a cell label</description>
+			<dtype>float</dtype>
+			<default>0.5</default>	
+		</THRESHOLD_CELL_OVERLAP_MASK_PC>
+		
+		<MAX_NB_SPHERES value="default">
+			<description>maximum number of spheres per stack.  just a safety measure if looping should occur, should be set very high</description>
+			<dtype>int</dtype>
+			<default>20000</default>
+		</MAX_NB_SPHERES>
+
+		<MASK_AS_MEMBRANE value="default">
+			<description>treats the exterior mask as a membrane when creating the DT.  Set to True if you are certain the exterior mask is correct</description>
+			<dtype>bool</dtype>
+			<default>False</default>
+		</MASK_AS_MEMBRANE>
+	
+	</parms>
+</spheresDT>
+
+<lineager_feeder>
+	<paths>
+		<INPUT_FILE value="default">
+			<description>the clusterview excel file from the spheresDT algorithm.  only fill in if you want to overrule the default location and use a specific file</description>
+			<default>body+spheresDT+paths+output_folder+file_cluster</default>
+		</INPUT_FILE>
+	</paths>
+	
+	<flowcontrol>
+		<MAKE_IMAGE_SEQUENCE value="default">
+			<description>Indicates if an image sequence (=folder of slices) from IMG_RAW_FILE will be constructed.</description>
+			<dtype>bool</dtype>
+			<default>True</default>
+		</MAKE_IMAGE_SEQUENCE>
+
+		<offset_lineage_files value="default">
+			<description>time offset. so, setting this to 9 will produce t009_nuclei as the first file. if set to -1 it will be set to the first timestep in ./preprocessing/flowcontrol/l_stack_number </description>
+			<dtype>int</dtype>
+			<default>0</default>
+		</offset_lineage_files>
+
+	</flowcontrol>
+</lineager_feeder>
+
+<CTC_TRA>
+	<paths>
+		<input_file_csv value="default">
+			<description>the clusterview excel file from the spheresDT algorithm.  only fill in if you want to overrule the default location and use a specific file</description>
+			<dtype>path</dtype>
+			<default>body+spheresDT+paths+output_folder+file_cluster</default>
+		</input_file_csv>
+		
+		<input_file_clusterview value="default">
+			<description>the clusterview image file from the spheresDT algorithm.  only fill in if you want to overrule the default location and use a specific file</description>
+			<dtype>path</dtype>
+			<default>body+spheresDT+paths+output_folder+file_clusterview</default>
+		</input_file_clusterview>
+		
+		<INPUT_FILE_VALIDATION value="default">
+			<description>optional, if filled in , the ground_truth files used in TRA score calculation will be formed</description>
+			<dtype>path</dtype>
+			<default>body+spheresDT+paths+FILE_VALIDATION</default>
+		</INPUT_FILE_VALIDATION>
+		
+		<CTC_TRA_EXE value="default">
+			<description>the location of the executable that will calculate the TRA score</description>
+			<dtype>path</dtype>
+			<default>/home/wth/Downloads/SYNC/TRAMeasure</default>
+		</CTC_TRA_EXE>
+	</paths>
+
+	<flowcontrol>
+		<GT_mode value="default">
+			<description>if True, then input_file_validation will be used to create the ground truth data used in CTC TRA score calculation.  When False INPUT_FILE will be used</description>
+			<dtype>bool</dtype>
+			<default>False</default>
+		</GT_mode>
+	</flowcontrol>
+	
+</CTC_TRA>
+
+<mpacts_input_generator>
+	<paths>	
+		
+		<input_file_csv value="default">
+			<description>The input needed from SDT to extract the sphere. cluster_summary.csv will be loaded
+				if left blanc then this file name will be automatically determined based on the previous steps
+			</description>
+			<dtype>path</dtype>
+			<default>body+spheresDT+paths+output_folder+file_cluster</default>
+		</input_file_csv>	
+
+		<input_file_frangi value="default">
+			<description>raw frangi image, will be used to construct file_pixel_selector </description>
+			<dtype>path</dtype>
+			<default>body+preprocessing+paths+output_folder+file_frangi</default>
+		</input_file_frangi>	
+
+		<input_file_threshold value="default">
+			<description>the binary threshold image, before skeletonization. will be used to construct file_pixel_selector </description>
+			<dtype>path</dtype>
+			<default>body+preprocessing+paths+output_folder+file_threshold</default>
+		</input_file_threshold>	
+
+		<img_membranes_blend_z value="default">
+			<description>If filled in, the z-membrane pixels will be selected from this image (value == 3 by convention). and they will be blended in the pixel selector with the maximum frangi value per slice</description>
+			<dtype>path</dtype>
+			<default>body+preprocessing+paths+output_folder+file_membranes_blend_z</default>
+		</img_membranes_blend_z>	
+
+		<img_exterior_outline value="&lt;ROOT_OUTPUT&gt;/002_preprocessing/exterior_outline.tif">
+			<description>If filled in, the z-membrane pixels will be selected from this image (value == 3 by convention). and they will be blended in the pixel selector with the maximum frangi value per slice.  If the outline in MAIN is filled, then this takes precedence</description>
+			<dtype>path</dtype>
+			<default>body+preprocessing+paths+output_folder+file_exterior_outline</default>
+		</img_exterior_outline>
+		
+		<output_folder value="default">
+			<description>folder containing the input needed for mpacts : the spheres csv, the pixel selector for mpacts, the exterior outline for mpacts_presim..</description>
+			<file_spheres value="spheres_for_meshing.csv" />
+			<file_spheres_CGAL value="spheres_for_meshing_CGAL.csv" />
+			<file_pixel_selector value="mpacts_pixel_selector.tif" />
+			<file_exterior_outline value="exterior_outline_stack.tif" />
+			<file_lineager value="lineage_named.tsv" />
+			<dtype>path</dtype>
+			<default>&lt;ROOT_OUTPUT&gt;/008_mpacts_input/</default>
+		</output_folder>
+	</paths>
+	
+	<process_flow>
+		<nb_stack_timelapse value="default">
+			<description>refers to the input stack from ./MAIN/paths/img_raw_file (1=first timepoint)jso refers to the input file of preprocessing.  Only use this if preprocessing l_nb_stack does not equal 'all', only then this value will differ from nb_stack.  This value is commonly used in the testcase label e.g. '09' in fmn0109</description>
+			<dtype>list;int</dtype>
+			<default>body+mpacts_input_generator+process_flow+nb_stack</default>
+		</nb_stack_timelapse>
+
+		<nb_stack value="default">
+			<description>the input stack for Mpacts. (1=first timepoint). Referring to the output from preprocessing (not the input). This will be the timevalue that will be used for all subsequent steps  </description>
+			<dtype>list;int</dtype>
+			<default>1</default>
+		</nb_stack>
+
+		<nb_stack_analysis value="default">
+			<description>This will be the timepoint the stack has in the analysis further downstream.  It it inconsequential because time in the analysis will be expressed in absolute units anyway (with respect to a certain event, like EMS-division&#224;, and this value is just the row-number, so it can be easily derived.  This can differ from nb-stack because mpacts-input-generator can pick out certain timepoints for further analysis. (typically when taking a larger time interval eg. every 3 minutes instead of 1,5 in the original timelapse).  So, as a summary : a certain stack can have time = 29 in the raw stack (cfr ./RAM/microscopy/raw), time = 5 in the cropped version used as input (cfr nb_stack_timelapse), time = 3 after selection by preprocessing (cfr nb_stack) and time=2 as nb-stack analysis (cfr nb_stack_analysis) because different runs of mpacts-input-generator only select a subset of stacks</description>
+			<dtype>int</dtype>
+			<default>body+mpacts_input_generator+process_flow+nb_stack</default>
+		</nb_stack_analysis>
+
+
+		
+		<shrink_spheres value="=TRUE()">
+			<description>if true, then spheres will shrink symmetrically until overlap is removed </description>
+			<dtype>bool</dtype>
+			<default>False</default>
+		</shrink_spheres>
+
+		<pixel_selector_type value="preprocessed">
+			<description>choose between 'raw' or 'preprocessed'.  
+				'raw' will take the raw image and evenly sample it (1 pixel per kernel lenght) and then scales so that the maximum pixel value has value = 1
+				.preprocessed' will start from the preprocessed membrane and extererior outline  </description>
+			<dtype>string</dtype>
+			<default>preprocessed</default>
+		</pixel_selector_type>
+
+		<nb_spheres_per_cell value="default">
+			<description>if -1 then all spheres will be selected. if 2 for example, the 2 largest spheres per cell will be selected </description>
+			<dtype>int</dtype>
+			<default>-1</default>
+		</nb_spheres_per_cell>
+
+
+	</process_flow>
+	
+	<parms>
+		<overlap_tolerance value="default">
+			<description>used for sphere_shrinking. spheres with only 1 pixel overlap in their radius are considered not overlapping</description>
+			<dtype>int</dtype>
+			<default>1</default>
+		</overlap_tolerance>
+	</parms>
+	
+</mpacts_input_generator>
+
+<sphere_meshing>
+	<paths>	
+		<input_file_spheres value="/home/docker/DATA/OUTPUT/my_testcase/008_mpacts_input/spheres_for_meshing_CGAL.csv">
+			<description>The file that list the location of the spheres (for 1 stack) that will be used for Mpacts meshing. 
+				if left blanc then this file name will be automatically determined based on the previous steps
+			</description>
+			<dtype>path</dtype>
+			<default>body+mpacts_input_generator+paths+output_folder+file_spheres</default>
+		</input_file_spheres>
+		
+		<output_folder_meshes value="/home/docker/DATA/OUTPUT/my_testcase/010_sphere_meshing">
+			<description>output folder for the meshed seeds.   prefix ./ is replaced by OUTPUT_FOLDER_ROOT</description>
+			<dtype>path</dtype>
+			<default>&lt;ROOT_OUTPUT&gt;/010_sphere_meshing/</default>
+		</output_folder_meshes>
+
+		<docker_run_ic value="True">
+			<description>Indicates if the program is run in a docker container.  If so, file paths will be updated accordingly</description>
+			<dtype>bool</dtype>
+			<default>True</default>
+		</docker_run_ic>
+		
+	</paths>
+	
+	<parms>
+		<shrink_factor value="0.3">
+			<description>the shrink factor for the CGAL skin mesher.  between 1 and 0.   1 means a tight fit, no slack</description>
+			<dtype>float</dtype>
+			<default>0.15</default>
+		</shrink_factor>
+		
+
+		<threshold_radius_micron value="0.0">
+			<description>skin surface mesher is unstable with small spheres, this allows a threshold to be set, 0.15 um seems to work most of the time</description>
+			<dtype>float</dtype>
+			<default>0</default>
+		</threshold_radius_micron>
+
+	</parms>
+</sphere_meshing>
+
+<BooleanDifferenceTrimesh>
+	<paths>	
+		<input_folder value="default">
+			<description>the folder containing the meshed cells (that still have overlap)</description>
+			<dtype>path</dtype>
+			<default>body+sphere_meshing+paths+output_folder</default>
+		</input_folder>
+		
+		<output_folder value="default">
+			<description>folder with meshed seeds, with overlap removed</description>
+			<dtype>path</dtype>
+			<default>&lt;ROOT_OUTPUT&gt;/011_BooleanDifferenceTrimesh/</default>
+		</output_folder>
+	</paths>
+</BooleanDifferenceTrimesh>
+
+<BooleanOperationPolyDataFilter>
+	<paths>	
+		<input_folder value="default">
+			<description>the folder containing the meshed cells (that still have overlap)</description>
+			<dtype>path</dtype>
+			<default>body+sphere_meshing+paths+output_folder</default>
+		</input_folder>
+		
+		<output_folder value="default">
+			<description>folder with meshed seeds, with overlap removed</description>
+			<dtype>path</dtype>
+			<default>&lt;ROOT_OUTPUT&gt;/019_BooleanOperationPolyDataFilter/</default>
+		</output_folder>
+	</paths>
+</BooleanOperationPolyDataFilter>
+
+<mpacts_PiCS>
+	
+	<paths>	
+	
+		<input_file_pixel_selector value="body+mpacts_input_generator+paths+output_folder+file_pixel_selector">
+			<description>The file that will be used by Mpacts_PiCS for selecting pixels (can be the raw image, or Frange for example).</description>
+			<dtype>path</dtype>
+			<default>body+mpacts_input_generator+paths+output_folder+file_pixel_selector</default>
+		</input_file_pixel_selector>
+		
+		<input_folder_meshed_cells value="body+sphere_meshing+paths+output_folder_meshes">
+			<description>folder for the meshed cells in stl format.  Use 'link' + link-tag to link it to the output of another step</description>
+			<dtype>path</dtype>
+			<default>body+sphere_meshing+paths+output_folder</default>
+		</input_folder_meshed_cells>
+
+		<input_file_vtp value="">
+			<description>vtp-file of the complete embryo that will be used to extract cells based on parentID. Leave blanc if you want to use STL's as input (takes precedence over STL) </description>
+			<dtype>path</dtype>
+			<default>&lt;ROOT_OUTPUT&gt;/012_mpacts_PiCS/Presim_cells_triangles_1.vtp</default>
+		</input_file_vtp>
+
+		<input_file_exterior_outline value="&lt;ROOT_OUTPUT&gt;/002_preprocessing/exterior_outline.tif">
+			<description>exterior outline, can be used in the presim phase if available</description>
+			<dtype>path</dtype>
+			<default>body+mpacts_input_generator+paths+output_folder+file_exterior_outline</default>
+		</input_file_exterior_outline>
+		
+		<output_folder value="&lt;ROOT_OUTPUT&gt;/012_mpacts_PiCS/">
+			<description>the output folder. This output can be viewed in Paraview</description>
+			<dtype>path</dtype>
+			<default>&lt;ROOT_OUTPUT&gt;/012_mpacts_PiCS/</default>
+		</output_folder>
+
+		<docker_run_ic value="default">
+			<description>Indicates if the program is run in a docker container.  If so, file paths will be updated accordingly</description>
+			<dtype>bool</dtype>
+			<default>True</default>
+		</docker_run_ic>
+		
+	</paths>
+
+	<process_flow>
+		<SELECT_IDX_CELL value="">
+			<description>if blank all centroids will be selected, otherwise only the idx mentioned will be selected eg 1;3 will select the second and fourth cell</description>
+			<dtype>list;int</dtype>
+			<default />
+		</SELECT_IDX_CELL>
+
+		<pixel_selector_type value="default">
+			<description>choose between 'raw' or 'preprocessed' or 'calibration'.  
+				'raw' will take the raw image and evenly sample it (1 pixel per kernel lenght) and then scales so that the maximum pixel value has value = 1
+				.preprocessed' will start from the preprocessed membrane and extererior outline 
+				'calibration' will set every pixel to value 1 </description>
+			<dtype>string</dtype>
+			<default>body+mpacts_input_generator+process_flow+pixel_selector_type</default>
+		</pixel_selector_type>
+
+
+		<calibration_run_ic value="default">
+			<description>DEPRECATED  use pixel selector type = 'calibration' instead.
+				Only use when a validation input membrane image is used in order to calibrate the system.   More specifically, to find a suitable value for image_force_ratio
+				the pixels will all get value 1 (instead of a frangi derived value), and image_force_ratio will not be downscaled, but directly taken from the input</description>
+			<dtype>bool</dtype>
+			<default>False</default>
+		</calibration_run_ic>
+
+		<fit_hull value="=TRUE()">
+			<description>a hull around the embryo will be fitted during simulation</description>
+			<dtype>bool</dtype>
+			<default>False</default>
+		</fit_hull>
+
+		<scale_hull_factor value="1">
+			<description>scaling of the hull.  1 does nothing</description>
+			<dtype>float</dtype>
+			<default>1</default>
+		</scale_hull_factor>
+
+	</process_flow>	
+	
+	
+	<parms_cell_model>
+		<Vpoiss value="default">
+			<description>Poisson ratio of cortex (nu_c). fixed at 1/3 for a isotropic linear elastic material</description>
+			<dtype>float</dtype>
+			<default>0.33333</default>
+		</Vpoiss>
+		
+		<adh_cell value="0.84">
+			<description>contact modelling : ratio of adhesion and surface tension (p_a),(rule of thumb : keep smaller than 1). 
+				Will be scaled as follows : X * pt_cortex 
+				Default value comes from the Heisenberg paper, and was derived for zebrafish embryo cells. We expect C. Elegans to be close to this..
+			</description>
+			<dtype>float</dtype>
+			<default>0.82</default>
+		</adh_cell>
+
+		<adh_cell_2 value="0.01">
+			<description> value for second phase of simulation</description>
+			<dtype>float</dtype>
+			<default>0.82</default>
+		</adh_cell_2>
+
+
+		<adh_cell_3 value="0.01">
+			<description> value for third phase of simulation</description>
+			<dtype>float</dtype>
+			<default>0.82</default>
+		</adh_cell_3>
+
+		<adh_cell_presim value="default">
+			<description>DEPRECATEDcontact modelling : ratio of adhesion and surface tension (p_a),(rule of thumb : keep smaller than 1). 
+				Will be scaled as follows : X * pt_cortex 
+				this value used in presim phase =&gt; unnaturally high (membranes should snap shut quickly)
+			</description>
+			<dtype>float</dtype>
+			<default>2</default>
+		</adh_cell_presim>
+		
+		<k_stretch value="default">
+			<description>elasticity modelling : linear spring stiffness</description>
+			<dtype>float</dtype>
+			<default>5.e-5</default>
+		</k_stretch>
+		
+		<tc value="default">
+			<description>elasticity modelling : cortical thickness (range [0.15,0.65])</description>
+			<dtype>float</dtype>
+			<default>0.25</default>
+		</tc>
+		
+		<pt_cortex value="0.5">
+			<description>active tension modelling : effective surface tension of cortex (gamma) (range [0,0.9])</description>
+			<dtype>float</dtype>
+			<default>1</default>
+		</pt_cortex>
+
+		<pt_cortex_2 value="1">
+			<description>value for second phase of simulation</description>
+			<dtype>float</dtype>
+			<default>1</default>
+		</pt_cortex_2>
+
+		<pt_cortex_3 value="1">
+			<description>value for third phase of simulation</description>
+			<dtype>float</dtype>
+			<default>1</default>
+		</pt_cortex_3>
+
+		<pt_cortex_presim value="default">
+			<description>DEPRECATED active tension modelling used for presim phase (unnatural values to eliminate gaps) </description>
+			<dtype>float</dtype>
+			<default>10</default>
+		</pt_cortex_presim>
+		
+		<kv_cell value="0.2">
+			<description>active tension modelling : effective bulk modulus (K))</description>
+			<dtype>float</dtype>
+			<default>1</default>
+		</kv_cell>
+
+		<kv_cell_2 value="0.1">
+			<description>value for second phase of simulation</description>
+			<dtype>float</dtype>
+			<default>1</default>
+		</kv_cell_2>
+
+		<kv_cell_3 value="1">
+			<description>value for third phase of simulation</description>
+			<dtype>float</dtype>
+			<default>1</default>
+		</kv_cell_3>
+
+		<kv_cell_presim value="default">
+			<description>DEPRECATED active tension modelling : effective bulk modulus (K)) used in presim phase. Closer to zero will causes more resistance to volume changes</description>
+			<dtype>float</dtype>
+			<default>0</default>
+		</kv_cell_presim>
+
+		<p_int value="0.001">
+			<description>additional global internal cell pressure</description>
+			<dtype>float</dtype>
+			<default>0.0001</default>
+		</p_int>
+
+		<p_int_2 value="2">
+			<description>value for second phase of simulation</description>
+			<dtype>float</dtype>
+			<default>0</default>
+		</p_int_2>
+
+		<p_int_3 value="0">
+			<description>value for third phase of simulation</description>
+			<dtype>float</dtype>
+			<default>0</default>
+		</p_int_3>
+
+		<internal_pressure_presim value="default">
+			<description>DEPRECATED additional global internal cell pressure</description>
+			<dtype>float</dtype>
+			<default>0</default>
+		</internal_pressure_presim>
+		
+		<gamma_liq value="default">
+			<description>dissipation : medium viscosity (eta_l). 
+				This value will be scaled as follows : X * viscosity / radius 
+			</description>
+			<dtype>float</dtype>
+			<default>1.5</default>
+		</gamma_liq>
+		
+		<cd_kd value="default">
+			<description>???. 
+				This value will be scaled as follows : X * h_eff 
+			</description>
+			<dtype>float</dtype>
+			<default>4.0</default>
+		</cd_kd>
+		
+		<baseVisco value="1">
+			<description>dissipation : In-plane cortex viscosity (eta_c) (kPa*s)</description>
+			<dtype>float</dtype>
+			<default>1</default>
+		</baseVisco>
+
+		<baseVisco_presim value="default">
+			<description>dissipation : In-plane cortex viscosity (eta_c) (kPa*s) (used for presim phase =&gt; set higher to increase stability </description>
+			<dtype>float</dtype>
+			<default>3</default>
+		</baseVisco_presim>
+
+		<FrictionN value="1">
+			<description>dissipation : normal friction coefficient (lambda_n) (kPa*s/um)</description>
+			<dtype>float</dtype>
+			<default>0.1</default>
+		</FrictionN>
+		
+		<FrictionT value="1">
+			<description>dissipation : tangential friction coefficient (lambda_t) (kPa*s/um)</description>
+			<dtype>float</dtype>
+			<default>0.1</default>
+		</FrictionT>
+		
+		<h_eff value="300">
+			<description>Adhesive range (smaller = stiffer, larger = soft and smooth).  =Contact range Used in contact model (nm)</description>
+			<dtype>float</dtype>
+			<default>300</default>
+		</h_eff>
+		
+		<h_smooth value="1">
+			<description>Smoothing length of image pixels (big -&gt; slow calculation) (um)</description>
+			<dtype>float</dtype>
+			<default>1.0</default>
+		</h_smooth>
+		
+		<radius value="default">
+			<description>cell modelling : Average cell radius (rough first appromixation.  Will be reestimated per cell when adding cells to the grid ) (um)</description>
+			<dtype>float</dtype>
+			<default>10</default>
+		</radius>
+		
+		<max_r value="default">
+			<description>maximum inverse curve (um)</description>
+			<dtype>float</dtype>
+			<default>25</default>
+		</max_r>
+		
+		<opt_limit value="default">
+			<description>Tolerance for conjugate gradient solver (large=fast and imprecise)</description>
+			<dtype>float</dtype>
+			<default>5e-4</default>
+		</opt_limit>
+		
+		<viscosity value="1">
+			<description>viscosity.  Diagonal (liquid) viscosity: high = stable (kPa*s)</description>
+			<dtype>float</dtype>
+			<default>1</default>
+		</viscosity>
+		
+		<sub value="4">
+			<description>subdivision</description>
+			<dtype>int</dtype>
+			<default>4</default>
+		</sub>
+		
+		<ka value="1">
+			<description>prevents triangles from collapsing or blowing up too much (no effect for small deformations, kicks in when triangles become too extreme). 
+			Will be scaled as follows '2*$pt_cortexn$'
+			</description>
+			<dtype>float</dtype>
+			<default>2</default>
+		</ka>
+		
+	</parms_cell_model>
+	
+	<parms_pix>
+		<image_force_ratio value="0.15">
+			<description>the scalefactor applied to the pixelvalues. Determines the balance between the pixel force and the rest of the mechanical forces</description>
+			<dtype>float</dtype>
+			<default>0.05</default>
+		</image_force_ratio>
+		
+		<sigma_smoothing value="default">
+			<description>sigma for the gaussian smoothing of the pixels.  Since sigma should be very small (less than 1 pixel), so the 'global' smoothing effect is not strong</description>
+			<dtype>float</dtype>
+			<default>0.75</default>
+		</sigma_smoothing>
+		
+		<zoom_factors value="default"> 
+			<description>the scaling factors used to resample the data (z,y,x). The sparse dimension (z) should be upsampled (through interpolation), dense dimension (x,y) should be decreased in resolution</description>
+			<dtype>float</dtype>
+			<default>3.0;0.25;0.25</default>
+		</zoom_factors>
+		
+		<perc_pix_sel value="17"> 
+			<description>percentage of brightest pixels that will be selected.  nb_pix_sel takes precedence</description>
+			<dtype>float</dtype>
+			<default>20</default>
+		</perc_pix_sel>
+		
+		<nb_pix_sel value="-1"> 
+			<description>nb of brightest pixels that will be selected. takes precedence over perc_pix_sel.  Set to -1 if you do not want to use perc_pix_sel instead</description>
+			<dtype>int</dtype>
+			<default>122958</default>
+		</nb_pix_sel>
+
+		<balance_z_signal value="default"> 
+			<description>if true then every slice will be recalibrated to avoid weak signal at the bottom.  The max of the middle slice will be taken as the referenence.  all other slices are rescaled, so their maximum equals that of the reference</description>
+			<dtype>bool</dtype>
+			<default>True</default>
+		</balance_z_signal>
+	</parms_pix>
+	
+	<parms_sim>
+		<simulation_time_1 value="0.2">
+			<description>simulation time interval phase I</description>
+			<dtype>float</dtype>
+			<default>0.5</default>
+		</simulation_time_1>
+
+		<simulation_time_2 value="0.2">
+			<description>simulation time interval phase II</description>
+			<dtype>float</dtype>
+			<default>0.01</default>
+		</simulation_time_2>
+
+		<simulation_time_3 value="0.1">
+			<description>simulation time interval phase III</description>
+			<dtype>float</dtype>
+			<default>0.15</default>
+		</simulation_time_3>
+
+		<simulation_time_presim value="default">
+			<description>DEPRECATED simulation time for the presim phase (should be very short) </description>
+			<dtype>float</dtype>
+			<default>0.1</default>
+		</simulation_time_presim>
+
+		<simulation_time_before_signal value="default">
+			<description>DEPRECATED simulation time interval when the cells are allowed to relax, before the pixel signal is added</description>
+			<dtype>float</dtype>
+			<default>0.5</default>
+		</simulation_time_before_signal>
+		
+		<simulation_time_with_signal value="default">
+			<description>DEPRECATED simulation time interval after the signal is added (until end time of the simulation)</description>
+			<dtype>float</dtype>
+			<default>0.15</default>
+		</simulation_time_with_signal>
+	</parms_sim>
+</mpacts_PiCS>
+
+
+<contactinfo>
+	<paths>	
+		<input_folder value="default">
+			<description>the folder containing the meshed cells</description>
+			<dtype>path</dtype>
+			<default>body+mpacts_PiCS</default>
+		</input_folder>
+		
+		<output_folder value="default">
+			<description>folder with files containing overlap info</description>
+			<dtype>path</dtype>
+			<default>&lt;ROOT_OUTPUT&gt;/020_contactinfo/</default>
+		</output_folder>
+	</paths>
+</contactinfo>
+
+<select_cells> 
+	<paths>	
+		<input_folder value="default">
+			<description>the folder containing the meshed cells in VTP format </description>
+			<dtype>path</dtype>
+			<default>body+mpacts_PiCS+paths+output_folder</default>
+		</input_folder>
+		
+		<input_file_nb value="default">
+			<description>the folder can contain many vtp files, from consecutive timesteps. This number selects one.  If left blanc, the last file will be processed </description>
+			<dtype>string</dtype>
+			<default>body+mpacts_validation+process_flow+nb_file_SEG</default>
+		</input_file_nb>
+
+		<input_file value="default">
+			<description>takes precedence over file_nb. If this is filled in, this file will be loaded (should be complete path) </description>
+			<dtype>path</dtype>
+			<default />
+		</input_file>
+		
+		<output_folder value="default">
+			<description>folder where the extracted vtp and stl file(s) will be placed </description>
+			<dtype>path</dtype>
+			<default>&lt;ROOT_OUTPUT&gt;/021_extract_selection/</default>
+		</output_folder>
+	</paths>
+
+	<process_flow>
+		<write_stl_files value="default">
+			<description>besides the vtp files, also stl files will be outputted</description>
+			<dtype>bool</dtype>
+			<default>True</default>
+			</write_stl_files>
+	</process_flow>
+</select_cells>
+
+<mpacts_pics_select> 
+	<paths>	
+		<input_folder value="default">
+			<description>the folder containing the embryo VTP that will be fragmented into separate cells.  </description>
+			<dtype>path</dtype>
+			<default>body+mpacts_PiCS+paths+output_folder</default>
+		</input_folder>
+		
+		<input_file value="">
+			<description>by default the embryo in the mpacts_PiCS folder ending in 'enriched' will be selected. but this offers the possibility to override this</description>
+			<dtype>path</dtype>
+			<default />
+		</input_file>
+		
+		<output_folder value="&lt;ROOT_OUTPUT&gt;/021_mpacts_pics_select/">
+			<description>folder where the extracted vtp and stl file(s) will be placed This folder will be used for further analysis of geometry</description>
+			<dtype>path</dtype>
+			<default>&lt;ROOT_OUTPUT&gt;/021_mpacts_PiCS_select/</default>
+		</output_folder>
+	</paths>
+
+	<process_flow>
+		<write_stl_files value="default">
+			<description>besides the vtp files, also stl files will be outputted</description>
+			<dtype>bool</dtype>
+			<default>True</default>
+			</write_stl_files>
+	</process_flow>
+
+</mpacts_pics_select>
+
+<enrich_contactinfo>
+	<paths>	
+		<input_folder value="default">
+			<description>the folder containing the selected vtp file of the embryo </description>
+			<dtype>path</dtype>
+			<default>body+select_cells+paths+output_folder</default>
+		</input_folder>
+
+		<input_file_nb value="default">
+			<description>which timestep will be processed. if left blanc the latest will be picked</description>
+			<dtype>str</dtype>
+			<default />
+		</input_file_nb>
+
+		<output_folder value="default">
+			<description>folder with files containing overlap info</description>
+			<dtype>path</dtype>
+			<default>&lt;ROOT_OUTPUT&gt;/023_enrich_contactinfo/</default>
+		</output_folder>
+	</paths>
+</enrich_contactinfo>
+
+<extract_contactinfo>
+	<paths>	
+		<input_folder value="default">
+			<description>the folder containing the selected vtp file of the embryo </description>
+			<dtype>path</dtype>
+			<default>body+mpacts_pics_select+paths+output_folder</default>
+		</input_folder>
+
+		<input_file value="">
+			<description>explicit file name to use.  If left blanc the folder will select the selected_embryo.vtp file</description>
+			<dtype>str</dtype>
+			<default />
+		</input_file>
+
+		<output_folder value="default">
+			<description>folder with files containing overlap info</description>
+			<dtype>path</dtype>
+			<default>&lt;ROOT_OUTPUT&gt;/023_extract_contactinfo/</default>
+		</output_folder>
+	</paths>
+</extract_contactinfo>
+
+<mpacts_pics_enrich>
+	<paths>	
+		<input_folder value="body+mpacts_PiCS+paths+output_folder">
+			<description>the folder containing the selected vtp file of the embryo </description>
+			<dtype>path</dtype>
+			<default>body+select_cells+paths+output_folder</default>
+		</input_folder>
+
+		<input_file value="">
+			<description>explicit file name to be enriched.  overrules input_file_nb</description>
+			<dtype>str</dtype>
+			<default />
+		</input_file>
+
+		<input_file_lineage value="default">
+			<description>named lineager file used for automatic naming.  This file should be in tab separated format (not starrynite format).  expressed in pixel values</description>
+			<dtype>path</dtype>
+			<default>body+mpacts_input_generator+paths+output_folder+file_lineager</default>
+		</input_file_lineage>
+
+		<input_file_canonical_tree value="">
+			<description>nlineage tree of c. elegans that will be used to extract the canonical parentid per cell name (the index of the cellname will become the canonical parentid</description>
+			<dtype>path</dtype>
+			<default>c100809-tree.tsv</default>
+		</input_file_canonical_tree>
+
+		<input_file_nb value="">
+			<description>which timestep will be processed. if left blanc the latest will be picked</description>
+			<dtype>str</dtype>
+			<default />
+		</input_file_nb>
+
+
+		<input_file_centroids value="&lt;ROOT_OUTPUT&gt;/012_mpacts_PiCS/cell_centroids.csv">
+			<description>the csv file with the centroids for each cell (sorted according to parentIndex) These centroids are a snapshot at the end of simulation</description>
+			<dtype>path</dtype>
+			<default>&lt;ROOT_OUTPUT&gt;/012_mpacts_PiCS/cell_centroids.csv</default>
+		</input_file_centroids>
+
+		<output_folder value="body+mpacts_PiCS+paths+output_folder">
+			<description>folder with files containing overlap info</description>
+			<dtype>path</dtype>
+			<default>&lt;ROOT_OUTPUT&gt;/012_mpacts_PiCS/</default>
+		</output_folder>
+	</paths>
+
+	<naming_strategy value="fallback">
+		<description>Which strategy to use to automatically name the cells. can be 'lineager','micsla','fallback' </description>
+		<dtype>str</dtype>
+		<default>lineager</default>
+	</naming_strategy>
+
+</mpacts_pics_enrich>
+
+<extract_geom_data>
+	<paths>	
+		<input_folder value="default">
+			<description>the folder containing the selected cells of the embryo </description>
+			<dtype>path</dtype>
+			<default>body+select_cells+paths+output_folder</default>
+		</input_folder>
+
+		<output_folder value="default">
+			<description>folder where geometry data will be written to</description>
+			<dtype>path</dtype>
+			<default>&lt;ROOT_OUTPUT&gt;/029_extract_geom_data/</default>
+		</output_folder>
+	</paths>
+</extract_geom_data>
+
+<file_name_mapper>
+	<paths>	
+
+		<input_folder value="default">
+			<description>input folder containing the files that will be renamed by the dds excel (from RAM). At this moment the script expects tab '1' to do the mapping</description>
+			<dtype>path</dtype>
+			<default>&lt;ROOT_OUTPUT&gt;/021_select_cells/</default>
+		</input_folder>
+
+		<output_folder value="default">
+			<description>output folder for the renamed files</description>
+			<dtype>path</dtype>
+			<default>&lt;ROOT_OUTPUT&gt;/036_select_cells_named/</default>
+		</output_folder>
+	</paths>
+
+	<regex_filter value="default">
+		<description>reg ex for selecting the files from the input folder</description>
+		<dtype>str</dtype>
+		<default>cell*.vtp</default>
+	</regex_filter>
+
+</file_name_mapper>
+
+
+<extract_indent_volume>
+	<paths>	
+		<input_file_vtp_1 value="default">
+			<description>the enriched mesh (cell1) used as input.  It has to contain contact_id (therefore enriched) </description>
+			<dtype>path</dtype>
+			<default>body+select_cells+paths+output_folder</default>
+		</input_file_vtp_1>
+
+		<input_file_vtp_2 value="default">
+			<description>the enriched mesh (cell2) used as input.  It has to contain contact_id (therefore enriched) </description>
+			<dtype>path</dtype>
+			<default>body+select_cells+paths+output_folder</default>
+		</input_file_vtp_2>
+
+		<input_folder value="default">
+			<description>input folder where the enriched meshes reside </description>
+			<dtype>path</dtype>
+			<default>&lt;DATA_FOLDER&gt;/M036b/INPUT/</default>
+		</input_folder>
+
+		<l_input_vtp value="default">
+			<description>the enriched mesh pair used as input. They must contain contact_id (therefore enriched). 
+			The list will be processed in pairs  </description>
+			<dtype>list;string</dtype>
+			<default>MS.vtp;E.vtp;MS.vtp;C.vtp;MS.vtp;ABpr.vtp;MS.vtp;ABpl.vtp;MS.vtp;ABar.vtp;MS.vtp;ABal.vtp</default>
+		</l_input_vtp>
+
+		<output_folder value="default">
+			<description>folder for the output excel containing the indent volumes of the cell with its neighbours </description>
+			<dtype>path</dtype>
+			<default>&lt;ROOT_OUTPUT&gt;/035_extract_indent_volume/</default>
+		</output_folder>
+	</paths>
+</extract_indent_volume>
+
+<mpacts_validation>
+	<paths>
+		<input_folder_mpacts_meshes value="default">
+			<description>the folder that contains the Mpacts output, the meshed cells</description>
+			<dtype>path</dtype>
+			<default>body+mpacts_PiCS+output_folder+file_folder_meshes</default>
+		</input_folder_mpacts_meshes>
+		
+		<input_file_validation_stack value="4D_membrane_manual.tif">
+			<description>filename of the Tiff file used for validation.  Manually annotated membranes as a binary image (&gt;0 should indicate membrane)</description>
+			<dtype>path</dtype>
+			<default>4D_membrane_manual.tif</default>
+		</input_file_validation_stack>
+		
+		<input_file_seed value="default">
+			<description>the lineage excel with the location of the cells used to extract the seed locations</description>
+			<dtype>path</dtype>
+			<default>TL1_lineage(original)_saved_corr.csv</default>
+		</input_file_seed>
+
+		<input_file_exterior_mask value="default">
+			<description>location of an exterior mask from preprocessing. if left blanc, this will not be used (in watershedding RES for SEG scoring)</description>
+			<dtype>path</dtype>
+			<default />
+		</input_file_exterior_mask>
+		
+		<input_folder_CTC_GT_SEG value="default">
+			<description>the folder that contains CTC ground truth segmentations eg man_seg_000_005.tif. must be in a 01_GT folder</description>
+			<dtype>path</dtype>
+			<default>body+CTC_SEG_3Dwatershed+paths+output_folder</default>
+		</input_folder_CTC_GT_SEG>
+		
+		<CTC_SEG_EXE value="default">
+			<description>the location of the executable that will calculate the SEG score</description>
+			<dtype>path</dtype>
+			<default>SEGMeasure</default>
+		</CTC_SEG_EXE>
+		
+		<output_folder value="default">
+			<description>the lineage excel with the location of the cells used to extract the seed locations</description>
+			<dtype>path</dtype>
+			<default>&lt;ROOT_OUTPUT&gt;/013_mpacts_validation</default>
+		</output_folder>
+	</paths>
+	
+	<dxyz value="body+spheresDT+parms+dxyz">
+		<description>resolution of image, (dx, dy, dz) in micron </description>
+		<dtype>list;float</dtype>
+		<default>0.129475;0.129475;1.1</default>
+	</dxyz>
+	
+	<process_flow>
+		<nb_stack value="default">
+			<description>the stack that will be validated (1 = first timestep)</description>
+			<dtype>int</dtype>
+			<default>1</default>
+		</nb_stack>
+
+		<nb_file_SEG value="default">
+			<description>the simulation timepoint that will be used to calculate SEG score (or better the file number of the corresponding vtp-file.  
+				if the simulation is unstable at that point, the SEG scoring most probably will give nonsense results(because of failing watershed).
+				if "best", the timepoint with the lowest validation score (avg pixel distance) will be used
+				if "last", the last timepoint will be selected
+			</description>
+			<dtype>str</dtype>
+			<default>best</default>
+		</nb_file_SEG>
+		
+		<nb_images value="50">
+			<description>how many timesteps of the simulation will be validated (images will be evenly spread in time automatically)</description>
+			<dtype>int</dtype>
+			<default>20</default>
+		</nb_images>
+	</process_flow>
+	
+	<parms>
+		<snapshot_start_time value="default">
+			<description>indicate the timerange (start) for validation = deprecated </description>
+			<dtype>float</dtype>
+			<default>1.49</default>
+		</snapshot_start_time>
+		
+		<snapshot_end_time value="default">
+			<description>indicate the timerange (end) for validation </description>
+			<dtype>float</dtype>
+			<default>1.99</default>
+		</snapshot_end_time>
+		
+		<snapshot_save_modulus value="default">
+			<description>only save an image snapshot every x times (no effect on score, just to reduce the size of the tiff visualization). Set to 1 to bypass effect</description>
+			<dtype>int</dtype>
+			<default>1</default>
+		</snapshot_save_modulus>
+	</parms>
+</mpacts_validation>	
+
+<CTC_SEG_3Dwatershed>
+	<paths>	
+		<input_file_image value="default">
+			<description>tif file that will be filled in = transformed to a 3D DT, and watershed will be performed</description>
+			<dtype>path</dtype>
+			<default>4D_membrane_manual.tif</default>
+		</input_file_image>
+		
+		<input_file_seed value="default">
+			<description>the lineage excel with the location of the cells used to extract the seed locations</description>
+			<dtype>path</dtype>
+			<default>TL1_lineage(original)_saved_corr.csv</default>
+		</input_file_seed>
+		
+		<input_file_overlay value="default">
+			<description>the overlay to prevent spillover to the outside (must be exact for that timestep)</description>
+			<dtype>path</dtype>
+			<default>TL1_t000_exterior_overlay_validation.tif</default>
+		</input_file_overlay>
+		
+		<output_folder value="default">
+			<description>folder with filled in slices, in a format that CTC SEG can work with</description>
+			<dtype>path</dtype>
+			<default>&lt;ROOT_OUTPUT&gt;/017_CTC_SEG_3Dwatershed/</default>
+		</output_folder>
+	</paths>
+
+	<process_flow>	
+			<nb_stack value="default">
+			<description>the timestep that will be processed.</description>
+			<dtype>int</dtype>
+			<default>1</default>
+		</nb_stack>
+	</process_flow>
+
+	<dxyz value="body+spheresDT+parms+dxyz">
+		<description>resolution of image, (dx, dy, dz) in micron </description>
+		<dtype>list;float</dtype>
+		<default>0.129475;0.129475;1.1</default>
+	</dxyz>
+	
+</CTC_SEG_3Dwatershed>
+
+<SEG_3D_GT_spheres>
+	<paths>	
+		<input_file_GT_filled value="default">
+			<description>tif file manually prepared of GT stack, where each cell has a distinct (random) label and membrane and background have label 0</description>
+			<dtype>path</dtype>
+			<default>TL2_emb1_16bit_final.tif</default>
+		</input_file_GT_filled>
+		
+		
+		<output_folder value="default">
+			<description>folder where the excel will be placed containing the spheres that describe each GT cell.  This can be inputted to skin_surface_meshing from CGAL </description>
+			<file_spheres value="spheres_for_meshing_GT.csv" />
+			<dtype>path</dtype>
+			<default>&lt;ROOT_OUTPUT&gt;/024_SEG_3D_GT_spheres/</default>
+		</output_folder>
+	</paths>
+
+	<dxyz value="body+spheresDT+parms+dxyz">
+		<description>resolution of image, (dx, dy, dz) in micron </description>
+		<dtype>list;float</dtype>
+		<default>0.1294</default>
+	</dxyz>
+
+	<min_sphere_size value="default">
+		<description>min pixel radius of DT spheres that will be allocated</description>
+		<dtype>int</dtype>
+		<default>9</default>
+	</min_sphere_size>
+
+	<max_nb_spheres value="default">
+		<description>a cap on the number of spheres</description>
+		<dtype>int</dtype>
+		<default>500</default>
+	</max_nb_spheres>
+	
+</SEG_3D_GT_spheres>
+
+<SEG_3D_scoring>
+	<paths>	
+		<input_folder_GT value="default">
+			<description>folder with the STL cells represeting ground truth</description>
+			<dtype>path</dtype>
+			<default>./GT</default>
+		</input_folder_GT>
+
+		<input_folder_RES value="default">
+			<description>folder with the resulting segmentation that will get scored. </description>
+			<dtype>path</dtype>
+			<default>./RES</default>
+		</input_folder_RES>
+
+		<input_file_type value="default">
+			<description> VTP format is expected by default. In this case the VTP's will be transformed to STL cells and copied to an output folder.  They will also be scaled to 10^6. Other file types will be read in as is.  The ground truth must always be in STL format</description>
+			<dtype>str</dtype>
+			<default>vtp</default>
+		</input_file_type>
+		
+		<output_folder value="default">
+			<description>folder with some info about the SEG scoring details</description>
+			<dtype>path</dtype>
+			<default>&lt;ROOT_OUTPUT&gt;/025_SEG_3D_scoring/</default>
+		</output_folder>
+	</paths>
+	
+	<l_error_intersection_trimesh value="default">
+		<description>in very rare cases trimesh intersection calculation causes trimesh to crash.  This appears to happen with meshes with minimal overlap, close to zero.  as a final way out these combinations can be put in this list, overlap will be considered zero for these cases
+		pass on as a list of strings eg cell_cell_149;cell_parent17.(will be converted into 2-tuples)
+		On these cases volume sampling via trimesh also fails, so this is also not an option.</description>
+		<dtype>list;string</dtype>
+		<default />
+	</l_error_intersection_trimesh>
+
+	<scaling value="default">
+		<description>scaling that will be applied to the input meshes. Trimesh calculations break down when working in micron, so scaling should be used</description>
+		<dtype>float</dtype>
+		<default>1.e6</default>
+	</scaling>
+</SEG_3D_scoring>
+
+<SEG_2D_scoring>
+	<paths>	
+		<input_stack_GT value="default">
+			<description>folder with the STL cells representing ground truth</description>
+			<dtype>path</dtype>
+			<default>./GT</default>
+		</input_stack_GT>
+
+		<input_folder_RES value="default">
+			<description>folder with the resulting segmentation that will get scored. </description>
+			<dtype>path</dtype>
+			<default>body+SEG_3D_scoring+paths+input_folder_RES</default>
+		</input_folder_RES>
+
+		<output_folder value="default">
+			<description>folder with some info about the SEG scoring details</description>
+			<dtype>path</dtype>
+			<default>&lt;ROOT_OUTPUT&gt;/038_SEG_2D_scoring/</default>
+		</output_folder>
+	</paths>
+
+	<scaling value="default">
+		<description>scaling that will be applied to the input meshes</description>
+		<dtype>float</dtype>
+		<default>1</default>
+	</scaling>
+
+</SEG_2D_scoring>
+
+
+<fig_z_trajectory>
+	<paths>	
+		<input_file_csv value="default">
+			<description>the clusterview excel that will be used to extract the z-trajectory information</description>
+			<dtype>path</dtype>
+			<default>cluster_summary.csv</default>
+		</input_file_csv>
+
+		<output_file_csv value="default">
+			<description>resulting csv file with z-trajectory info.  This file must still be converted into a graph</description>
+			<dtype>path</dtype>
+			<default>&lt;ROOT_OUTPUT&gt;/007_fig_z_trajectory/z_trajectory.csv</default>
+		</output_file_csv>
+	</paths>
+</fig_z_trajectory>
+
+<viz_results>
+	<paths>	
+		<results_tracking value="default">
+			<description>excel with TRA results per timelapse =&gt; columns : label (eg TL2_2) / TRA_score /</description>
+			<dtype>path</dtype>
+			<default>results_tracking.csv</default>
+		</results_tracking>
+
+		<results_tracking_detail value="default">
+			<description>excel with accuracy tracking over time =&gt; columns : label (eg TL2_2) / t / TP / FP / FN</description>
+			<dtype>path</dtype>
+			<default>results_tracking_detail.csv</default>
+		</results_tracking_detail>
+
+		<results_segmentation value="default">
+			<description>excel with SEG results =&gt; columns : label (eg TL2_2) / t / SEG score / SEG_rel score</description>
+			<dtype>path</dtype>
+			<default>results_segmentation.csv</default>
+		</results_segmentation>
+
+		<output_folder value="default">
+			<description>outputfolder for the data vizualizations </description>
+			<dtype>path</dtype>
+			<default>&lt;ROOT_OUTPUT&gt;/028_viz_results/</default>
+		</output_folder>
+	</paths>
+</viz_results>
+
+<viz_results2>
+	<paths>
+		<f_agg_seg_data value="default">
+			<description>agg_seg_data </description>
+			<dtype>path</dtype>
+			<default>agg_seg_data.xlsx</default>
+		</f_agg_seg_data>
+
+		<output_folder value="default">
+			<description>outputfolder for the data vizualizations </description>
+			<dtype>path</dtype>
+			<default>&lt;ROOT_OUTPUT&gt;/028_viz_results/</default>
+		</output_folder>
+	</paths>
+</viz_results2>
+
+<agg_geom_data>
+	<paths>	
+		<input_dds value="default">
+			<description>inputfile for loading datastructures</description>
+			<dtype>path</dtype>
+			<default>dds_agg_geom_data.xlsx</default>
+		</input_dds>
+
+		<root_folder value="default">
+			<description>root folder containing inputdata</description>
+			<dtype>path</dtype>
+			<default>&lt;ROOT_OUTPUT&gt;</default>
+		</root_folder>
+
+		<regex_file_select value="default">
+			<description>regex that expresses the file selection, starting from the input_folder</description>
+			<dtype>string</dtype>
+			<default>7cell[/d*]/029_extract_geom_data/geom_volume.csv</default>
+		</regex_file_select>
+
+		<regex_file_select2 value="default">
+			<description>regex that expresses the file selection, starting from the input_folder</description>
+			<dtype>string</dtype>
+			<default>./7cell*/023_enrich_contactinfo/contactinfo.csv</default>
+		</regex_file_select2>
+
+		<regex_file_select3 value="default">
+			<description>regex that expresses the file selection, starting from the input_folder</description>
+			<dtype>string</dtype>
+			<default>./7cell*/021_select_cells/selected_embryo.vtp</default>
+		</regex_file_select3>
+
+		<regex_file_select4 value="default">
+			<description>regex that expresses the file selection, starting from the input_folder</description>
+			<dtype>string</dtype>
+			<default>./7cell*/031_exam_last_slice/last_slice_info.xlsx</default>
+		</regex_file_select4>
+
+		<regex_file_select5 value="default">
+			<description>regex that expresses the file selection, starting from the input folder</description>
+			<dtype>string</dtype>
+			<default>./7cell*/035_extract_indent_volume/volume_mesh_plane_intersections.xlsx</default>
+		</regex_file_select5>
+
+
+		<output_folder value="default">
+			<description>outputfolder for aggregated volume info </description>
+			<dtype>path</dtype>
+			<default>&lt;ROOT_OUTPUT&gt;/028_viz_results/</default>
+		</output_folder>
+	</paths>
+
+	<copy_and_rename_only value="default">
+		<description>if you only want to aggregate the cells and rename them based on the dds file (no aggregation of geom data). fill in regex_file_select3 for this</description>
+		<dtype>bool</dtype>
+		<default>False</default>
+	</copy_and_rename_only>
+
+	<prefix_folder value="default">
+		<description>this is the label that searched for when deriving repID and runID from the foldername</description>
+		<dtype>string</dtype>
+		<default>7cell</default>
+	</prefix_folder>
+
+	<l_select_cellID value="default">
+			<description>list of cellID's that will be copied for visualization over time</description>
+			<dtype>list;string</dtype>
+			<default>ABpr;ABpl;ABal;ABar;E;MS;C;P2</default>
+	</l_select_cellID>
+</agg_geom_data>
+
+<agg_seg_data>
+	<paths>	
+		<input_dds value="default">
+			<description>inputfile for loading datastructures</description>
+			<dtype>path</dtype>
+			<default>dds_seg.xlsx</default>
+		</input_dds>
+
+		<root_folder value="default">
+			<description>root folder containing inputdata</description>
+			<dtype>path</dtype>
+			<default>&lt;ROOT_OUTPUT&gt;</default>
+		</root_folder>
+
+		<regex_file_select value="default">
+			<description>regex that expresses the file selection, tcID will be filled in from dds file</description>
+			<dtype>string</dtype>
+			<default>&lt;tcID&gt;/025_SEG_3D_scoring/SEG3D_score_details.csv</default>
+		</regex_file_select>
+
+		<regex_file_select2 value="default">
+			<description>regex that expresses the file selection, tracking</description>
+			<dtype>string</dtype>
+			<default>&lt;tcID&gt;/003_spheresDT/validation_cells.csv</default>
+		</regex_file_select2>
+
+		<regex_file_select3 value="default">
+			<description>regex that expresses the file selection TRA measure</description>
+			<dtype>string</dtype>
+			<default>&lt;tcID&gt;/006_CTC_TRA/01_RES/TRA_log.txt</default>
+		</regex_file_select3>
+
+		<regex_file_select4 value="default">
+			<description>regex that expresses the file selection  for summary4D</description>
+			<dtype>string</dtype>
+			<default>&lt;tcID&gt;/003_spheresDT/summary4D.csv</default>
+		</regex_file_select4>
+
+		<regex_file_select5 value="default">
+			<description>regex that expresses the file selection the SEG2D (=3D evaluation based on 2D ground truth</description>
+			<dtype>string</dtype>
+			<default>&lt;tcID&gt;/038_SEG_2D_scoring/SEG_scores_2D.csv</default>
+		</regex_file_select5>
+
+		<output_folder value="default">
+			<description>outputfolder for the excel with the aggregated SEG data. </description>
+			<dtype>path</dtype>
+			<default>&lt;ROOT_OUTPUT&gt;/segAgg/</default>
+		</output_folder>
+	</paths>
+</agg_seg_data>
+
+<agg_tc>
+	<paths>	
+		<root_folder value="default">
+			<description>root folder containing inputdata.  this root folder will be searched recursively</description>
+			<dtype>path</dtype>
+			<default>&lt;ROOT_OUTPUT&gt;</default>
+		</root_folder>
+
+		<regex_file_select value="default">
+			<description>regex that expresses the file selection (e.g. fmn[0-9]*/**/Seeding_cells_triangles_[0-9]*_enriched.vtp)</description>
+			<dtype>string</dtype>
+			<default />
+		</regex_file_select>
+
+		<regex_tc value="default">
+			<description>regex applied to the full path name of the file.  Used to extract the info for the suffix of the file (replicate, timepoint ...). If left blanc the suffix will just get an ascending number</description>
+			<dtype>string</dtype>
+			<default>'fmn(\d\d)(\d\d)'</default>
+		</regex_tc>
+
+		<l_suffix value="default">
+			<description>deprecated.  contains the labels used in construction the suffix (eg; 'R' to indicate the replicate). Each matching group from the regex will be preceded by a string in this list</description>
+			<dtype>list;string</dtype>
+			<default>R;t</default>
+		</l_suffix>
+
+		<output_folder value="default">
+			<description>output folder</description>
+			<dtype>path</dtype>
+			<file_agg_tc value="agg_tc.xlsx" />
+			<default>&lt;ROOT_OUTPUT&gt;/fmnAgg/</default>
+		</output_folder>
+	</paths>
+
+	<l_xml_keys_tc_data value="default">
+		<description>contains the labels used in construction the suffix (eg; 'R' to indicate the replicate). Each matching group from the regex will be preceded by a string in this list</description>
+		<dtype>list;string</dtype>
+		<default>./RAM/repID;./RAM/embID;./mpacts_input_generator/process_flow/nb_stack;./mpacts_input_generator/process_flow/nb_stack_timelapse</default>
+	</l_xml_keys_tc_data>
+
+	<regex_param_xml value="default">
+		<description>the regex to select the parameter xml files that will be used to extract the testcase metadata (written to excel(e.g. fmn[0-9]*/**/testinfra*.xml)</description>
+		<dtype>list;string</dtype>
+		<default>**/testinfra*.xml</default>
+	</regex_param_xml>
+
+	<l_regex_files value="default">
+		<description>list of regex expression that will select the filesregex for file selection e.g. fmn[0-9]*/**/selected_embryo.vtp </description>
+		<dtype>list;string</dtype>
+		<default />
+	</l_regex_files>
+
+	<l_ext_parms value="default">
+		<description>contains the parms used in construction the file suffix, they are always proceeded by a _ and the value in l_ext_letters..Used whenever files are written to the output e.g. vtp files</description>
+		<dtype>list;string</dtype>
+		<default>repID;nb_stack_analysis</default>
+	</l_ext_parms>
+
+	<l_ext_letters value="default">
+		<description>contains the labels used in construction the suffix (eg; 'R' to indicate the replicate).used whenever files are written to the output e.g. vtp files</description>
+		<dtype>list;string</dtype>
+		<default>R;t</default>
+	</l_ext_letters>
+
+
+</agg_tc>
+
+
+<analyse_agg_data>
+	<paths>	
+		<input_file value="default">
+			<description>the input file that will be used in all R scripts as input</description>
+			<dtype>path</dtype>
+			<default>body+agg_tc+paths+output_folder+file_agg_tc</default>
+		</input_file>
+
+		<output_folder value="default">
+			<description>output folder</description>
+			<dtype>path</dtype>
+			<default>&lt;ROOT_OUTPUT&gt;/040_analyse_agg_data/</default>
+		</output_folder>
+	</paths>
+
+	<process_flow>
+		<l_R_modules value="default">
+			<description>the list of R modules that will be executed</description>
+			<dtype>list;string</dtype>
+			<default>analyse_geom_data.R;analyse_contact_info.R;analyse_indentation_volume.R</default>
+		</l_R_modules>
+	</process_flow>
+
+</analyse_agg_data>
+
+<exam_last_slice>
+	<paths>	
+		<input_file_preprocessing value="default">
+			<description>input file from preprocessing that will be used to determine the last z slice that contains signal (normally : body+MAIN+paths+img_exterior_outline</description>
+			<dtype>path</dtype>
+			<default />
+		</input_file_preprocessing>
+
+		<input_file_sphere_meshing value="default">
+			<description>input file with spheres that will be used to reconstruct a stack with cells, so that the number of pixels on the bottom slice (per cell) can be retrieved</description>
+			<dtype>path</dtype>
+			<default>body+mpacts_input_generator+paths+output_folder+file_spheres</default>
+		</input_file_sphere_meshing>
+
+		<input_file_exterior_mask value="default">
+			<description>input file with exterior mask, used to detect the last z slice that contains signal (together with input file preprocessing) </description>
+			<dtype>path</dtype>
+			<default>body+preprocessing+paths+output_folder+file_exterior_mask</default>
+		</input_file_exterior_mask>
+
+		<output_folder value="default">
+			<description>outputfolder for the excel with data concerning the last slice.  also a tif file of the stack with cells (can be used to check) </description>
+			<dtype>path</dtype>
+			<default>&lt;ROOT_OUTPUT&gt;/031_exam_last_slice/</default>
+		</output_folder>
+	</paths>
+	<process_flow>	
+			<nb_stack value="default">
+			<description>the timestep that will be processed. if left blanc all timesteps will be processed (this only applies to the preprocessing file , the sphere meshing file is only 1 timepoint.</description>
+			<dtype>list;int</dtype>
+			<default>body+mpacts_input_generator+process_flow+nb_stack</default>
+		</nb_stack>
+	</process_flow>
+</exam_last_slice>
+
+<viz_7cell>
+	<paths>	
+		<input_file_excel value="default">
+			<description>input file with raw data (from R)</description>
+			<dtype>path</dtype>
+			<default>&lt;ROOT_OUTPUT&gt;/7cellAgg/R_7cell.xlsx</default>
+		</input_file_excel>
+
+		<output_folder value="default">
+			<description>outputfolder for the excel with data concerning the last slice.  also a tif file of the stack with cells (can be used to check) </description>
+			<dtype>path</dtype>
+			<default>&lt;ROOT_OUTPUT&gt;/7cellAgg/</default>
+		</output_folder>
+	</paths>
+</viz_7cell>
+
+<log_grepper>
+	<paths>	
+		<input_file_csv value="default">
+			<description>the excel with the history logging, new logs will be added to this</description>
+			<dtype>path</dtype>
+			<default>./log_grepper.csv</default>
+		</input_file_csv>
+		
+		<input_folder_log value="default">
+			<description>the folder with the log files.  only new logs will be selected from this folder</description>
+			<dtype>path</dtype>
+			<default>./log</default>
+		</input_folder_log>
+		
+		<output_folder value="default">
+			<description>folder for the output csv.  If this points to the inputfolder the orginal image will be overwritten</description>
+			<dtype>path</dtype>
+			<default>./</default>
+		</output_folder>
+	</paths>
+
+</log_grepper>
+
+
+<driver> 
+	<paths>
+		<input_folder value="default">
+			<description>put all the needed files in this folder</description>
+			<dtype>path</dtype>
+			<file_input_1>file1</file_input_1>
+			<file_input_2>file2</file_input_2>
+			<default>./</default>
+		</input_folder>
+	
+		<output_folder value="default">
+			<description>output of the method</description>
+			<dtype>path</dtype>
+			<default>./</default>
+		</output_folder>
+	</paths>
+	
+	<method value="filter_tif_values" />
+	
+	<arg1 value="arg1">
+		<dtype value="list;int"> </dtype>  
+	</arg1>
+	<arg2 value="arg2">
+		<dtype value="list;int" />
+	</arg2>
+	<arg3 value="arg3">
+		<dtype>string</dtype>
+	</arg3>
+	<arg4 value="arg4">
+		<dtype>string</dtype>
+	</arg4>
+	<arg5 value="arg5">
+		<dtype>string</dtype>
+	</arg5>
+	
+</driver>
+
+
+<LOG> 
+	<runID value="my_testcase">
+		<description>runID (testinfrastructure)</description>
+	</runID>
+	
+	<run_desc value="second replicate 26 cell stage (SEG)">
+		<description>info about the run (testinfrastructure) </description>
+	</run_desc>
+
+</LOG>
+
+<RAM> 
+	<RAW_IMG_DIM_TZYX value="1;24;406;453">
+		<description>image pixel dimension</description>
+		<dtype>list;int</dtype>
+		<default>18;27;441;240</default>
+	</RAW_IMG_DIM_TZYX>
+
+	<scaling_ZYX value="1;0.1199538;0.1199538">
+		<description>image pixel scaling</description>
+		<dtype>list;float</dtype>
+		<default>1;0.1294751;0.1294751</default>
+	</scaling_ZYX>
+
+	<timestep value="default">
+		<description>optional. Can refer to the timestep in a timeseries.  Needed for mapping cell divisions.  This always refers back to the original microscopy image (nb_stack_timelapse refers to the timepoint from the timelapse in the input folder, which could be time-cropped, so it could differ from this value</description>
+		<dtype>int</dtype>
+		<default>body+mpacts_input_generator+process_flow+nb_stack</default>
+	</timestep>
+
+	<script_folder value="/home/docker/SCRIPT">
+		<description>the folder where the scripts reside</description>
+		<dtype>path</dtype>
+		<default>/home/wth/Downloads/SYNC</default>
+	</script_folder>
+
+	<data_folder value="/home/docker/DATA">
+		<description>the folder where the data (input and outputfiles) reside </description>
+		<dtype>path</dtype>
+		<default>/home/wth/Downloads/testinfra</default>
+	</data_folder>
+
+	<docker_script_folder value="default">
+		<description>the folder where the scripts reside within the docker image</description>
+		<dtype>path</dtype>
+		<default>/home/docker/SCRIPT</default>
+	</docker_script_folder>
+
+	<docker_data_folder value="default">
+		<description>the folder where the data resides within the docker image</description>
+		<dtype>path</dtype>
+		<default>/home/docker/DATA</default>
+	</docker_data_folder>
+
+	<dds_file value="">
+		<description>the excel file with the helper datastructures (dicts for mapping). for example map parentID to cellID
+			load example : dds = excel_to_dds(str(input_dds),sheet_name=None,d_index_cols={'1':[0],'3':[0]}) 
+				#dds[0] : d_replicate-&gt; embID
+				#dds[1] : (replicate / cell-label) -&gt; cellID  #multi-index because of d_index_cols={'1':[0]}
+				#dds[2] : tcpart -&gt; time
+				#dds[3] : (embID / cellID)-&gt; time-division ; daughter_cell: eg TL1  P2 3 = P2 is fully divided at t=3 #multi_index
+		</description>
+		<dtype>path</dtype>
+		<default>/home/wth/Downloads/SYNC/dds_7cell_geom.xlsx</default>
+	</dds_file>
+
+	<embID value="default">
+		<description>unique identifier for the embryo that is being processed</description>
+		<dtype>str</dtype>
+		<default>body+RAM+repID</default>
+	</embID>
+
+	<repID value="default">
+		<description>unique identifier for the replicate that is being processed</description>
+		<dtype>int</dtype>
+		<default>1</default>
+	</repID>
+
+</RAM>
+
+<microscopy>
+	<raw>
+		<file_name>
+			<description> file name. This also acts as a unique ID</description>
+		</file_name>
+
+		<base_location value="">
+			<description>The folder where the image resides</description>
+		</base_location>
+
+		<recording_date value="">
+			<description>date of recording. format YYMMDD</description>
+		</recording_date>
+
+		<res_t value="default">
+			<description>delta t in seconds</description>
+			<default>90</default>
+		</res_t>
+
+		<res_z value="">
+			<description>z resolution in um</description>
+		</res_z>
+
+		<res_y value="">
+			<description>y resolution in um</description>
+		</res_y>
+
+		<res_x value="">
+			<description>x resolution in um</description>
+		</res_x>
+
+		<recorded_by value="">
+			<description> who made the image ?</description>
+		</recorded_by>
+
+		<z_orientation value="">
+			<description> how does the z axis relate to the axis of the embryo ? for example LtoR means the left side of the embryo is at the top of the stack, right at the bottom. (L=left, R=right, V=ventral, D=dorsal, A=anterior, P=posterior)</description>
+		</z_orientation>
+
+		<y_orientation value="">
+			<description> cfr z </description>
+		</y_orientation>
+
+		<x_orientation value="">
+			<description> cfr z </description>
+		</x_orientation>
+
+		<cell_stage_start value="">
+			<description> cell stage at the start of the recording</description>
+		</cell_stage_start>
+
+		<category value="">
+			<description> Use for grouping. for example 'wild type' versus 'fmn-mutant'</description>
+		</category>
+
+		<nb_stack_EMS_division value="">
+			<description> The timepoint when EMS division is completed. 1-indexed and relative to t=0. so when ems division is at t=3 then value = 4. </description>
+		</nb_stack_EMS_division>
+
+		<strain value="">
+			<description>info about the strain.</description>
+		</strain>
+
+		<marker1 value="">
+			<description>Which marker is used for the first channel ?</description>
+		</marker1>
+
+		<marker2 value="">
+			<description>Which marker is used for the second channel ?</description>
+		</marker2>
+
+		<nb_embryos value="">
+			<description>number of embryos in the image</description>
+		</nb_embryos>
+
+		<comment value="">
+			<description> free text. Why was it recorded ?, artefacts in the image</description>
+		</comment>
+
+	</raw>
+
+	<cropped>
+		<file_name value="">
+			<description>the file name should be unique</description>
+		</file_name>
+
+		<base_location value="">
+			<description>The base folder where the image resides 
+				This is not necessarily the input folder of the testcase, but a central folder (local or remote) where all these cropped images are kept</description>
+		</base_location>
+
+		<link_raw value="">
+			<description>explicit link to the raw microscopy file_name</description>
+		</link_raw>
+
+		<c_crop value="">
+			<description> indicates the channel from the raw image </description>
+		</c_crop>
+
+		<t_crop value="">
+			<description> the time interval that is cropped e.g. 4;9 (from t=4 to t=9). In case of 1 timepoint use for example 30;30 or 30 for short </description>
+		</t_crop>
+
+		<dim_t value="">
+			<description>t dimension (=max t size) of the cropped image. should be consistent with t_crop</description>
+		</dim_t>
+
+		<dim_z value="">
+			<description>z dimension (=max z size) of the cropped image</description>
+		</dim_z>
+
+		<dim_y value="">
+			<description>y dimension (=max y size) of the cropped image</description>
+		</dim_y>
+		
+		<dim_x value="">
+			<description>x dimension (=max x size) of the cropped image</description>
+		</dim_x>
+
+		<res_t value="">
+			<description>optional. only fill in if different from raw image (rescaling)</description>
+		</res_t>
+
+		<res_z value="">
+			<description>optional. only fill in if different from raw image (rescaling)</description>
+		</res_z>
+
+		<res_y value="">
+			<description>optional. only fill in if different from raw image (rescaling)</description>
+		</res_y>
+
+		<res_x value="">
+			<description>optional. only fill in if different from raw image (rescaling)</description>
+		</res_x>
+
+		<embryo value="">
+			<description> a number that indicates the embryo that was selected. (number from left to right and top to bottom = reading direction)</description>
+		</embryo>
+
+		<comment>
+			<description> free text.  Why this time range ? Any other manipulations besides cropping ?</description>
+		</comment>
+
+	</cropped>
+</microscopy>
+
+
+</body>

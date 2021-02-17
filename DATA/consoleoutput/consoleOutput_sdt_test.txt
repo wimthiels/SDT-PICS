@@ -1,0 +1,922 @@
+e92bd2b2f7ed
+STEP0-SETUP------------------------------------------------------------------------------------------------------------
+param_xml_object from location DATA/XML/testinfra_sdt_test.xml is used
+SDT_MAIN.py:all info will be written to :  /home/docker/DATA/OUTPUT/sdt_test/
+checks done, proceeding...
+STEP1-PREPROCESSING---------------------------------------------------------------------------------------------------
+file loaded->TL1_emb1.tif, with input_shape=(18, 27, 441, 276)uint16 from location
+/home/docker/DATA/INPUT/testrun/TL1_emb1.tif
+
+*processing stack number  1 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+**starting the ORIGINAL filter on stack 1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the flip filter on stack 1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the frangi filter on stack 1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the scale_max filter on stack 1
+
+**starting the write_output filter on stack 1
+
+**starting the collect_Otsu filter on stack 1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the collect_stats filter on stack 1
+
+**starting the reconstruction filter on stack 1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the thrabs filter on stack 1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~<string>:6: RuntimeWarning: Converting input from bool to <class 'numpy.uint8'> for compatibility.
+
+**starting the write_output filter on stack 1
+
+**starting the RmSmObj3D filter on stack 1
+
+**starting the skeletonize filter on stack 1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output_no_signal_filtered filter on stack 1
+
+**starting the active_contour filter on stack 1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the exterior_mask filter on stack 1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output filter on stack 1
+
+**starting the blend_z_membrane filter on stack 1
+
+**starting the write_output_no_signal_filtered filter on stack 1
+None
+*processing stack number  2 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+**starting the ORIGINAL filter on stack 2
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the flip filter on stack 2
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the frangi filter on stack 2
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the scale_max filter on stack 2
+
+**starting the write_output filter on stack 2
+
+**starting the collect_Otsu filter on stack 2
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the collect_stats filter on stack 2
+
+**starting the reconstruction filter on stack 2
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the thrabs filter on stack 2
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output filter on stack 2
+
+**starting the RmSmObj3D filter on stack 2
+
+**starting the skeletonize filter on stack 2
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output_no_signal_filtered filter on stack 2
+
+**starting the active_contour filter on stack 2
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the exterior_mask filter on stack 2
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output filter on stack 2
+
+**starting the blend_z_membrane filter on stack 2
+
+**starting the write_output_no_signal_filtered filter on stack 2
+None
+*processing stack number  3 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+**starting the ORIGINAL filter on stack 3
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the flip filter on stack 3
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the frangi filter on stack 3
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the scale_max filter on stack 3
+
+**starting the write_output filter on stack 3
+
+**starting the collect_Otsu filter on stack 3
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the collect_stats filter on stack 3
+
+**starting the reconstruction filter on stack 3
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the thrabs filter on stack 3
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output filter on stack 3
+
+**starting the RmSmObj3D filter on stack 3
+
+**starting the skeletonize filter on stack 3
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output_no_signal_filtered filter on stack 3
+
+**starting the active_contour filter on stack 3
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the exterior_mask filter on stack 3
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output filter on stack 3
+
+**starting the blend_z_membrane filter on stack 3
+
+**starting the write_output_no_signal_filtered filter on stack 3
+None
+*processing stack number  4 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+**starting the ORIGINAL filter on stack 4
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the flip filter on stack 4
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the frangi filter on stack 4
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the scale_max filter on stack 4
+
+**starting the write_output filter on stack 4
+
+**starting the collect_Otsu filter on stack 4
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the collect_stats filter on stack 4
+
+**starting the reconstruction filter on stack 4
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the thrabs filter on stack 4
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output filter on stack 4
+
+**starting the RmSmObj3D filter on stack 4
+
+**starting the skeletonize filter on stack 4
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output_no_signal_filtered filter on stack 4
+
+**starting the active_contour filter on stack 4
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the exterior_mask filter on stack 4
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output filter on stack 4
+
+**starting the blend_z_membrane filter on stack 4
+
+**starting the write_output_no_signal_filtered filter on stack 4
+None
+*processing stack number  5 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+**starting the ORIGINAL filter on stack 5
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the flip filter on stack 5
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the frangi filter on stack 5
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the scale_max filter on stack 5
+
+**starting the write_output filter on stack 5
+
+**starting the collect_Otsu filter on stack 5
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the collect_stats filter on stack 5
+
+**starting the reconstruction filter on stack 5
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the thrabs filter on stack 5
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output filter on stack 5
+
+**starting the RmSmObj3D filter on stack 5
+
+**starting the skeletonize filter on stack 5
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output_no_signal_filtered filter on stack 5
+
+**starting the active_contour filter on stack 5
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the exterior_mask filter on stack 5
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output filter on stack 5
+
+**starting the blend_z_membrane filter on stack 5
+
+**starting the write_output_no_signal_filtered filter on stack 5
+None
+*processing stack number  6 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+**starting the ORIGINAL filter on stack 6
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the flip filter on stack 6
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the frangi filter on stack 6
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the scale_max filter on stack 6
+
+**starting the write_output filter on stack 6
+
+**starting the collect_Otsu filter on stack 6
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the collect_stats filter on stack 6
+
+**starting the reconstruction filter on stack 6
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the thrabs filter on stack 6
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output filter on stack 6
+
+**starting the RmSmObj3D filter on stack 6
+
+**starting the skeletonize filter on stack 6
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output_no_signal_filtered filter on stack 6
+
+**starting the active_contour filter on stack 6
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the exterior_mask filter on stack 6
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output filter on stack 6
+
+**starting the blend_z_membrane filter on stack 6
+
+**starting the write_output_no_signal_filtered filter on stack 6
+None
+*processing stack number  7 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+**starting the ORIGINAL filter on stack 7
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the flip filter on stack 7
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the frangi filter on stack 7
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the scale_max filter on stack 7
+
+**starting the write_output filter on stack 7
+
+**starting the collect_Otsu filter on stack 7
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the collect_stats filter on stack 7
+
+**starting the reconstruction filter on stack 7
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the thrabs filter on stack 7
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output filter on stack 7
+
+**starting the RmSmObj3D filter on stack 7
+
+**starting the skeletonize filter on stack 7
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output_no_signal_filtered filter on stack 7
+
+**starting the active_contour filter on stack 7
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the exterior_mask filter on stack 7
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output filter on stack 7
+
+**starting the blend_z_membrane filter on stack 7
+
+**starting the write_output_no_signal_filtered filter on stack 7
+None
+*processing stack number  8 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+**starting the ORIGINAL filter on stack 8
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the flip filter on stack 8
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the frangi filter on stack 8
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the scale_max filter on stack 8
+
+**starting the write_output filter on stack 8
+
+**starting the collect_Otsu filter on stack 8
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the collect_stats filter on stack 8
+
+**starting the reconstruction filter on stack 8
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the thrabs filter on stack 8
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output filter on stack 8
+
+**starting the RmSmObj3D filter on stack 8
+
+**starting the skeletonize filter on stack 8
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output_no_signal_filtered filter on stack 8
+
+**starting the active_contour filter on stack 8
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the exterior_mask filter on stack 8
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output filter on stack 8
+
+**starting the blend_z_membrane filter on stack 8
+
+**starting the write_output_no_signal_filtered filter on stack 8
+None
+*processing stack number  9 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+**starting the ORIGINAL filter on stack 9
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the flip filter on stack 9
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the frangi filter on stack 9
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the scale_max filter on stack 9
+
+**starting the write_output filter on stack 9
+
+**starting the collect_Otsu filter on stack 9
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the collect_stats filter on stack 9
+
+**starting the reconstruction filter on stack 9
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the thrabs filter on stack 9
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output filter on stack 9
+
+**starting the RmSmObj3D filter on stack 9
+
+**starting the skeletonize filter on stack 9
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output_no_signal_filtered filter on stack 9
+
+**starting the active_contour filter on stack 9
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the exterior_mask filter on stack 9
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output filter on stack 9
+
+**starting the blend_z_membrane filter on stack 9
+
+**starting the write_output_no_signal_filtered filter on stack 9
+None
+*processing stack number  10 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+**starting the ORIGINAL filter on stack 10
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the flip filter on stack 10
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the frangi filter on stack 10
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the scale_max filter on stack 10
+
+**starting the write_output filter on stack 10
+
+**starting the collect_Otsu filter on stack 10
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the collect_stats filter on stack 10
+
+**starting the reconstruction filter on stack 10
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the thrabs filter on stack 10
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output filter on stack 10
+
+**starting the RmSmObj3D filter on stack 10
+
+**starting the skeletonize filter on stack 10
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output_no_signal_filtered filter on stack 10
+
+**starting the active_contour filter on stack 10
+~~~~~~~~~~~~~~~snake did not converge.  ix=15 will fallback to previous slice
+~~~~~~~~~~~~
+**starting the exterior_mask filter on stack 10
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output filter on stack 10
+
+**starting the blend_z_membrane filter on stack 10
+
+**starting the write_output_no_signal_filtered filter on stack 10
+None
+*processing stack number  11 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+**starting the ORIGINAL filter on stack 11
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the flip filter on stack 11
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the frangi filter on stack 11
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the scale_max filter on stack 11
+
+**starting the write_output filter on stack 11
+
+**starting the collect_Otsu filter on stack 11
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the collect_stats filter on stack 11
+
+**starting the reconstruction filter on stack 11
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the thrabs filter on stack 11
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output filter on stack 11
+
+**starting the RmSmObj3D filter on stack 11
+
+**starting the skeletonize filter on stack 11
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output_no_signal_filtered filter on stack 11
+
+**starting the active_contour filter on stack 11
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the exterior_mask filter on stack 11
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output filter on stack 11
+
+**starting the blend_z_membrane filter on stack 11
+
+**starting the write_output_no_signal_filtered filter on stack 11
+None
+*processing stack number  12 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+**starting the ORIGINAL filter on stack 12
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the flip filter on stack 12
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the frangi filter on stack 12
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the scale_max filter on stack 12
+
+**starting the write_output filter on stack 12
+
+**starting the collect_Otsu filter on stack 12
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the collect_stats filter on stack 12
+
+**starting the reconstruction filter on stack 12
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the thrabs filter on stack 12
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output filter on stack 12
+
+**starting the RmSmObj3D filter on stack 12
+
+**starting the skeletonize filter on stack 12
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output_no_signal_filtered filter on stack 12
+
+**starting the active_contour filter on stack 12
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the exterior_mask filter on stack 12
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output filter on stack 12
+
+**starting the blend_z_membrane filter on stack 12
+
+**starting the write_output_no_signal_filtered filter on stack 12
+None
+*processing stack number  13 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+**starting the ORIGINAL filter on stack 13
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the flip filter on stack 13
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the frangi filter on stack 13
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the scale_max filter on stack 13
+
+**starting the write_output filter on stack 13
+
+**starting the collect_Otsu filter on stack 13
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the collect_stats filter on stack 13
+
+**starting the reconstruction filter on stack 13
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the thrabs filter on stack 13
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output filter on stack 13
+
+**starting the RmSmObj3D filter on stack 13
+
+**starting the skeletonize filter on stack 13
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output_no_signal_filtered filter on stack 13
+
+**starting the active_contour filter on stack 13
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the exterior_mask filter on stack 13
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output filter on stack 13
+
+**starting the blend_z_membrane filter on stack 13
+
+**starting the write_output_no_signal_filtered filter on stack 13
+None
+*processing stack number  14 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+**starting the ORIGINAL filter on stack 14
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the flip filter on stack 14
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the frangi filter on stack 14
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the scale_max filter on stack 14
+
+**starting the write_output filter on stack 14
+
+**starting the collect_Otsu filter on stack 14
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the collect_stats filter on stack 14
+
+**starting the reconstruction filter on stack 14
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the thrabs filter on stack 14
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output filter on stack 14
+
+**starting the RmSmObj3D filter on stack 14
+
+**starting the skeletonize filter on stack 14
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output_no_signal_filtered filter on stack 14
+
+**starting the active_contour filter on stack 14
+~~~~~~~~~~~~~~~snake did not converge.  ix=15 will fallback to previous slice
+~~~~~~~~~~~~
+**starting the exterior_mask filter on stack 14
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output filter on stack 14
+
+**starting the blend_z_membrane filter on stack 14
+
+**starting the write_output_no_signal_filtered filter on stack 14
+None
+*processing stack number  15 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+**starting the ORIGINAL filter on stack 15
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the flip filter on stack 15
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the frangi filter on stack 15
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the scale_max filter on stack 15
+
+**starting the write_output filter on stack 15
+
+**starting the collect_Otsu filter on stack 15
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the collect_stats filter on stack 15
+
+**starting the reconstruction filter on stack 15
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the thrabs filter on stack 15
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output filter on stack 15
+
+**starting the RmSmObj3D filter on stack 15
+
+**starting the skeletonize filter on stack 15
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output_no_signal_filtered filter on stack 15
+
+**starting the active_contour filter on stack 15
+~~~~~~~~~~~~~~snake did not converge.  ix=14 will fallback to previous slice
+~~~~~~~~~~~~~
+**starting the exterior_mask filter on stack 15
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output filter on stack 15
+
+**starting the blend_z_membrane filter on stack 15
+
+**starting the write_output_no_signal_filtered filter on stack 15
+None
+*processing stack number  16 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+**starting the ORIGINAL filter on stack 16
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the flip filter on stack 16
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the frangi filter on stack 16
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the scale_max filter on stack 16
+
+**starting the write_output filter on stack 16
+
+**starting the collect_Otsu filter on stack 16
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the collect_stats filter on stack 16
+
+**starting the reconstruction filter on stack 16
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the thrabs filter on stack 16
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output filter on stack 16
+
+**starting the RmSmObj3D filter on stack 16
+
+**starting the skeletonize filter on stack 16
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output_no_signal_filtered filter on stack 16
+
+**starting the active_contour filter on stack 16
+~~~~~~~~~~~~~~~~snake did not converge.  ix=16 will fallback to previous slice
+~~~~~~~~~~~
+**starting the exterior_mask filter on stack 16
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output filter on stack 16
+
+**starting the blend_z_membrane filter on stack 16
+
+**starting the write_output_no_signal_filtered filter on stack 16
+None
+*processing stack number  17 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+**starting the ORIGINAL filter on stack 17
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the flip filter on stack 17
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the frangi filter on stack 17
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the scale_max filter on stack 17
+
+**starting the write_output filter on stack 17
+
+**starting the collect_Otsu filter on stack 17
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the collect_stats filter on stack 17
+
+**starting the reconstruction filter on stack 17
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the thrabs filter on stack 17
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output filter on stack 17
+
+**starting the RmSmObj3D filter on stack 17
+
+**starting the skeletonize filter on stack 17
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output_no_signal_filtered filter on stack 17
+
+**starting the active_contour filter on stack 17
+~~~~~~~~~~~~~snake did not converge.  ix=13 will fallback to previous slice
+~~~~~~~~~~~~~~
+**starting the exterior_mask filter on stack 17
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output filter on stack 17
+
+**starting the blend_z_membrane filter on stack 17
+
+**starting the write_output_no_signal_filtered filter on stack 17
+None
+*processing stack number  18 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+**starting the ORIGINAL filter on stack 18
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the flip filter on stack 18
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the frangi filter on stack 18
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the scale_max filter on stack 18
+
+**starting the write_output filter on stack 18
+
+**starting the collect_Otsu filter on stack 18
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the collect_stats filter on stack 18
+
+**starting the reconstruction filter on stack 18
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the thrabs filter on stack 18
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output filter on stack 18
+
+**starting the RmSmObj3D filter on stack 18
+
+**starting the skeletonize filter on stack 18
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output_no_signal_filtered filter on stack 18
+
+**starting the active_contour filter on stack 18
+~~~~~~~~~~~~~snake did not converge.  ix=13 will fallback to previous slice
+~snake did not converge.  ix=14 will fallback to previous slice
+~~~~~~~~~~~~~
+**starting the exterior_mask filter on stack 18
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**starting the write_output filter on stack 18
+
+**starting the blend_z_membrane filter on stack 18
+
+**starting the write_output_no_signal_filtered filter on stack 18
+None
+excel dds output/home/docker/DATA/OUTPUT/sdt_test/002_preprocessing/log_preprocess.xlsx
+All preprocess data written to : 
+/home/docker/DATA/OUTPUT/sdt_test/002_preprocessing/
+STEP2-SPHERES_DT------------------------------------------------------------------------------------------------------
+Processing stack 1
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
+___Cluster stats (after filtering) : 7 TOTAL, of which 0 GT_seeded, 0 seeded, 0 filtered (current stack)
+creating a subdir1 /home/docker/DATA/OUTPUT/sdt_test/003_spheresDT
+
+Processing stack 2
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
+___Cluster stats (after filtering) : 9 TOTAL, of which 0 GT_seeded, 7 seeded, 0 filtered (current stack)
+###write excel validation (append stack)
+Processing stack 3
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
+___Cluster stats (after filtering) : 11 TOTAL, of which 0 GT_seeded, 7 seeded, 0 filtered (current stack)
+###write excel validation (append stack)
+Processing stack 4
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
+___Cluster stats (after filtering) : 13 TOTAL, of which 0 GT_seeded, 7 seeded, 0 filtered (current stack)
+###write excel validation (append stack)
+Processing stack 5
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
+___Cluster stats (after filtering) : 11 TOTAL, of which 0 GT_seeded, 8 seeded, 0 filtered (current stack)
+###write excel validation (append stack)
+Processing stack 6
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
+___Cluster stats (after filtering) : 12 TOTAL, of which 0 GT_seeded, 8 seeded, 0 filtered (current stack)
+###write excel validation (append stack)
+Processing stack 7
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
+___Cluster stats (after filtering) : 16 TOTAL, of which 0 GT_seeded, 8 seeded, 0 filtered (current stack)
+###write excel validation (append stack)
+Processing stack 8
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
+___Cluster stats (after filtering) : 14 TOTAL, of which 0 GT_seeded, 8 seeded, 0 filtered (current stack)
+###write excel validation (append stack)
+Processing stack 9
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
+___Cluster stats (after filtering) : 12 TOTAL, of which 0 GT_seeded, 8 seeded, 0 filtered (current stack)
+###write excel validation (append stack)
+Processing stack 10
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
+___Cluster stats (after filtering) : 12 TOTAL, of which 0 GT_seeded, 8 seeded, 0 filtered (current stack)
+###write excel validation (append stack)
+Processing stack 11
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
+___Cluster stats (after filtering) : 13 TOTAL, of which 0 GT_seeded, 9 seeded, 0 filtered (current stack)
+###write excel validation (append stack)
+Processing stack 12
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
+___Cluster stats (after filtering) : 14 TOTAL, of which 0 GT_seeded, 9 seeded, 0 filtered (current stack)
+###write excel validation (append stack)
+Processing stack 13
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
+___Cluster stats (after filtering) : 19 TOTAL, of which 0 GT_seeded, 10 seeded, 0 filtered (current stack)
+###write excel validation (append stack)
+Processing stack 14
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
+___Cluster stats (after filtering) : 20 TOTAL, of which 0 GT_seeded, 13 seeded, 0 filtered (current stack)
+###write excel validation (append stack)
+Processing stack 15
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
+___Cluster stats (after filtering) : 17 TOTAL, of which 0 GT_seeded, 13 seeded, 0 filtered (current stack)
+###write excel validation (append stack)
+Processing stack 16
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
+___Cluster stats (after filtering) : 19 TOTAL, of which 0 GT_seeded, 13 seeded, 0 filtered (current stack)
+###write excel validation (append stack)
+Processing stack 17
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
+___Cluster stats (after filtering) : 17 TOTAL, of which 0 GT_seeded, 14 seeded, 0 filtered (current stack)
+###write excel validation (append stack)
+Processing stack 18
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
+___Cluster stats (after filtering) : 22 TOTAL, of which 0 GT_seeded, 14 seeded, 0 filtered (current stack)
+###write excel validation (append stack)
+...update_lineage_names...
+###write_excel_summary_4D
+/home/docker/miniconda3/lib/python3.7/site-packages/skimage/util/dtype.py:525: UserWarning: Downcasting uint16 to uint8 without scaling because max value 255 fits in uint8
+  return _convert(image, np.uint8, force_copy)
+0 datamodel inconsistencies found across all stacks
+STEP3-LINEAGER_FEEDER------------------------------------------------------------------------------------------------------
+||||||||||||||||||  - making image sequence
+file loaded->/home/docker/DATA/INPUT/testrun/TL1_emb1.tif, with input_shape=(18, 27, 441, 276)uint16 from location
+/home/docker/DATA/INPUT/testrun/TL1_emb1.tif
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||END Lineager Feeder
+STEP4-CTC_TRA------------------------------------------------------------------------------------------------------
+file loaded->/home/docker/DATA/OUTPUT/sdt_test/003_spheresDT/raw_clusterview.tif, with input_shape=(18, 27, 441, 276)uint16 from location
+/home/docker/DATA/OUTPUT/sdt_test/003_spheresDT/raw_clusterview.tif
+
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+/home/docker/DATA/OUTPUT/sdt_test/006_CTC_TRA/01_RES/res_track.txt items 21
+1 0 1 0
+
+2 0 17 0
+
+3 0 10 0
+
+4 0 9 0
+
+5 0 10 0
+
+6 0 17 0
+
+7 0 10 0
+
+8 2 17 1
+
+9 2 7 1
+
+10 8 17 9
+
+11 8 17 9
+
+12 10 17 4
+
+13 10 17 4
+
+14 11 17 3
+
+15 11 17 5
+
+16 11 13 7
+
+17 11 17 3
+
+18 11 17 5
+
+19 11 17 7
+
+20 14 17 16
+
+21 14 17 16
+
+the end : excel
+#load the Cell nuclei for validation
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+/home/docker/DATA/OUTPUT/sdt_test/006_CTC_TRA/01_GT/TRA/man_track.txt items 17
+1 0 10 0
+
+2 0 1 0
+
+3 0 10 0
+
+4 0 10 0
+
+5 0 17 0
+
+6 0 17 0
+
+7 0 10 0
+
+8 2 17 2
+
+9 2 17 2
+
+10 11 17 3
+
+11 11 17 1
+
+12 11 17 3
+
+13 11 17 1
+
+14 11 17 4
+
+15 11 17 4
+
+16 11 17 7
+
+17 11 17 7
+
+the end , GT
+DEBUG cmd_TRA = /home/docker/SCRIPT/TRAMeasure /home/docker/DATA/OUTPUT/sdt_test/006_CTC_TRA/ 01
+TRA measure: 0.980715
+DEBUG after executing TRA
+STEP5-mpacts_input_generator-----------------------------------------------------------------------------------------------------
+02_green_t1
+03_skyblue_t1
+04_blue_t1
+05_purple_t1
+06_fuchia_t1
+07_magenta_t1
+08_gray_t1
+mpacts output written as /home/docker/DATA/OUTPUT/sdt_test/008_mpacts_input/spheres_for_meshing.csv

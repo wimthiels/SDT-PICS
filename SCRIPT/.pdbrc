@@ -1,0 +1,49 @@
+#SETUP
+#----------------------   
+print("...running .pdbrc...")
+# Enable tab completion                                           
+import rlcompleter     
+import readline                                                          
+#import ipdb             
+#from ipdb import launch_ipdb_on_exception         
+#from IPython import embed                                            
+#pdb.Pdb.complete = rlcompleter.Completer(locals()).complete
+
+#ALIASES
+#----------------------
+alias pi for k in %1.__dict__.keys(): print("%1.",k,"=",%1.__dict__[k])   # Print instance variables (usage "pi classInst")
+alias pi2 pp %1.__dict__
+alias pi3 pp %1.__dict__.keys()
+
+# Print instance variables in self
+alias ps pi self
+
+#BREAKPOINTS
+#----------------------
+
+#break datamodel:1090,ctr_cluster_landed==43
+#break datamodel:365,centre.cell=='44d1(44_gray-)'
+#break spheres_DT:311,nb_stack==3
+#tbreak CTC_Tracking:67
+
+#break viz_results2:259
+#break viz_7cell:110
+#break datamodel:3484
+#break extract_indent_volume_2:131
+#break VTK_utils:271
+#break xml_modifier:185
+#break spheres_DT:173
+#break enrich_vtp:113
+#break param_XML:262
+#break mpacts_input_generator:556
+#break preProcess:740
+#break SEG_2D_scoring:129
+#break extract_indent_volume_2:60
+break agg_tc2:203
+#break SEG_3D_scoring:232
+break mpacts_pics_enrich:130
+break datamodel:1588
+
+disable 1 2 3 4 5
+
+continue
