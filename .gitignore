@@ -10,4 +10,7 @@ run_test.sh
 copy_fix_build_test.sh
 push_to_git.sh
 post_sync_alterations.sh
-**/TL1_emb1.tif
+**/TL1_emb1.tif*
+assert_testrun/
+tip.sh
+

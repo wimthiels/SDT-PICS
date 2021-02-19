@@ -2,16 +2,14 @@ print("VOLUME ANALYSIS##########################################################
 #print('# 0-Fetch command line arguments------------') 
 myArgs <- commandArgs(trailingOnly = TRUE)
 
-# test if there is at least one argument: if not, return an error
+#<<<MANUAL INPUT : REPLACE SCRIPT AND DATA FOLDER TO LOCAL PATH !>>>>>
+SCRIPT_FOLDER <- "/home/wth/Downloads/SYNC/"
+DATA_FOLDER <- "/home/wth/Downloads/testinfra/"
+
 if (length(myArgs)==0) {
-  # input_file <- "/home/wth/Downloads/testinfra/OUTPUT/fmnAgg/agg_tc.xlsx"
-  # output_folder <- "/home/wth/Downloads/testinfra/OUTPUT/fmnAna"
   print("Input arguments filled with default values:")
-  #input_file <- "/home/wth/Downloads/testinfra/OUTPUT/7cellAgg/agg_tc.xlsx"
-  #output_folder <- "/home/wth/Downloads/testinfra/OUTPUT/7cellAna/analyse_geom_data/"
-  input_file <- "/home/wth/Downloads/testinfra/OUTPUT/fmnAgg/agg_tc.xlsx"
-  output_folder <- "/home/wth/Downloads/testinfra/OUTPUT/fmnAna/analyse_geom_data/"
-  input_file_agg_enriched <- "/home/wth/Downloads/testinfra/INPUT/fmn01/geom_info_full_enriched_agg.csv"
+  input_file <- paste0(DATA_FOLDER,"OUTPUT/7cellAgg/agg_tc.xlsx")
+  output_folder <- paste0(DATA_FOLDER,"OUTPUT/7cellAgg")
 } else {
   input_file <- myArgs[1]
   output_folder <- myArgs[2]
@@ -25,7 +23,7 @@ packages <- c("ggplot2", "dplyr","nlme","lme4","lattice","writexl","stargazer","
 if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
   install.packages(setdiff(packages, rownames(installed.packages()))) 
 }
-source("helper_functions.R")
+source(paste0(SCRIPT_FOLDER,"helper_functions.R"))
 library(ggplot2)
 library(lme4)
 library(lattice)

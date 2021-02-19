@@ -1,4 +1,4 @@
-e92bd2b2f7ed
+c99e28b74383
 STEP0-SETUP------------------------------------------------------------------------------------------------------------
 param_xml_object from location DATA/XML/testinfra_sdt_test.xml is used
 SDT_MAIN.py:all info will be written to :  /home/docker/DATA/OUTPUT/sdt_test/

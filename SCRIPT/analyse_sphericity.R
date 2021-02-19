@@ -2,14 +2,15 @@ print("SPHERICITY ANALYSIS######################################################
 #print('# 0-Fetch command line arguments------------') 
 myArgs <- commandArgs(trailingOnly = TRUE)
 
-# test if there is at least one argument: if not, return an error
+#<<<MANUAL INPUT : REPLACE DATA_FOLDER TO LOCAL PATH !>>>>>
+DATA_FOLDER <- "/home/wth/Downloads/testinfra/"
+SCRIPT_FOLDER <- "/home/wth/Downloads/SYNC/"
+
 if (length(myArgs)==0) {
-  # input_file <- "/home/wth/Downloads/testinfra/OUTPUT/fmnAgg/agg_tc.xlsx"
-  # output_folder <- "/home/wth/Downloads/testinfra/OUTPUT/fmnAna"
   print("Input arguments filled with default values:")
-  input_file <- "/home/wth/Downloads/testinfra/OUTPUT/7cellAgg/agg_tc.xlsx"
-  input_file_fmn <- "/home/wth/Downloads/testinfra/OUTPUT/fmnAgg/agg_tc.xlsx"
-  output_folder <- "/home/wth/Downloads/testinfra/OUTPUT/7cellAna/analyse_sphericity/"
+  input_file <- paste0(DATA_FOLDER,"OUTPUT/7cellAgg/agg_tc.xlsx")
+  output_folder <- paste0(DATA_FOLDER,"OUTPUT/7cellAgg/")
+  #input_file_fmn <- "/home/wth/Downloads/testinfra/OUTPUT/fmnAgg/agg_tc.xlsx"
 } else {
   input_file <- myArgs[1]
   output_folder <- myArgs[2]
@@ -47,7 +48,7 @@ library(lmerTest)
 # library(rstudioapi) 
 library(stringr) 
 
-source("/home/wth/Downloads/SYNC/helper_functions.R") #todo: replace this via parm passing
+source(paste0(SCRIPT_FOLDER,"helper_functions.R") )
 # source(paste0(dirname(getSourceEditorContext()$path) ,"/helper_functions.R")) 
 
 # 0 - read data / enrich / select -------------

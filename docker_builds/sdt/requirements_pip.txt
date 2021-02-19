@@ -7,3 +7,4 @@ pyacvd==0.2.5
 triangle==20200424
 meshio==4.3.8
 pyvista==0.27.4
+python-fcl==0.0.12

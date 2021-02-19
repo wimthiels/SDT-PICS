@@ -15,12 +15,7 @@ ENV HOME /home/docker
 ENV CONDA_DIR $HOME/miniconda3
 ENV PATH=$CONDA_DIR/bin:$PATH
 
-#install miniconda via downloaded file (tested)
-#COPY ./Miniconda3-latest-Linux-x86_64.sh $HOME/
-#RUN chmod 777 Miniconda3-latest-Linux-x86_64.sh
-#RUN bash $HOME/Miniconda3-latest-Linux-x86_64.sh -b -p ${CONDA_DIR}  #silent mode
-
-#OR install via wget (tested) #Miniconda3-py37_4.9.2-Linux-x86_64.sh
+#miniconda base
 RUN apt-get update && apt-get -y install wget
 ENV MINICONDA_VERSION 4.9.2
 ENV CONDA_DIR $HOME/miniconda3
@@ -30,6 +25,7 @@ RUN chmod +x ~/miniconda.sh \
 && rm ~/miniconda.sh
 
 RUN apt-get install -y python3-pip libcgal-dev python-qt4 libgl1-mesa-glx locate  #To avoid "ModuleNotFoundError: No module named 'vtkOpenGLKitPython' " when importing vtk
+RUN apt-get install -y blender
 
 # Create user "docker" with sudo powers
 RUN useradd -m docker && \
@@ -53,7 +49,7 @@ RUN pip install -r requirements_pip.txt
 # fixes
 COPY SCRIPT_FIX/dataset_adapter.py $HOME/SCRIPT_FIX/
 #fix (VTK selection does not work, ending up with a corrupt VTP-file)
-#RUN cp -f SCRIPT_FIX/dataset_adapter.py  /usr/local/lib/python3.7/dist-packages/vtk/numpy_interface/dataset_adapter.py
+RUN cp -f SCRIPT_FIX/dataset_adapter.py  /home/docker/miniconda3/lib/python3.7/site-packages/vtk/numpy_interface/dataset_adapter.py
 
 
 USER docker

@@ -163,13 +163,13 @@ for tcID_i, tc_info_i in dds['tc'].items():
 			l_df_seg_detail.append(l_df[0])
 			l_df_agg_scores.append(l_df[1])
 			l_df_agg_scores.append(l_df[2])
-			#SEG2D and SEG2D_bg_corr
-			file_i_2 = root_folder / regex_file_select5.replace("<tcID>",tcID_i)
-			l_df = process_SEG2D_file(file_i_2,tcID_i,tc_info_i)
-			if l_df:
-				l_df_seg2D_detail.append(l_df[0])
-				l_df_agg_scores.append(l_df[1])
-				l_df_agg_scores.append(l_df[2])
+			# #SEG2D and SEG2D_bg_corr
+			# file_i_2 = root_folder / regex_file_select5.replace("<tcID>",tcID_i)
+			# l_df = process_SEG2D_file(file_i_2,tcID_i,tc_info_i)
+			# if l_df:
+			# 	l_df_seg2D_detail.append(l_df[0])
+			# 	l_df_agg_scores.append(l_df[1])
+			# 	l_df_agg_scores.append(l_df[2])
 
 		elif tc_info_i['score'] == 'TRA':
 			#tracking detail

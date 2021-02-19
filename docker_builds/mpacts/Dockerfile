@@ -71,7 +71,9 @@ COPY install_python.sh /tmp/install_python.sh
 RUN bash /tmp/install_python.sh ${PYTHON_VERSION_TAG} ${LINK_PYTHON_TO_PYTHON3} && \
     rm -r /tmp/install_python.sh Python-${PYTHON_VERSION_TAG}
 
-RUN pip install Sphinx vtk numpy networkx scipy matplotlib pyDOE h5py pyevtk seaborn cython pyACVD pymeshfix xmltodict tifffile trimesh
+#RUN pip install Sphinx vtk numpy networkx scipy matplotlib pyDOE h5py pyevtk seaborn cython pyACVD pymeshfix xmltodict tifffile trimesh
+COPY requirements_pip.txt .
+RUN pip install -r requirements_pip.txt
 
 # Enable tab completion by uncommenting it from /etc/bash.bashrc
 # The relevant lines are those below the phrase "enable bash completion in interactive shells"

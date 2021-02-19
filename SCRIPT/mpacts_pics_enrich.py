@@ -107,6 +107,8 @@ poly_embryo = read_vtp_file(input_file_vtp)
 #part 2 enrich embryoVTP with cellname -> canonical parentid -> contactidCanonical
 #naming_strategy='lineager'  #'micsla':strategy of michiel(needs debugging);  'fallback'=just use naming 'parentXX'; Ultimately this should be replaced with automatic naming
 naming_strategy = prm.get('naming_strategy','lineager')
+df_canonical_parentid =pd.DataFrame({})
+d_parentid_canonical = {}
 print(f'Automated naming via {naming_strategy} method:')
 if naming_strategy=='micsla':
 	a_centroids = np.genfromtxt(prm['input_file_centroids'], delimiter=',')
@@ -122,8 +124,6 @@ if naming_strategy=='micsla':
 elif naming_strategy=='fallback':
 	a_parentIndex = get_data_array(poly_embryo, field_type="CELL", attribute='parentIndex')
 	d_parentid_cellname={i: ("parent" + str(i).zfill(3))for i in np.unique(a_parentIndex)}
-	df_canonical_parentid ={}  #no real cell names, so no link to canonical naming
-	d_parentid_canonical = {}
 	#a_cellName = np.array([("parent" + str(i).zfill(3)) for i in a_parentIndex]).astype(str)
 	# poly = add_array(poly,a_cellName, "cellName", field_type="CELL",dtype='str')
 elif naming_strategy=='lineager':
@@ -132,7 +132,7 @@ elif naming_strategy=='lineager':
 	d_parentid_cellname = name_cells_using_lineage(poly_embryo,df_cell_names)
 add_array_with_mapper(poly_embryo,'parentIndex','cellName',d_parentid_cellname,default='Unidentified')
 
-if df_canonical_parentid:
+if not df_canonical_parentid.empty:
 	d_cellname_canonical_parentid = {k:get_canonical_parentid(k,df_canonical_parentid) for k in d_parentid_cellname.values()}
 	add_array_with_mapper(poly_embryo,'cellName','parentIndexCanonical',d_cellname_canonical_parentid,default=999)
 	d_parentid_canonical={i:d_cellname_canonical_parentid[j] for i,j in d_parentid_cellname.items()}
