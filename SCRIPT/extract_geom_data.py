@@ -32,10 +32,25 @@ def write_excel_vol_data():
 		d_df.setdefault('volume', []).append(cell_i.volume)
 		d_df.setdefault('surface_area', []).append(cell_i.surface_area)
 		d_df.setdefault('sphericity', []).append(cell_i.sphericity)
+		d_df.setdefault('scale', []).append(cell_i.scale)
 		l,w,h = cell_i.extents
 		d_df.setdefault('extents_length', []).append(l)
 		d_df.setdefault('extents_width', []).append(w)
 		d_df.setdefault('extents_height', []).append(h)
+		x,y,z = cell_i.centroid
+		d_df.setdefault('centroid_x', []).append(x)
+		d_df.setdefault('centroid_y', []).append(y)
+		d_df.setdefault('centroid_z', []).append(z)
+		x,y,z = cell_i.center_mass
+		d_df.setdefault('center_mass_x', []).append(x)
+		d_df.setdefault('center_mass_y', []).append(y)
+		d_df.setdefault('center_mass_z', []).append(z)
+		x,y,z = cell_i.principal_inertia_components
+		d_df.setdefault('principal_inertia_x', []).append(x)
+		d_df.setdefault('principal_inertia_y', []).append(y)
+		d_df.setdefault('principal_inertia_z', []).append(z)
+		
+		
 
 	df = pd.DataFrame.from_dict(d_df)
 	df.to_csv(str(output_folder / "geom_info.csv"), index=False,mode='w')
@@ -47,6 +62,7 @@ def write_excel_vol_data():
 
 # Read parms
 input_folder, output_folder = read_parms()
+print('TEMP8888',input_folder,output_folder)
 output_folder.mkdir(parents=True, exist_ok=True)
 		
 init_ds_cells()

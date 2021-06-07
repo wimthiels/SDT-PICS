@@ -19,7 +19,7 @@ docker build -t $DOCKER_IMAGE_NAME $DOCKER_IMAGE_FOLDER
 
 
 #remove container if exist
-if [ "$(docker ps -aq  -f name=${DOCKER_CONTAINER_NAME})" ]; then
+if [ "$(docker ps -aq  -f name=${DOCKER_CONTAINER_NAME}$)" ]; then
 	printf "$DOCKER_CONTAINER_NAME is already present.  Container will be removed: \n"; 
 	docker stop $DOCKER_CONTAINER_NAME
 	docker rm $DOCKER_CONTAINER_NAME

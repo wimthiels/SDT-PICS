@@ -6,7 +6,7 @@ Created on 4 Apr 2019
 import numpy as np
 from shutil import copyfile
 from tifffile import TiffFile,imsave
-import sys ,re
+import sys ,re,os
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d.axes3d import Axes3D
 from skimage import img_as_ubyte
@@ -24,8 +24,38 @@ import pyvista as pv
 from VTK_utils import read_vtp_file, get_point_array, get_data_array
 import vtk
 from scipy.ndimage import zoom
+from scipy import ndimage
+
 
 # from pv.DataSetFilters import slice_along_axis
+
+def display_top(snapshot, key_type='lineno', limit=3):
+	import tracemalloc
+	import linecache
+	
+	snapshot = snapshot.filter_traces((
+		tracemalloc.Filter(False, "<frozen importlib._bootstrap>"),
+		tracemalloc.Filter(False, "<unknown>"),
+	))
+	top_stats = snapshot.statistics(key_type)
+
+	print("Top %s lines" % limit)
+	for index, stat in enumerate(top_stats[:limit], 1):
+		frame = stat.traceback[0]
+		# replace "/path/to/module/file.py" with "module/file.py"
+		filename = os.sep.join(frame.filename.split(os.sep)[-2:])
+		print("#%s: %s:%s: %.1f KiB"
+			  % (index, filename, frame.lineno, stat.size / 1024))
+		line = linecache.getline(frame.filename, frame.lineno).strip()
+		if line:
+			print('    %s' % line)
+
+	other = top_stats[limit:]
+	if other:
+		size = sum(stat.size for stat in other)
+		print("%s other: %.1f KiB" % (len(other), size / 1024))
+	total = sum(stat.size for stat in top_stats)
+	print("Total allocated size: %.1f KiB" % (total / 1024))
 
 def vtp_to_tif(vtp_file, t_tif_shape, path_output, l_zyx = [1e-6,0.129e-6,0.129e-6]):
 	"""
@@ -191,6 +221,14 @@ def examine(na,na_name='no name np-array',output=sys.stdout,ix_print=0):
 	print('<-----------------------------------------------------------------------------------',file=output)
 	return
 
+def examine_img(img,name='no name given'):
+	print('examine img name={0} :'.format(name))
+	print('shape:' ,img.shape)
+	print('dtype:' ,img.dtype)
+	print('bincount membrane: ',np.bincount(img.flatten()))
+	print("Histogram of DT :{2} values{2} {0} {2} with bin_edges {2}{1}".format(np.histogram(img)[0],np.histogram(img)[1],"\n"))
+	return
+
 def slice_tif(na_tif=np.zeros((0)),ix_slice_z=None,ix_slice_time=None,
 			  RGB=False,
 			  ix_keep_channel=None,
@@ -216,6 +254,7 @@ def slice_tif(na_tif=np.zeros((0)),ix_slice_z=None,ix_slice_time=None,
 	'''
 	
 	if not na_tif.any(): 
+		if verbose:print('No input data given (or all zeros), so pass on load info via a filehandler object')
 		na_tif = filehandler.load_tif(verbose=verbose)
 	
 	if ix_keep_channel:
@@ -289,6 +328,11 @@ def slice_tif(na_tif=np.zeros((0)),ix_slice_z=None,ix_slice_time=None,
 
 
 def convert_16bit_to_RGB(a_img_16bit,clip_not_scale=True,d_save_info=None):
+
+	if a_img_16bit.dtype!='int16':
+		a_img_16bit = a_img_16bit.astype('int16')
+
+	a_img_16bit = a_img_16bit - np.min(a_img_16bit)  #subtract mnimimum
 	
 	if clip_not_scale:
 		a_img_8bit=img_as_ubyte(np.where(a_img_16bit>255,255,a_img_16bit))
@@ -551,7 +595,7 @@ def get_color_values(fun_cd='1'):
 		
 	return l_colors
 	
-def filter_tif_values(a_img,l_filter_values=[], filter_reserved_fiji=False,invers=False):
+def filter_tif_values(a_img,l_filter_values=[], filter_reserved_fiji=False,invers=False,remove_small_objects=True):
 	'''
 	:keep only the values in l_filter_values, all other values will be set to zero
 
@@ -569,12 +613,15 @@ def filter_tif_values(a_img,l_filter_values=[], filter_reserved_fiji=False,inver
 	
 	#try to remove small isolated pixels, check per slice
 	examine(a_img_filtered,'a_img_filtered')
-	a_img_filter2 = np.zeros_like(a_img_filtered)
-	for ix_z,a_z_i in enumerate(a_img_filtered):
-		a_bool = a_z_i > 0
-		a_img_filter2 [ix_z,...]= remove_small_objects(a_bool, min_size=10, connectivity=1, in_place=False)
-	
-	examine(a_img_filter2,'a_img_filter2')
+	if remove_small_objects:
+		a_img_filter2 = np.zeros_like(a_img_filtered)
+		for ix_z,a_z_i in enumerate(a_img_filtered):
+			a_bool = a_z_i > 0
+			a_img_filter2 [ix_z,...]= remove_small_objects(a_bool, min_size=10, connectivity=1, in_place=False)
+		
+		examine(a_img_filter2,'a_img_filter2')
+	else:
+		a_img_filter2 = a_img_filtered
 	
 	return np.where(a_img_filter2,a_img_filtered,0)
 
@@ -836,6 +883,53 @@ def interpollate_image(a_img,spacing_ZYX = [1.1,0.1294,0.1294],XY_downsampling_r
 
 	return a_img_zoom
 
+def zoom_data(nd_array, spacing=None,target_shape = None, keep_XY_ratio=True, target_res = None, curr_res = None):
+	"""
+	specify a target shape OR a target resolution in micron
+	use 'spacing' to target spacing of the z-axis specifically
+	"""
+
+	if len(nd_array.shape) ==4: #handle a timelapse recursively
+		l_array_zoom= []
+		for ix,stack in enumerate(nd_array):
+			array_zoom, [z_zoom,y_zoom,x_zoom], spacing = zoom_data(stack,spacing=spacing,target_shape = target_shape, keep_XY_ratio=keep_XY_ratio, target_res = target_res, curr_res = curr_res)
+			l_array_zoom.append(array_zoom)
+		return np.array(l_array_zoom).astype('int16'), [z_zoom,y_zoom,x_zoom], spacing
+		
+	elif spacing is not None:
+		print ("start interpollating the data to expand z-range: ")
+		# xy_down = 1/4
+		xy_down = 1
+		print  (" - to compress size x and y are downscaled with a factor of {0}".format(xy_down))
+		z_zoom = spacing[0]
+		y_zoom = spacing[1] * xy_down
+		x_zoom = spacing[2] * xy_down
+		spacing=[1,1*xy_down,1*xy_down]
+		print  (" - zoom used {0} with spacing {1} ".format([z_zoom,y_zoom,x_zoom], spacing))
+	elif target_shape is not None:
+		z,y,x = nd_array.shape
+		z_zoom = target_shape[0] / z
+		y_zoom = target_shape[1] / y
+		if keep_XY_ratio:
+			x_zoom = y_zoom
+		else:
+			x_zoom = target_res[2] / x
+		print  (" - zoom used {0} with target shape {1} ".format([z_zoom,y_zoom,x_zoom], target_shape))
+	elif target_res is not None:
+		if curr_res is None:
+			print('current resolution ZYX in microns is needed as input')
+			return None
+		z_zoom,y_zoom,x_zoom = [i/j for i,j in zip(curr_res,target_res)]
+		print  (" - zoom used {0} with target resolution {1} ".format([z_zoom,y_zoom,x_zoom], target_res))
+	else:
+		print("Specify target resolution or shape !")
+		return None
+	
+	nd_array_zoom = ndimage.zoom( nd_array, [z_zoom,y_zoom,x_zoom], order=1, prefilter=False ) 
+	
+	print  (" - resampling from ", nd_array.shape, "to", nd_array_zoom.shape)
+	
+	return nd_array_zoom, [z_zoom,y_zoom,x_zoom], spacing
 
 def dds_get_value(dds,label_ds,k1,k2,fallback=None):
 	#labels_ds = name of dict = name of excel tab

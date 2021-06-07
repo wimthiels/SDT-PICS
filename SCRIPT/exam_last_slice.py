@@ -1,6 +1,8 @@
 """
 Created on 29 may 2020
-aggregate geometry data from all replicates
+gather the pixels from the bottom slice in order to use this information for volume correction (more pixels on the bottom slice = more volume missed)
+The z-index of the last slice will be the z-ix that was marked as still having signal (max signal > no-signal-threshold). However if a manually annotated exterior mask is created, this
+can overrule this
 @author: wimth
 """
 import numpy as np
@@ -39,7 +41,10 @@ d_nbstack_ixzlast['nb_stack'] = nb_stack
 # d_nbstack_ixzlast['ix_z_no_signal'] = [l_dim[1]]
 # d_nbstack_ixzlast['ix_z_exterior_mask'] = [l_dim[1]]
 if input_file_preprocessing: 
-	df_file_prepro = pd.read_csv(input_file_preprocessing,header=0,index_col=False,keep_default_na=True) 
+	if input_file_preprocessing.suffix=='.xlsx':
+		df_file_prepro = pd.read_excel(input_file_preprocessing,sheet_name='frangi_vesselness_scores')
+	else:
+		df_file_prepro = pd.read_csv(input_file_preprocessing,header=0,index_col=False,keep_default_na=True) 
 	if not nb_stack:
 		nb_stack = df_file_prepro['nb_stack'].unique()
 	l_ix_z = [0] * len(nb_stack)
@@ -62,8 +67,8 @@ if input_file_preprocessing:
 if input_file_exterior_mask:
 	with TiffFile(input_file_exterior_mask) as tif:
 		a_exterior_mask = tif.asarray()
-
-	a_exterior_mask = a_exterior_mask[nb_stack[0]-1,:]
+	if len(a_exterior_mask.shape)>3:
+		a_exterior_mask = a_exterior_mask[nb_stack[0]-1,:]
 	a_pixel_per_slice = np.sum(a_exterior_mask,axis=(1,2))
 	for ix in range(a_exterior_mask.shape[0]-1,0,-1):
 		if a_pixel_per_slice[ix] > 0:

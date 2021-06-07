@@ -213,7 +213,13 @@ class FileHandler():
         
         return
         
-        
+    def clear_save_dir(self):
+        save_dir = self.get_save_location()
+        if save_dir:
+            for file in Path(save_dir).iterdir(): 
+                os.remove(file)
+
+        return
         
     def reset_save_info(self):
         self.d_save_info = self.d_save_info_snapshot.copy()
@@ -275,6 +281,7 @@ class FileHandler():
                             xlsx, png, txt, csv, lineage,stl
         :param RGB: a tif will be written with RGB.  because these are always tifs for visualization, these will be automatically converted to 
                     fiji format (=tif but with dimensions flipped (TZCYXR)
+        resolution : default the data will be converted to a uint16
         '''
         save_dir = self.d_save_info['save_dir']
         sub_dir_1 = self.d_save_info['sub_dir_1']
@@ -337,11 +344,17 @@ class FileHandler():
         
         if file_ext=='tif':
             #comment : use np.abs(np_array).astype('uint16') : to get no scaling and clipping 
-            if data.dtype=='float64':data=data.astype(int,casting='unsafe')
             #if data.dtype not in ('uint16','uint8','int'):data=img_as_uint(data)  #WARNING if values exist above max, img_as_uint returns all zeros !!
+            if resolution in ['float64','float32']:
+                data=data.astype('float32') #for now change both to float32 which is compatible with fiji (float64 can be saved as bigtiff however)
             if resolution=='uint16':
-                if str(data.dtype) not in ('uint16'):data=img_as_uint(data) #Negative input values will be clipped. Positive values are scaled between 0 and 255.
+                if data.dtype in ['float64','float32']:
+                    data=data.astype(int,casting='unsafe')
+                if str(data.dtype) not in ('uint16'):
+                    data=img_as_uint(data) #Negative input values will be clipped. Positive values are scaled between 0 and 255.
             elif resolution=='uint8':
+                if data.dtype  in ['float64','float32']:
+                    data=data.astype(int,casting='unsafe') #Images of type float must be between -1 and 1.for img_as_ubyte
                 if str(data.dtype) not in ('uint8'):
                     if clip_not_scale:
                         data=img_as_ubyte(np.where(data>255,255,data))

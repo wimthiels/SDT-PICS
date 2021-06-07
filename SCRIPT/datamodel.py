@@ -502,7 +502,8 @@ class Stack:
                 max_dt = max(GT_radius,
                              max_dt,
                              Param.MIN_SEED_RADIUS)  # GT seeding, too small spheres will get engulfed, so seed larger
-                max_dt = 25 # unequal seeds can cause problems
+                #max_dt = 25 # unequal seeds can cause problems
+                #max_dt = Param.MIN_SEED_RADIUS
             elif seeding_cell:
                 ##max_dt = min(max_dt,Param.MIN_SEED_RADIUS)  ##normal seeding, to be assessed  limit movement good idea ?? : No worsen results...
                 max_dt_zyx = list(np.unravel_index(np.argmax(a_dist_transf), a_dist_transf.shape))
@@ -569,7 +570,7 @@ class Stack:
                 cluster.update_overlap_pixels(max_cluster_ctr,get_overlap_info_of_current_sphere_with_cluster(max_cluster_ctr))
                 bincount[max_cluster_ctr] = 0
                 max_cluster_ctr = np.argmax(bincount)
-            
+
             return 
         
         def filter_sphere():
@@ -668,7 +669,8 @@ class Stack:
         else:
             cluster = add_sphere_to_existing_cluster()
 
-        if cluster:    
+        if cluster: 
+
             get_overlap_with_other_clusters() 
 
         #update stack views   
@@ -746,7 +748,7 @@ class Stack:
                     continue
             
             if cluster_i in l_processed_clusters: 
-                print('---cluster_i already processed, no new label will be drawn. but still checking overlapping cluster for label passing')
+                if verbose:print('---cluster_i already processed, no new label will be drawn. but still checking overlapping cluster for label passing')
             else:
                 cluster_i.label = Label(timestep=self.timestep,label_parent_ctr=Label.PARENT_ZEUS_CTR)  #draw new label with no parent
         #             if DBG:print('new label is created {0}'.format(cluster_i.get_color()))
@@ -840,7 +842,10 @@ class Stack:
                     ic_seeded = 1
                 else:
                     ic_seeded = 0
-                l_t.append((cluster_i,cluster_i.label.ctr,-ic_seeded,-cluster_i.get_seed_radius())) #(cluster(key),ctr(ASC),ic_seeded(DESC),volume(DESC))
+                if cluster_i.label is not None:
+                    l_t.append((cluster_i,cluster_i.label.ctr,-ic_seeded,-cluster_i.get_seed_radius())) #(cluster(key),ctr(ASC),ic_seeded(DESC),volume(DESC))
+                else:
+                    print(f"Something went wrong. {cluster_i.ctr} has no label attached. Skipping this cluster....")
             l_t = sorted(l_t, key=lambda l_t: (l_t[1],l_t[2],l_t[3]))
             return [t[0] for t in l_t]
         
@@ -923,8 +928,6 @@ class Stack:
         '''
         if verbose:print("###handle cell divisions for stack {0} ".format(self.timestep), end='')
         
-        
-        
         l_new_labels = []
         for cell_i in self.cells:
             if cell_i.label in Label.L_INDICATOR:
@@ -984,11 +987,11 @@ class Stack:
                         
                     #check for GT-seeds in the other clusters.  if found, promote to largest_unseeded and put on list to process
                     for ix,other_cluster_i in enumerate(cell_i.l_clusters_other):
-                        print('in loop 1 cell_i.label={0}   other_cluster_i.GT_seeded={1}   other_cluster_i.ctr={2} {3}'.format(cell_i.label.color,other_cluster_i.GT_seeded, other_cluster_i.ctr,ix))
+                        if verbose:print('in loop 1 cell_i.label={0}   other_cluster_i.GT_seeded={1}   other_cluster_i.ctr={2} {3}'.format(cell_i.label.color,other_cluster_i.GT_seeded, other_cluster_i.ctr,ix))
                         if other_cluster_i.GT_seeded:
                             
                             if other_cluster_i != cell_i.cluster_largest_unseeded:
-                                print('swithching other to largest unseeded')
+                                if verbose:print('swithching other to largest unseeded')
                                 t = cell_i.cluster_largest_unseeded
                                 cell_i.cluster_largest_unseeded = other_cluster_i
                                 cell_i.l_clusters_other[ix] = t
@@ -1244,8 +1247,11 @@ class Stack:
             
             l_cluster_sort = []
             for cluster_i in Cluster.d_ctr_cluster.values():
+
                 if cluster_i.stack !=self:
                     continue #filter : only clusters of this stack
+                if cluster_i.label is None:
+                    continue
                 l_cluster_sort.append((cluster_i,cluster_i.label.ctr,-cluster_i.get_volume())) #sorting on [label (asc),volume(desc)]
             
             return [i for i,_,_ in sorted(l_cluster_sort, key=lambda l_cluster_sort: (l_cluster_sort[1],l_cluster_sort[2]))]  
@@ -1315,7 +1321,17 @@ class Stack:
             #report the overlap info for clusters involved in cell division
             if cluster.is_largest_non_seed_cluster() or cluster.seed_new_cell:
                 cluster_seed = cluster.cell.cluster_seed
-                overlap_max_DT.append(cluster.d_clusterctr_overlap.get(cluster_seed.ctr)['overlap_max_DT'] if cluster.d_clusterctr_overlap.get(cluster_seed.ctr) else 0)
+                cluster_seed_overlap = cluster.d_clusterctr_overlap.get(cluster_seed.ctr)
+                if cluster_seed_overlap:
+                    overlap_max_DT.append(cluster_seed_overlap['overlap_max_DT'])  # the overlap with the seed cluster of the same cell is stored (no division occurred)
+                else:
+                    max_overlap=0
+                    for overlap_i in cluster.d_clusterctr_overlap.values():
+                        if overlap_i['overlap_max_DT']> max_overlap:
+                            max_overlap = overlap_i['overlap_max_DT'] 
+                    overlap_max_DT.append(max_overlap)
+
+
                 min_radius = min(cluster.spheres[0].radius, cluster_seed.spheres[0].radius)
                 DT_max_threshold.append(self.get_overlap_maxDT_threshold(cluster.spheres[0],cluster_seed))
                 if  overlap_max_DT[-1] < DT_max_threshold[-1]:       
@@ -1594,16 +1610,16 @@ class Stack:
                 print_string = '  ' + str(cluster_i.label.ctr) + '_' + str(cluster_i.ctr)
                 print_cluster_id_RGB(print_string,cluster_i)
             
-            if cluster_i.validation_error == 'OVERSEGMENTATION':  
-                z,y,x = cluster_i.centre
-                size_cross = 6 
-                x_min_clip = max(x-(size_cross-1),0)
-                x_max_clip = min(x+size_cross,Param.X_DIM-1)
-                y_max_clip = min(y+size_cross,Param.Y_DIM-1)        #underline with red line in case of oversegmentation
-                RGBA_clusterview[z,y_max_clip,x_min_clip:x_max_clip,:] = Label.D_COLOR_RGBA['red']
+                if cluster_i.validation_error == 'OVERSEGMENTATION':  #(FP red cross)
+                    z,y,x = cluster_i.centre
+                    size_cross = 6 
+                    x_min_clip = max(x-(size_cross-1),0)
+                    x_max_clip = min(x+size_cross,Param.X_DIM-1)
+                    y_max_clip = min(y+size_cross,Param.Y_DIM-1)        #underline with red line in case of oversegmentation
+                    RGBA_clusterview[z,y_max_clip,x_min_clip:x_max_clip,:] = Label.D_COLOR_RGBA['deep pink']
             #<--cluster loop 4   
         
-        #validation errors and cell/label numbers
+        #validation errors and cell/label numbers (FN red balls)
             for cluster in self.get_clusters_for_label(Label.VALIDATION):  
                 Z,Y,X = cluster.get_l_pixels()
                 RGBA_clusterview[Z,Y,X,:]=np.asarray(Label.D_COLOR_RGBA.get(cluster.label.color,((255,255,255,255))))  #superimposing the validation clusters
@@ -1656,7 +1672,7 @@ class Stack:
         a_4D_RGBA_clusterview = a_4D_RGBA_clusterview.reshape((nb_channels,int(t/nb_channels),z,y,x,rgba)) 
         
         #add extra channel (use for raw data for example)
-        if len(extra_channel):
+        if extra_channel is not None:
             if extra_channel.shape[-1] ==3:
                 extra_channel = np.insert(extra_channel,3,255,axis=4)
             t,z,y,x,rgba = extra_channel.shape
@@ -2193,9 +2209,9 @@ class Cluster:
         '''
         cluster_1 = self
         cluster_2 = Cluster.d_ctr_cluster[cluster_ctr_overlap]  #symmetric relationship
+
         
-        
-        d_overlap_cluster= cluster_1.d_clusterctr_overlap.get(cluster_2)  #retrieve the overlap info for cluster_ctr_overlap
+        d_overlap_cluster= cluster_1.d_clusterctr_overlap.get(cluster_2.ctr)  #retrieve the overlap info for cluster_ctr_overlap
         if d_overlap_cluster:  #appending the sphere l_pixels to the cluster
             Z,Y,X = d_overlap_cluster['overlap_pix'] 
             Z_append,Y_append,X_append = d_overlap_sphere['overlap_pix']
@@ -2510,7 +2526,6 @@ class Cell:
         (check if a matching cluster can be found)
         the reason is tracked for ease of debugging
         '''
-        
         verbose=False
         if not self.cluster_largest_unseeded:
             return False #only 1 cluster, so no cell division possible
@@ -2566,8 +2581,8 @@ class Cell:
 
         
         if verbose:
-            print('check_cell_division =TRUE:the largest non seed cluster {0} does not overlap too much with the seed : {1} < {2}.(radius = {3})'.
-                format(self.cluster_largest_unseeded.ctr, d_overlap['overlap_max_DT'], threshold_dt,self.cluster_largest_unseeded.get_radius()))
+            print('check_cell_division =TRUE:the largest non seed cluster {0} does not overlap too much with the seed : overlap {1} < threshold {2}.(radius = {3})'.
+                format(self.cluster_largest_unseeded.ctr, d_overlap['overlap_max_DT'], threshold_dt,self.cluster_largest_unseeded.spheres[0]))
         
 
         return True
@@ -2869,7 +2884,7 @@ class Label():
                    'lime':(0,255,0,255),
                    'cyan':(0,204,204,255),
                    'black':(0,0,0,255),
-                   'black_light':(50,50,50,255),
+                   'black_light':(100,100,100,255),
                    'white':(255,255,255,255),
                    'off-white':(230,230,230,255),
                    'red':(255,0,0,255),
@@ -3291,10 +3306,15 @@ class Param():
         Param.THRESHOLD_CELL_OVERLAP_MASK_PC = param_xml.get_value('THRESHOLD_CELL_OVERLAP_MASK_PC')
         Param.MASK_AS_MEMBRANE = param_xml.get_value('MASK_AS_MEMBRANE')
         
-        
+
         Param.MIN_SPHERE_RADIUS = param_xml.get_value('MIN_SPHERE_RADIUS')
         Param.MIN_SEED_RADIUS = param_xml.get_value('MIN_SEED_RADIUS')
         Param.MIN_CELL_RADIUS = param_xml.get_value('MIN_CELL_RADIUS')
+        try:
+            Param.FLAG_MICRON_INPUT = param_xml.get_value('FLAG_MICRON_INPUT')
+        except Exception:
+            Param.FLAG_MICRON_INPUT  = False
+
         Param.SEEDING_Z_RANGE = param_xml.get_value('SEEDING_Z_RANGE')
         Param.THRESHOLD_CELL_DIVISION_MIN_RADIUS_RATIO = param_xml.get_value('THRESHOLD_CELL_DIVISION_MIN_RADIUS_RATIO')
         Param.MAX_NB_SPHERES = param_xml.get_value('MAX_NB_SPHERES')
@@ -3312,9 +3332,17 @@ class Param():
 
         Param.VOXEL_DEPTH,_,Param.PIXEL_WIDTH = param_xml.get_value('scaling_ZYX',l_path_keys=['body','RAM'],use_main_keys=False)
         Param.XY_VS_Z = Param.VOXEL_DEPTH/Param.PIXEL_WIDTH 
-        if verbose:print('temp sdt uses voxel depth of {0} and a pixel depth of {1}'.format(Param.PIXEL_WIDTH,Param.VOXEL_DEPTH))
+        if verbose:print('SDT uses voxel depth of {0} and a pixel depth of {1}'.format(Param.PIXEL_WIDTH,Param.VOXEL_DEPTH))
 
-        
+
+        if Param.FLAG_MICRON_INPUT:
+                Param.MIN_SPHERE_RADIUS = round(Param.MIN_SPHERE_RADIUS/Param.PIXEL_WIDTH)
+                Param.MIN_SEED_RADIUS   = round(Param.MIN_SEED_RADIUS/Param.PIXEL_WIDTH)
+                Param.MIN_CELL_RADIUS   = round(Param.MIN_CELL_RADIUS/Param.PIXEL_WIDTH)
+        Param.MIN_SPHERE_RADIUS = int(Param.MIN_SPHERE_RADIUS)
+        Param.MIN_SEED_RADIUS   = int(Param.MIN_SEED_RADIUS)
+        Param.MIN_CELL_RADIUS   = int(Param.MIN_CELL_RADIUS)
+
           
         #to be filled dynamically
         Param.X_DIM = 0

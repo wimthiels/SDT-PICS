@@ -38,15 +38,20 @@ class Cell:
 		self.d_cell_contactinfo = {}
 		self.surface_area = self.trimesh.area
 		self.extents= self.trimesh.extents #The length, width, and height of the axis aligned bounding box of the mesh.
+		self.centroid = self.trimesh.centroid
+		self.principal_inertia_components = self.trimesh.principal_inertia_components
+		self.scale = self.trimesh.scale
 
 		if self.trimesh.is_volume:
 			self.volume = self.trimesh.volume
 			self.centroid = self.trimesh.centroid
 			self.sphericity = ((math.pi**(1/3))*((6.0e-6*self.trimesh.volume)**(2/3)))/(self.surface_area*1.e-6) # sphericity = ratio of surface area of a sphere that has the same volume as the object to the surface area of the particle itself.
+			self.center_mass = self.trimesh.center_mass
 		else:
 			self.volume = None
 			self.centroid = None
 			self.sphericity = None
+			self.center_mass = None
 			print('warning : the cell {0} is not a proper volume according to trimesh'.format(self.name))
 
 		self.cm = cm

@@ -30,8 +30,8 @@ def mpacts_input_generator(param_xml, filehandler):
 		prm['input_file_threshold'] = param_xml.get_value('input_file_threshold', ['paths'])
 		prm['output_folder'] = param_xml.get_value('output_folder', ['paths'])
 
-		prm['nb_stack'] = param_xml.get_value('nb_stack', ['process_flow'])
-		prm['nb_stack_timelapse'] = param_xml.get_value('nb_stack_timelapse', ['process_flow'])
+		prm['nb_stack_mpacts'] = param_xml.get_value('nb_stack_mpacts', ['process_flow'])
+		prm['nb_stack_prepro'] = param_xml.get_value('nb_stack_prepro', ['process_flow'])
 		prm['shrink_spheres'] = param_xml.get_value('shrink_spheres', ['process_flow'])
 		prm['pixel_selector_type'] = param_xml.get_value('pixel_selector_type',['process_flow'])
 		prm['nb_spheres_per_cell'] = param_xml.get_value('nb_spheres_per_cell',['process_flow'])
@@ -380,19 +380,19 @@ def mpacts_input_generator(param_xml, filehandler):
 	p = re.compile(r"(?:\()(.+?)(?:\))")
 	p2 = re.compile(r"\d+")
 
-	nb_stack_timelapse = prm['nb_stack_timelapse']
+	nb_stack_prepro = prm['nb_stack_prepro']
 		
 	if isinstance(prm['l_stack_number_preprocess'], str):
-		prm['nb_stack'] = prm['nb_stack_timelapse']  #if not 'all' timesteps are processed, then only the first occurrence is processed
+		prm['nb_stack_mpacts'] = prm['nb_stack_prepro']  #if not 'all' timesteps are processed, then only the first occurrence is processed
 	else:
-		prm['nb_stack'] = prm['nb_stack']
+		prm['nb_stack_mpacts'] = prm['nb_stack_mpacts']
 
 	if not prm['shrink_spheres']:
 
 		d_cellID_l_nt_spheres = {}  # ix = mesh key
 		nt_Sphere = namedtuple('nt_Sphere', ['z', 'y', 'x', 'radius'])
 
-		for nb_time in prm['nb_stack']:
+		for nb_time in prm['nb_stack_mpacts']:
 			for _, row_cluster in df_ipt[df_ipt.stack_nb == nb_time].iterrows():
 				if row_cluster.cluster_label in SKIP_LABEL: continue
 				mesh_key = "{0}_{1}_t{2}".format("{:02d}".format(row_cluster.cluster_label), row_cluster.color, row_cluster.stack_nb)
@@ -412,7 +412,7 @@ def mpacts_input_generator(param_xml, filehandler):
 
 	else:
 		dd = {}  #to avoid looping if the same combination keeps popping up
-		for nb_time in prm['nb_stack']:  # for now, will only be 1 timepoint e.g. [4]
+		for nb_time in prm['nb_stack_mpacts']:  # for now, will only be 1 timepoint e.g. [4]
 			for _, row_cluster in df_ipt[df_ipt.stack_nb == nb_time].iterrows():
 				if row_cluster.cluster_label in SKIP_LABEL: 
 					continue
@@ -457,7 +457,7 @@ def mpacts_input_generator(param_xml, filehandler):
 	# with TiffFile(str(prm['img_raw_file'])) as tif:
 	# 	img_raw = tif.asarray()
 	if len(img_raw.shape)==4:
-		img_raw = img_raw[nb_stack_timelapse[0] - 1, :].squeeze()
+		img_raw = img_raw[nb_stack_prepro[0] - 1, :].squeeze()
 
 	if prm['pixel_selector_type'] == 'preprocessed':
 		with TiffFile(str(prm['input_file_frangi'])) as tif:
@@ -466,7 +466,7 @@ def mpacts_input_generator(param_xml, filehandler):
 			a_threshold = tif.asarray()
 
 		if len(a_threshold.shape)==4:
-			a_mpacts_pixel_selector = np.where(a_threshold[prm['nb_stack'][0] - 1, ...], a_frangi[prm['nb_stack'][0] - 1, ...], 0)
+			a_mpacts_pixel_selector = np.where(a_threshold[prm['nb_stack_mpacts'][0] - 1, ...], a_frangi[prm['nb_stack_mpacts'][0] - 1, ...], 0)
 		else:
 			a_mpacts_pixel_selector = np.where(a_threshold, a_frangi, 0)
 
@@ -476,7 +476,7 @@ def mpacts_input_generator(param_xml, filehandler):
 				print('exterior_outline is blended into mpacts_pixel_selector :{0}'.format(prm['img_exterior_outline']))
 				a_exterior_outline = tif.asarray()
 				if len(a_exterior_outline.shape)==4:
-					a_exterior_outline = a_exterior_outline[prm['nb_stack'][0] - 1, ...]
+					a_exterior_outline = a_exterior_outline[prm['nb_stack_mpacts'][0] - 1, ...]
 			a_copy = np.zeros_like(a_mpacts_pixel_selector)
 			for ix_z,a_z in enumerate(a_mpacts_pixel_selector):
 				a_copy[ix_z] = np.where(a_exterior_outline[ix_z]>0,np.max(a_z),a_z)
@@ -489,7 +489,7 @@ def mpacts_input_generator(param_xml, filehandler):
 			with TiffFile(str(prm['img_membranes_blend_z'])) as tif:
 				a_membranes_blend_z = tif.asarray()
 				if len(a_membranes_blend_z.shape)==4:
-					a_membranes_blend_z = a_membranes_blend_z[prm['nb_stack'][0] - 1, ...]
+					a_membranes_blend_z = a_membranes_blend_z[prm['nb_stack_mpacts'][0] - 1, ...]
 
 			a_copy = np.zeros_like(a_mpacts_pixel_selector)
 			for ix_z,a_z in enumerate(a_mpacts_pixel_selector):
@@ -546,14 +546,14 @@ def mpacts_input_generator(param_xml, filehandler):
 	a_paraview = a_paraview - np.min(a_paraview)
 
 	imsave(str(prm['output_folder'] / "raw_img_inverted_y.tif"), a_paraview)
-	imsave(str(prm['output_folder'] / "raw_img_selected_stack .tif"), img_raw)
+	imsave(str(prm['output_folder'] / "raw_img_selected_stack.tif"), img_raw)
 
 
 	# PART 4 : select part of validation (will be used for automated cell naming)
 	#------------------------------------------------------
 	if isinstance(prm['file_validation'],Path):
 		df_val = pd.read_csv(prm['file_validation'],delimiter="\t")
-		cond = df_val['time']==prm['nb_stack_timelapse'][0]
+		cond = df_val['time']==prm['nb_stack_prepro'][0]
 		df_val = df_val[cond]
 		df_val.to_csv(prm['output_folder'] / "lineage_named.tsv",sep='\t')
 

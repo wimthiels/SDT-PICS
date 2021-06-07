@@ -22,7 +22,7 @@ import matplotlib.pyplot as plt
 import networkx as nx
 
 from param_XML import Param_xml
-verbose=False
+verbose=True
 from id_cells import identify
 
 def read_parms():
@@ -35,7 +35,6 @@ def read_parms():
 
 def load_lineage_data(verbose=False):
 	#read cell names
-	file_cell_names = "/home/wth/Downloads/testinfra/INPUT/fmn01/fmn01_lineage_v1.tsv_named"
 	df_cell_names = pd.read_csv(prm['input_file_lineage'],delimiter="\t")
 	df_cell_names['x'] = prm['scaling_ZYX'][2]  *1.e-6 * df_cell_names['x']
 	df_cell_names['y'] = prm['scaling_ZYX'][1] * 1.e-6 * df_cell_names['y']
@@ -60,8 +59,8 @@ def name_cells_using_lineage(poly,df_cell_names):
 			if tmh_i.contains(np.array([list(point_xyz)])):  #must have shape (1,3)
 				if verbose:print('mesh {} contains point {}'.format(parentid_i, point_xyz))
 				d_parentid_cellname[parentid_i]  = row_i[1]['cell']
-			else:
-				if verbose:print('mesh {} does not contain point {}'.format(parentid_i, point_xyz))
+			# else:
+				# if verbose:print('mesh {} does not contain point {}'.format(parentid_i, point_xyz))
 	print(d_parentid_cellname)
 
 	return d_parentid_cellname

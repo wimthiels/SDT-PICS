@@ -99,7 +99,7 @@ declare -r DATA_FOLDER_DOCKER="${ROOT_DOCKER}/DATA"  #
 declare -r XML_OUTPUT_FOLDER_DOCKER="DATA/XML"  
 declare -r XML_INPUT_DOCKER="${PARAM_FOLDER_DOCKER}/PARAMS.xml"
 
-a_mpacts_container=(sphere_meshing.py mpacts_PiCS.py mpacts_PiCS_presim.py mpacts_PiCS_LUT.py gen_artificial.py)
+a_mpacts_container=(sphere_meshing.py mpacts_PiCS.py mpacts_PiCS_presim.py mpacts_PiCS_v2.py gen_artificial.py)
 # start docker containers
 if [[ $MPACTS_CONTAINER != "" ]] ; then
 	if [ $(docker inspect -f '{{.State.Running}}' ${MPACTS_CONTAINER}) = "false" ]; then

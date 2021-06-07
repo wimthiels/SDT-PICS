@@ -80,6 +80,10 @@ def pre_filter( image, sigma,dz_dx_ratio ):
 	'''
 	Gaussian smooth filter with standard deviation sigma. Implementation is numpy so very fast
 	'''
+
+	if sigma==0:
+		print('No smoothing applied')
+		return image
 	image = np.array(image, dtype=float)
 	image /= np.max(image)
 	image *= 256
@@ -95,7 +99,12 @@ def resample( data, to_zoom, dx, dy, dz ):
 	dx /= to_zoom[2]
 	dy /= to_zoom[1]
 	dz /= to_zoom[0]
-	new_data = zoom( data, to_zoom, order=1, prefilter=False )  #prefilter off. the spline filter messes up the image!
+	print(to_zoom)
+	if to_zoom == (1.0,1.0,1.0):
+		new_data = data
+		print(" - No resampling needed")
+	else:
+		new_data = zoom( data, to_zoom, order=1, prefilter=False )  #prefilter off. the spline filter messes up the image!
 	print  (" - resampling from ", np.shape(data), "to", np.shape(new_data), "for data ratio", new_data.size/float(data.size)*100, "%")
 	print  ("    - after resampling dimensions are scaled as follows dx=",dx,"dy=",dy,"dz=",dz)
 
@@ -199,6 +208,7 @@ def print_simulation_parameters():
 	print("cortical tension = {}".format(pt_cortex.get_value()))
 	print("cell adhesion  = {}".format(adh_cell.get_value()))
 	print("image_force_ratio  = {}".format(image_force_ratio.get_value()))
+	print("k_layer  = {}".format(k_layer.get_value()))
 
 	return
 
@@ -255,10 +265,17 @@ def update_parms_simulation(phase=2):
 	pt_cortex_mult.set_value(1.e-3*param_xml.get_value('pt_cortex_{}'.format(phase),['parms_cell_model'])/param_xml.get_value('pt_cortex',['parms_cell_model']))
 	adh_cell_mult.set_value(1e-1*param_xml.get_value('adh_cell_{}'.format(phase),['parms_cell_model'])/param_xml.get_value('adh_cell',['parms_cell_model']))
 
+	if phase in [1]:
+		k_layer_mult.set_value(1.e12)
+	else:
+		k_layer_mult.set_value(1.e7)
+
+
 	return
    
 if __name__ == "__main__":
 	#files&folders
+	import time;tic = time.time() 
 
 	param_xml = Param_xml.get_param_xml(sys.argv,l_main_keys = ['body','mpacts_PiCS'],verbose=True)
 	docker_run_ic =  param_xml.get_value('docker_run_ic',['paths'])
@@ -366,6 +383,11 @@ if __name__ == "__main__":
 	function    = '$baseVisco$'
 	baseVisco_f   = VariableFunction("baseVisco_f"  , params, function=function )
 
+
+	k_layer_mult = Variable("k_layer_mult", params, value=1e12)  
+	k_layer = VariableFunction("k_layer", params, function="{}*$k_layer_mult$".format(1)) 
+
+
 	del param_xml.l_main_keys[-1]
 
 	#------------------------------------------------------#
@@ -411,7 +433,7 @@ if __name__ == "__main__":
 															, contact_range     = h_eff
 															, implicitness      = 1.0
 															, reject_angle      = np.pi/2.
-															, k_layer=1e12 ##speedup respulsion  Layer stiffness. 
+															, k_layer=k_layer #1e3   #1e12 ##speedup repulsion  Layer stiffness. 
 															)
 
 	h0 = h_smooth.get_value()
@@ -555,13 +577,13 @@ if __name__ == "__main__":
 	#PHASEI------------
 	if param_xml.get_value('fit_hull',['process_flow']):
 		add_hull_to_simulation()
-	print (">>>Phase1:cell relaxation (without pixels); simulation time : {0}s".format(param_xml.get_value('simulation_time_1',['parms_sim'])))
+	print (">>>PhaseI:cell relaxation (without pixels); simulation time : {0}s".format(param_xml.get_value('simulation_time_1',['parms_sim'])))
 	print_simulation_parameters()
 	mysim.run_until(mysim.get_time() + param_xml.get_value('simulation_time_1',['parms_sim']))
 
-	cells('triangles').VTKWriterCmd(executeInterval=.05, select_all=True, directory=str(output_folder))  #vtp files
+	cells('triangles').VTKWriterCmd(executeInterval=.01, select_all=True, directory=str(output_folder))  #vtp files (default every 0.05s sim time)
 	#PHASEII--------------
-	add_pixels_to_simulation()
+	add_pixels_to_simulation() 
 	update_parms_simulation(phase=2)
 
 	print (">>>PhaseII:cell expansion (with pixels); simulation time : {0}s".format(param_xml.get_value('simulation_time_2',['parms_sim'])))
@@ -570,6 +592,7 @@ if __name__ == "__main__":
 
 
 	#PHASEIII-------------------
+	#add_pixels_to_simulation()
 	update_parms_simulation(phase=3)
 	#image_force_ratio_mult.set_value(0)
 	if param_xml.get_value('fit_hull',['process_flow']):
@@ -585,3 +608,5 @@ if __name__ == "__main__":
 
 	#save centroids
 	np.savetxt(str(output_folder / "cell_centroids.csv"), np.array(cells('x')), delimiter=",")
+	toc = time.time()
+	print('runtime_mpacts_pics = ', toc-tic)

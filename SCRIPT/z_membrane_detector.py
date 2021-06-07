@@ -185,8 +185,9 @@ def detect_z_membrane(a_input,a_membrane_mask,a_membrane,a_exterior_mask,
 	for ix_z in range(a_membrane_mask.shape[0]):
 		slice_signal = a_membrane_overlay[ix_z]
 		slice_noise  = a_membrane_mask[ix_z]
-		l_MS_signal.append(np.square(slice_signal[slice_signal>0]).mean())
-		l_MS_noise.append(np.square(slice_noise[slice_noise>0]).mean())
+		#l_MS_signal.append(np.square(slice_signal[slice_signal>0]).mean())
+		l_MS_signal.append(np.mean(np.square(slice_signal[slice_signal>0])))
+		l_MS_noise.append(np.mean(np.square(slice_noise[slice_noise>0])))
 
 	l_SN_ratio = [signal/noise for signal,noise in zip(l_MS_signal,l_MS_noise)]
 	dlog1['SN_ratio'] = l_SN_ratio

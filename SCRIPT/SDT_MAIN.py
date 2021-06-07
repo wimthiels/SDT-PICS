@@ -16,7 +16,6 @@ import shutil
 import pprint
 from pathlib import Path
 pp = pprint.PrettyPrinter(indent=4)
-
 os.system('hostname')
 
 
@@ -106,17 +105,17 @@ if __name__ == '__main__':
     os.makedirs(filehandler.get_save_location(),exist_ok=True)
     #shutil.copyfile(str(param_xml.file), os.path.join(filehandler.get_save_location(),param_xml.file.name)) #backup param file
     
-    print('checks done, proceeding...') if check_params_and_data() else print('checks failed. stopping executing')
-    
+    if not IMG_RAW_FILE:
+        print('Please specify an input file. Exitting')
+        exit(1)
+    else:
+        print('checks done, proceeding...') if check_params_and_data() else print('checks failed. stopping executing')
 
     for filename_raw in Path(IMG_RAW_DIR).glob('**/*.tif'):
-    # for filename_raw in os.listdir(IMG_RAW_DIR):
-    #     if filename_raw.endswith(".tif") or filename_raw==IMG_RAW_FILE:
-            
+ 
         if IMG_RAW_FILE and filename_raw.name != IMG_RAW_FILE:continue  #if input file is given , only process this one file
         
         update_filehandler_with_f_name(filename_raw.name)
-        
         for execution_block in l_execution_blocks:
             if d_execution_blocks.get(execution_block)=='preprocessing':
                 print('STEP1-PREPROCESSING---------------------------------------------------------------------------------------------------')

@@ -52,7 +52,11 @@ def generate_lineager_input_files(param_xml,filehandler):
         MAKE_IMAGE_SEQUENCE = param_xml.get_value('MAKE_IMAGE_SEQUENCE',['flowcontrol'])
         offset_lineage_files = param_xml.get_value('offset_lineage_files',['flowcontrol'])
         if offset_lineage_files==-1:
-            offset_lineage_files = param_xml.get_value('l_stack_number',['body','preprocessing','flowcontrol'],use_main_keys=False)[0] - 1
+            l_stack_number = param_xml.get_value('l_stack_number',['body','preprocessing','flowcontrol'],use_main_keys=False)
+            if isinstance(l_stack_number,list):
+                offset_lineage_files = l_stack_number[0] - 1
+            else:
+                offset_lineage_files = 0
         param_xml.l_main_keys = ['body','MAIN']
         img_raw_file = param_xml.get_value('img_raw_file',['paths'])
 

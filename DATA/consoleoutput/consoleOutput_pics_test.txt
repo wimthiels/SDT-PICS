@@ -3,18 +3,19 @@ param_xml_object from location DATA/XML/testinfra_pics_test.xml is used
     'input_folder': PosixPath('/home/docker/DATA/OUTPUT/pics_test/012_mpacts_PiCS'),
     'output_folder': PosixPath('/home/docker/DATA/OUTPUT/pics_test/021_mpacts_pics_select'),
     'write_stl_files': True}
-vtp file /home/docker/DATA/OUTPUT/pics_test/012_mpacts_PiCS/Seeding_cells_triangles_9_enriched.vtp will be used for extraction cells
---processing cell with parentID 0
---processing cell with parentID 1
---processing cell with parentID 2
---processing cell with parentID 3
---processing cell with parentID 4
---processing cell with parentID 5
---processing cell with parentID 6
-Unique values in cellName are ['parent000']
-Unique values in cellName are ['parent001']
-Unique values in cellName are ['parent002']
-Unique values in cellName are ['parent003']
-Unique values in cellName are ['parent004']
-Unique values in cellName are ['parent005']
-Unique values in cellName are ['parent006']
+vtp file /home/docker/DATA/OUTPUT/pics_test/012_mpacts_PiCS/Seeding_cells_triangles_33_enriched.vtp will be used for extraction cells
+VTP file written to output parent000.vtp
+STL file written to output parent000.stl
+VTP file written to output parent001.vtp
+STL file written to output parent001.stl
+VTP file written to output parent002.vtp
+STL file written to output parent002.stl
+VTP file written to output parent003.vtp
+STL file written to output parent003.stl
+VTP file written to output parent004.vtp
+STL file written to output parent004.stl
+VTP file written to output parent005.vtp
+STL file written to output parent005.stl
+VTP file written to output parent006.vtp
+STL file written to output parent006.stl
+selected_embryo.vtp written to output

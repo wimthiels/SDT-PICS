@@ -3,56 +3,57 @@ param_xml_object from location DATA/XML/testinfra_my_testcase.xml is used
     'input_folder': PosixPath('/home/docker/DATA/OUTPUT/my_testcase/012_mpacts_PiCS'),
     'output_folder': PosixPath('/home/docker/DATA/OUTPUT/my_testcase/021_mpacts_pics_select'),
     'write_stl_files': True}
-vtp file /home/docker/DATA/OUTPUT/my_testcase/012_mpacts_PiCS/Seeding_cells_triangles_9_enriched.vtp will be used for extraction cells
---processing cell with parentID 0
---processing cell with parentID 1
---processing cell with parentID 2
---processing cell with parentID 3
---processing cell with parentID 4
---processing cell with parentID 5
---processing cell with parentID 6
---processing cell with parentID 7
---processing cell with parentID 8
---processing cell with parentID 9
---processing cell with parentID 10
---processing cell with parentID 11
---processing cell with parentID 12
---processing cell with parentID 13
---processing cell with parentID 14
---processing cell with parentID 15
---processing cell with parentID 16
---processing cell with parentID 17
---processing cell with parentID 18
---processing cell with parentID 19
---processing cell with parentID 20
---processing cell with parentID 21
---processing cell with parentID 22
---processing cell with parentID 23
---processing cell with parentID 24
---processing cell with parentID 25
-Unique values in cellName are ['parent000']
-Unique values in cellName are ['parent001']
-Unique values in cellName are ['parent002']
-Unique values in cellName are ['parent003']
-Unique values in cellName are ['parent004']
-Unique values in cellName are ['parent005']
-Unique values in cellName are ['parent006']
-Unique values in cellName are ['parent007']
-Unique values in cellName are ['parent008']
-Unique values in cellName are ['parent009']
-Unique values in cellName are ['parent010']
-Unique values in cellName are ['parent011']
-Unique values in cellName are ['parent012']
-Unique values in cellName are ['parent013']
-Unique values in cellName are ['parent014']
-Unique values in cellName are ['parent015']
-Unique values in cellName are ['parent016']
-Unique values in cellName are ['parent017']
-Unique values in cellName are ['parent018']
-Unique values in cellName are ['parent019']
-Unique values in cellName are ['parent020']
-Unique values in cellName are ['parent021']
-Unique values in cellName are ['parent022']
-Unique values in cellName are ['parent023']
-Unique values in cellName are ['parent024']
-Unique values in cellName are ['parent025']
+vtp file /home/docker/DATA/OUTPUT/my_testcase/012_mpacts_PiCS/Seeding_cells_triangles_33_enriched.vtp will be used for extraction cells
+VTP file written to output parent000.vtp
+STL file written to output parent000.stl
+VTP file written to output parent001.vtp
+STL file written to output parent001.stl
+VTP file written to output parent002.vtp
+STL file written to output parent002.stl
+VTP file written to output parent003.vtp
+STL file written to output parent003.stl
+VTP file written to output parent004.vtp
+STL file written to output parent004.stl
+VTP file written to output parent005.vtp
+STL file written to output parent005.stl
+VTP file written to output parent006.vtp
+STL file written to output parent006.stl
+VTP file written to output parent007.vtp
+STL file written to output parent007.stl
+VTP file written to output parent008.vtp
+STL file written to output parent008.stl
+VTP file written to output parent009.vtp
+STL file written to output parent009.stl
+VTP file written to output parent010.vtp
+STL file written to output parent010.stl
+VTP file written to output parent011.vtp
+STL file written to output parent011.stl
+VTP file written to output parent012.vtp
+STL file written to output parent012.stl
+VTP file written to output parent013.vtp
+STL file written to output parent013.stl
+VTP file written to output parent014.vtp
+STL file written to output parent014.stl
+VTP file written to output parent015.vtp
+STL file written to output parent015.stl
+VTP file written to output parent016.vtp
+STL file written to output parent016.stl
+VTP file written to output parent017.vtp
+STL file written to output parent017.stl
+VTP file written to output parent018.vtp
+STL file written to output parent018.stl
+VTP file written to output parent019.vtp
+STL file written to output parent019.stl
+VTP file written to output parent020.vtp
+STL file written to output parent020.stl
+VTP file written to output parent021.vtp
+STL file written to output parent021.stl
+VTP file written to output parent022.vtp
+STL file written to output parent022.stl
+VTP file written to output parent023.vtp
+STL file written to output parent023.stl
+VTP file written to output parent024.vtp
+STL file written to output parent024.stl
+VTP file written to output parent025.vtp
+STL file written to output parent025.stl
+selected_embryo.vtp written to output

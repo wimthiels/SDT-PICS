@@ -119,7 +119,8 @@ def construct_tc_xml(file,tc):
 	for xml_field,value in tc.xml_data.items():
 		d_df[xml_field] =value
 		
-	return pd.DataFrame(d_df)
+	return pd.DataFrame(d_df, index=[0]) #if using all scalar values you must pass an index
+	# return pd.DataFrame(d_df)
 
 def construct_tc_xml_deprecated(file,tc):
 	"""the param xml of the testcase will be used to extract metadata """
@@ -198,7 +199,7 @@ for ix_regex,regex_i in enumerate(prm['l_regex_files']):
 				l_df.append(construct_csv_tab(file,tc_i))
 			elif file_suffix=='.xlsx':  #only first tab is extracted
 				l_df.append(construct_xlsx_tab(file,tc_i))
-			elif file_suffix=='.vtp':
+			elif file_suffix in ['.vtp','.tif']:
 				if not (prm['output_folder'] / file.stem).exists():
 					(prm['output_folder'] / file.stem).mkdir(parents=True)
 				copy_vtp_file(file,tc_i)
@@ -222,4 +223,25 @@ with pd.ExcelWriter(prm['output_folder']/"agg_tc.xlsx",mode='w') as writer:
 
 
 print("Aggregated data can be found in \n {}".format(prm['output_folder']/"agg_tc.xlsx"))
-		
+
+
+#append extra excel
+if prm['append_file1']:
+	excel1 = prm['output_folder']/"agg_tc.xlsx"
+	excel2 = prm['append_file1']
+
+	d_sheet_df = {}
+	for sheet_name_i in pd.ExcelFile(excel1).sheet_names: 
+		print(sheet_name_i)
+		try:
+			d_sheet_df[sheet_name_i] = pd.concat([pd.read_excel(excel1,sheet_name=sheet_name_i),pd.read_excel(excel2,sheet_name=sheet_name_i)])
+		except Exception as e:
+			print(f'{sheet_name_i} caused error {e}. Copying data from excel1 only')
+			d_sheet_df[sheet_name_i] = pd.read_excel(excel1,sheet_name=sheet_name_i)
+			pass
+
+	with pd.ExcelWriter(prm['output_folder']/"agg_tc_appended.xlsx",mode='w') as writer:
+		for sheet_name_i, df_i in d_sheet_df.items():
+			df_i.to_excel(writer, sheet_name=sheet_name_i,index=False)
+	print("Appended data can be found in \n {}".format(prm['output_folder']/"agg_tc_appended.xlsx"))
+

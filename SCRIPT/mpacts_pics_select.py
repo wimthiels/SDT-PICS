@@ -10,6 +10,7 @@ import numpy as np
 import re,os
 from param_XML import Param_xml
 import os,sys
+import traceback
 
 def read_parms():
 	param_xml = Param_xml.get_param_xml(sys.argv, l_main_keys=['body'],verbose=True) 
@@ -19,6 +20,8 @@ def read_parms():
 
 prm = read_parms()
 prm['output_folder'].mkdir(parents=True,exist_ok=True)
+for f in list(prm['output_folder'].glob('*')): # clear outputfolder
+		os.remove(str(f))
 
 #pick a VTP to extract cells
 input_file_vtp = ""
@@ -33,7 +36,7 @@ print('vtp file {0} will be used for extraction cells'.format(input_file_vtp),fl
 poly_in = read_vtp_file(input_file_vtp)
 
 # write VTP file per cell
-d_parentID_VTP = extract_parentID_selection_from_VTP(poly_in,verbose=True)
+d_parentID_VTP = extract_parentID_selection_from_VTP(poly_in,verbose=False)
 for parent_ID_i,vtp_i in d_parentID_VTP.items():
 
 	l_cell_name = list_unique_values(vtp_i,attribute='cellName', field_type="CELL",repr=True)
@@ -43,7 +46,13 @@ for parent_ID_i,vtp_i in d_parentID_VTP.items():
 		cell_name = f"cell_parent{str(parent_ID_i).zfill(3)}" #fallback naming via parentid
 
 	write_vtp_file(vtp_i, str(prm['output_folder'] / f"{cell_name}.vtp"))
+	print(f"VTP file written to output {cell_name}.vtp",flush=True)
 	if prm['write_stl_files']:
-		write_stl_file(vtp_i,str(prm['output_folder'] / f"{cell_name}.stl"),scale=1.0e6)
+		try:
+			write_stl_file(vtp_i,str(prm['output_folder'] / f"{cell_name}.stl"),scale=1.0e6)
+			print(f"STL file written to output {cell_name}.stl",flush=True)
+		except:
+			print(traceback.print_exc())
 #write vtp embryo
 write_vtp_file(poly_in, str(prm['output_folder'] / "selected_embryo.vtp") )
+print(f"selected_embryo.vtp written to output",flush=True)

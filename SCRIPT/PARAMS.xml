@@ -153,7 +153,8 @@
 			</sigmas>
 			
 			<scale_range value="default">
-				<description>2-tuple. The range of sigmas used. = related to width of the vessels. To calibrate, measure the XY distance of piece of membrane in number of pixels </description>
+				<description>2-tuple. The range of sigmas used. = related to width of the vessels. To calibrate, measure the XY distance of piece of membrane in number of pixels 
+				The response of the filter will be maximum at a scale that approximately matches the size of the vessel to detect. They can be chosen so that they will cover the range of vessel widths</description>
 				<dtype>tuple;int</dtype>
 				<default>5;6</default>
 			</scale_range>
@@ -165,25 +166,25 @@
 			</scale_step>			
 			
 			<alpha value="default">
-				<description> </description>
+				<description>This is parameter 'alpha' in original Frangi paper (has only an effect in 3D frangi !).  Increasing alpha will increase score sensitivity to Ra (lamba2/lambda3) (with lambda 1 being the largest eigenvalue). for distinguishing line-like structures (Ra =very large) from plate like structures (Ra =close to 1) </description>
 				<dtype>float</dtype>
-				<default>0.5</default>
+				<default>1</default>
 			</alpha>
 			
 			<beta value="default">
-				<description>this is parameter 'beta' in the original Frangi paper  (code : filtered = np.exp(-rb / beta1) * (np.ones(np.shape(image)) - np.exp(-s2 / beta2))
-				increasing 'beta' will increase tolerance for blobs </description>
+				<description>this is parameter 'beta' in the original Frangi paper  (code : filtered = np.exp(-rb / beta1) * (np.ones(np.shape(image)) - np.exp(-s2 / beta2)).  increasing beta will increase sensitivity to Rb (lamba1 /(sqrt(lamba2*lambda3)..Works in 3D as well 2D. In 2D it is needed to distinguish circles (Rb near 1) from lines (Rb = large). Rb will penalize structures that deviate from circles, but making beta bigger will ease that penalty
+				Or put differently : increasing 'beta' will increase tolerance for blobs </description>
 				<dtype>float</dtype>
 				<default>1</default>
 			</beta>
 			
 			<gamma value="default">
-				<description>this is parameter 'c' in the original frangi paper.  Increase if you feel the interior noise gets too high frangi output </description>
+				<description>this is parameter 'c' in the original frangi paper.  The S term will penalize small eigenvalues but increasing c will ease that penalty.  Put differently : Increase if you feel the interior noise gets too high frangi output </description>
 				<dtype>float</dtype>
 				<default>0.0005</default>
 			</gamma>
 			
-			<beta1 value="default">
+<!-- 			<beta1 value="default">
 				<description>this is parameter 'beta' in the original Frangi paper  (code : filtered = np.exp(-rb / beta1) * (np.ones(np.shape(image)) - np.exp(-s2 / beta2))
 				increasing 'beta' will increase tolerance for blobs </description>
 				<dtype>float</dtype>
@@ -194,7 +195,7 @@
 				<description>this is parameter 'c' in the original frangi paper.  Increase if you feel the interior noise gets too high frangi output </description>
 				<dtype>float</dtype>
 				<default>0.0005</default>
-			</beta2>
+			</beta2> -->
 			
 			
 			<black_ridges value="default">
@@ -451,6 +452,88 @@
 	</filter_parms>
 </preprocessing>
 
+<sdt>
+	<paths>
+		<input_folder value="">
+			<description>the directory of the binary membrane file. Leave blank if you want to use the one outputted by preprocessing</description>
+			<dtype>path</dtype>
+			<default>/home/wth/Downloads/testinfra/INPUT/jupyter/SDTv2</default>
+		</input_folder>
+		
+
+
+		<input_file_membrane value="default">
+			<description>binary membrane image from preprocessing</description>
+			<default>membranes.tif</default>
+		</input_file_membrane>
+
+		<input_file_exterior_mask value="default">
+			<description>exterior mask from preprocessing</description>
+			<default>exterior_mask.tif</default>
+		</input_file_exterior_mask>
+
+		<output_folder value="default">
+			<description>output folder</description>
+			<dtype>path</dtype>
+			<default>body+MAIN+paths+OUTPUT_FOLDER_ROOT</default>
+		</output_folder>
+
+		<suffix_file value="">
+			<description>optional file suffix to outputfiles</description>
+			<default></default>
+		</suffix_file>
+
+	</paths>
+
+	<process_flow>
+		<time_ix_range value="default">
+			<description> to process the whole time lapse leave blanc.  otherwise provide 2 numbers to specify the range e.g [1,3] will process range(1,3)</description>
+			<dtype>list;int</dtype>
+			<default>blanc</default>
+		</time_ix_range>
+
+		<flag_vis_ds value="default">
+			<description> generate an overview dashboard plot of all datastructures, one for every time point</description>
+			<dtype>boolean</dtype>
+			<default>True</default>
+		</flag_vis_ds>
+
+		<flag_write_df value="default">
+			<description> write the dataframes that are used to construct the vtp's. 
+				If flag_write_vtp = True this will be defaulted to True </description>
+			<dtype>boolean</dtype>
+			<default>True</default>
+		</flag_write_df>
+
+		<flag_write_vtp value="default">
+			<description> write the vtp's based on the dataframes for visualisation in Paraview </description>
+			<dtype>boolean</dtype>
+			<default>True</default>
+		</flag_write_vtp>
+
+		<nb_cores value="default">
+			<description> number of cores that will be used in parallel processing. leave blanc to use all cores.  When nb_cores = 1 , the timelapse will be handled serially</description>
+			<dtype>int</dtype>
+			<default></default>
+		</nb_cores>
+	</process_flow>
+
+
+	<parms>
+		<min_sp_rad value="">
+			<description>minimum sphere radius.  Determines resolution of sdt segmentation.  expressed in XY pixels</description>
+			<dtype>int</dtype>
+			<default>10</default>
+		</min_sp_rad>
+	
+		<fragmentation_level value="default">
+			<description>determines threshold for grouping clusters into cells (DTmax > radius minimum seed sphere * fragmentation_level</description>
+			<dtype>float</dtype>
+			<default>0.8</default>
+		</fragmentation_level>
+	</parms>
+</sdt>
+
 <spheresDT>
 	
 	<paths>
@@ -627,23 +710,28 @@
 			<default>0.4</default>	
 		</FILTER_SPHERE_OVERLAP_MASK_PC>
 		
+		<FLAG_MICRON_INPUT value="default">
+			<description>If set to True, the input parameters are interpreted as absolute distances instead of XY-pixel distance.  Parameters will be converted and rounded to a XY pixel distance using the resolution in RAM. affects MIN_SPHERE_RADIUS, MIN_SEED_RADIUS, , MIN_CELL_RADIUS, </description>
+			<dtype>bool</dtype>
+			<default>False</default>
+		</FLAG_MICRON_INPUT>
+
 		
 		<MIN_SPHERE_RADIUS value="default">
 			<description>threshold for sphere creation. The lower, the higher the resolution and computation time</description>
-			<dtype>int</dtype>
+			<dtype>float</dtype>
 			<default>10</default>
 		</MIN_SPHERE_RADIUS>
 		
 		<MIN_SEED_RADIUS value="default">
-			<description>threshold for cluster creation.  A sphere with a radius smaller than this can not be the seed of a new cluster. This does not apply to the first stack, there MIN_CELL_RADIUS is used, given that in the first stack </description>
+			<description>threshold for cluster creation.  A sphere with a radius smaller than this can not be the seed of a new cluster. This does not apply to the first stack, there MIN_CELL_RADIUS is used.  </description>
 			<dtype>int</dtype>
 			<default>14</default>
 		</MIN_SEED_RADIUS>
 
 		<MIN_CELL_RADIUS value="default">
-			<description>threshold for cell creation (used in first stack and cell division).  This is defined as the radius the volume of a sphere that can harbor all pixels of the clusters.  
-			This is considered a user parameter</description>
-			<dtype>int</dtype>
+			<description>threshold for cell creation (used in first stack and cell division). The volume of the cluster in question must be greater than the volume of the hypothetical sphere with radius = min_cell_radius</description>
+			<dtype>float</dtype>
 			<default>14</default>
 		</MIN_CELL_RADIUS>
 
@@ -796,26 +884,31 @@
 	</paths>
 	
 	<process_flow>
-		<nb_stack_timelapse value="default">
-			<description>refers to the input stack from ./MAIN/paths/img_raw_file (1=first timepoint)jso refers to the input file of preprocessing.  Only use this if preprocessing l_nb_stack does not equal 'all', only then this value will differ from nb_stack.  This value is commonly used in the testcase label e.g. '09' in fmn0109</description>
+		<nb_stack_raw value="default">
+			<description>refers to the time (1-indexed) in the original microscopy image. This value is commonly used in the testcase label e.g. '09' in fmn0109</description>
 			<dtype>list;int</dtype>
-			<default>body+mpacts_input_generator+process_flow+nb_stack</default>
-		</nb_stack_timelapse>
+			<default>body+mpacts_input_generator+process_flow+nb_stack_prepro</default>
+		</nb_stack_raw>
 
-		<nb_stack value="default">
+
+		<nb_stack_prepro value="default">
+			<description>refers to the input stack from ./MAIN/paths/img_raw_file (1=first timepoint)jso refers to the input file of preprocessing.  Only use this if preprocessing l_nb_stack does not equal 'all', only then this value will differ from nb_stack.  </description>
+			<dtype>list;int</dtype>
+			<default>body+mpacts_input_generator+process_flow+nb_stack_mpacts</default>
+		</nb_stack_prepro>
+
+		<nb_stack_mpacts value="default">
 			<description>the input stack for Mpacts. (1=first timepoint). Referring to the output from preprocessing (not the input). This will be the timevalue that will be used for all subsequent steps  </description>
 			<dtype>list;int</dtype>
 			<default>1</default>
-		</nb_stack>
+		</nb_stack_mpacts>
 
 		<nb_stack_analysis value="default">
 			<description>This will be the timepoint the stack has in the analysis further downstream.  It it inconsequential because time in the analysis will be expressed in absolute units anyway (with respect to a certain event, like EMS-divisionà, and this value is just the row-number, so it can be easily derived.  This can differ from nb-stack because mpacts-input-generator can pick out certain timepoints for further analysis. (typically when taking a larger time interval eg. every 3 minutes instead of 1,5 in the original timelapse).  So, as a summary : a certain stack can have time = 29 in the raw stack (cfr ./RAM/microscopy/raw), time = 5 in the cropped version used as input (cfr nb_stack_timelapse), time = 3 after selection by preprocessing (cfr nb_stack) and time=2 as nb-stack analysis (cfr nb_stack_analysis) because different runs of mpacts-input-generator only select a subset of stacks</description>
 			<dtype>int</dtype>
-			<default>body+mpacts_input_generator+process_flow+nb_stack</default>
+			<default>body+mpacts_input_generator+process_flow+nb_stack_mpacts</default>
 		</nb_stack_analysis>
 
-
-		
 		<shrink_spheres value="default">
 			<description>if true, then spheres will shrink symmetrically until overlap is removed </description>
 			<dtype>bool</dtype>
@@ -1438,7 +1531,7 @@
 		</input_file>
 
 		<input_file_lineage value="default">
-			<description>named lineager file used for automatic naming.  This file should be in tab separated format (not starrynite format).  expressed in pixel values</description>
+			<description>named lineager file used for automatic naming.  This file should be in tab separated format (not starrynite format).  expressed in pixel values. Only containing the relevant timestep (so other timesteps should be filtered out beforehand</description>
 			<dtype>path</dtype>
 			<default>body+mpacts_input_generator+paths+output_folder+file_lineager</default>
 		</input_file_lineage>
@@ -1482,7 +1575,7 @@
 		<input_folder value="default">
 			<description>the folder containing the selected cells of the embryo </description>
 			<dtype>path</dtype>
-			<default>body+select_cells+paths+output_folder</default>
+			<default>body+mpacts_pics_select+paths+output_folder</default>
 		</input_folder>
 
 		<output_folder value="default">
@@ -1774,7 +1867,7 @@
 <SEG_2D_scoring>
 	<paths>	
 		<input_stack_GT value="default">
-			<description>folder with the STL cells representing ground truth</description>
+			<description>folder with the GT stack (tif file) representing ground truth</description>
 			<dtype>path</dtype>
 			<default>./GT</default>
 		</input_stack_GT>
@@ -1793,7 +1886,7 @@
 	</paths>
 
 	<scaling value="default">
-		<description>scaling that will be applied to the input meshes</description>
+		<description>scaling that will be applied to the input meshes. Only if you </description>
 		<dtype>float</dtype>
 		<default>1</default>
 	</scaling>
@@ -2014,8 +2107,16 @@
 			<description>output folder</description>
 			<dtype>path</dtype>
 			<file_agg_tc value="agg_tc.xlsx"></file_agg_tc>
+			<file_agg_tc_appended value="agg_tc_appended.xlsx"></file_agg_tc_appended>
 			<default>&lt;ROOT_OUTPUT&gt;/fmnAgg/</default>
 		</output_folder>
+
+		<append_file1 value="">
+			<description>An extra aggregation file. If filled in this will be added to the output data and written as a second aggregation file (agg_tc_appended).  Tabnames present in this file and not in the original file will be skipped.  Tabnames present in the original file and not in this one, will result in a copy of the original</description>
+			<dtype>path</dtype>
+			<default>/home/wth/Downloads/testinfra/INPUT/7cellAgg/agg_tc_020321_manually_updated.xlsx</default>
+		</append_file1>
+
 	</paths>
 
 	<l_xml_keys_tc_data value="default">
@@ -2075,6 +2176,30 @@
 		</l_R_modules>
 	</process_flow>
 
+	<l_cell_name value="">
+		<description>used to filter cell names that will be analysed Leave blank to analyse all cell names</description>
+		<dtype>list;string</dtype>
+		<default>ABal;ABar;ABpl;ABpr;E;MS;P2;C;P3</default>
+	</l_cell_name>
+
+	<l_emb_ID value="">
+		<description>used to filter emb ID. Leave blank to analyse all embID</description>
+		<dtype>list;string</dtype>
+		<default>ABal;ABar;ABpl;ABpr;E;MS;P2;C;P3</default>
+	</l_emb_ID>
+
+	<l_rep_ID value="">
+		<description>used to filter repID. Leave blank to analyse all repID</description>
+		<dtype>list;string</dtype>
+		<default>rep1;rep2;rep3</default>
+	</l_rep_ID>
+
+	<l_time_interval value="">
+		<description>used to filter t (=whatever t means in the analysis) Leave blank to analyse all timesteps e.g 0;15 (all timesteps in interval [0 min, 15min]  (=inclusive interval) </description>
+		<dtype>list;string</dtype>
+		<default>0;15</default>
+	</l_time_interval>
+
 </analyse_agg_data>
 
 <exam_last_slice>
@@ -2107,7 +2232,7 @@
 			<nb_stack value="default">
 			<description>the timestep that will be processed. if left blanc all timesteps will be processed (this only applies to the preprocessing file , the sphere meshing file is only 1 timepoint.</description>
 			<dtype>list;int</dtype>
-			<default>body+mpacts_input_generator+process_flow+nb_stack</default>
+			<default>body+mpacts_input_generator+process_flow+nb_stack_mpacts</default>
 		</nb_stack>
 	</process_flow>
 </exam_last_slice>
@@ -2215,9 +2340,9 @@
 	</scaling_ZYX>
 
 	<timestep value="default">
-		<description>optional. Can refer to the timestep in a timeseries.  Needed for mapping cell divisions.  This always refers back to the original microscopy image (nb_stack_timelapse refers to the timepoint from the timelapse in the input folder, which could be time-cropped, so it could differ from this value</description>
+		<description>optional. Can refer to the timestep in a timeseries.  Needed for mapping cell divisions.  This always refers back to the original microscopy image </description>
 		<dtype>int</dtype>
-		<default>body+mpacts_input_generator+process_flow+nb_stack</default>
+		<default>body+mpacts_input_generator+process_flow+nb_stack_raw</default>
 	</timestep>
 
 	<script_folder value="default">
@@ -2326,7 +2451,7 @@
 		</category>
 
 		<nb_stack_EMS_division value="">
-			<description> The timepoint when EMS division is completed. 1-indexed and relative to t=0. so when ems division is at t=3 then value = 4. </description>
+			<description> The timepoint in the original microscopy data when EMS division it taking place. Take first timepoint when EMS is completely finished and step back 1 timepoint.  1-indexed</description>
 		</nb_stack_EMS_division>
 
 		<strain value="">

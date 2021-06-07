@@ -499,7 +499,7 @@ def list_unique_values(poly,attribute='cellName', field_type="CELL",repr=True):
 		return []
 	else:
 		a_unique = np.unique(data_array)
-		print(f"Unique values in {attribute} are {a_unique}")
+		# print(f"Unique values in {attribute} are {a_unique}")
 		return a_unique
 
 
@@ -517,3 +517,91 @@ def get_mapper(poly,name_array_key, name_array_value,field_type="CELL"):
 	mapper = {i:j for i,j in s_pairs}
 
 	return mapper
+
+
+def create_poly_from_df(df_input,type='spheres',output_file=None,add_xyzr_extra=True, verbose=False):
+	""" a dataframe with 
+	spheres :
+		x,y,z of center, radius should be provided.  Additional columns will be added as cell data arrays
+		e.g : 	x	y	z	radius	spID	clID	ceID
+	lines : 
+		x1,y1,z1,x2,y2,z2
+	int is the default datatype for added cell arrays.
+	an output file location is mandatory because a temporary vtp file must be written to disk, but if not given the paraview VTK object without extra data will be returned
+	output = VTK poly
+	"""
+	df_cell_data = {}
+
+	if type=='lines':
+		ix_extra_data = 6
+		connectivity = 2 # pv.Lines.lines (= a line mesh)
+	elif type=='spheres':
+		ix_extra_data = 4
+		connectivity = 3 # pv.Sphere.faces (=a triangulated mesh)
+	elif type=='vertices':
+		ix_extra_data = 3
+		connectivity = 1 # pv.Sphere.faces (=a triangulated mesh)
+	if add_xyzr_extra:
+		ix_extra_data=0
+
+	# 1 - creation of the elementary objects (spheres, lines)
+	if type=='vertices':
+		#vtp_points  = np.array(df_input.iloc[:,0:3])
+		vtp_points = np.transpose(np.vstack([np.array(df_input['x']),np.array(df_input['y']),np.array(df_input['z'])]))
+		for i in range(ix_extra_data,len(df_input.columns)):
+			df_cell_data[df_input.columns[i]]  = np.array(df_input.iloc[:,i])
+	
+	else:
+		blocks = pv.MultiBlock()
+		for row_i in df_input.iterrows():
+			if type=='spheres':
+				blocks.append(pv.Sphere(radius=row_i[1].radius, center=(row_i[1].x,row_i[1].y,row_i[1].z), direction=(0, 0, 1), theta_resolution=10, phi_resolution=10, start_theta=0, end_theta=360, start_phi=0, end_phi=180))
+			elif type=='lines':
+				blocks.append(pv.Line(pointa=(row_i[1].x1, row_i[1].y1, row_i[1].z1), pointb=(row_i[1].x2, row_i[1].y2, row_i[1].z2)))
+
+		# 2 - creating 1 vtp file 
+		blocks_copy = blocks.copy(deep=True) # (WATCH OUT, the following destroys the sphere data (updates face information), so we take a copy
+		vtp_points  = np.zeros((0,3),dtype='float64')
+		vtp_mesh_components = np.zeros((0,),dtype='int64')
+		for extra_data_column in df_input.columns[ix_extra_data:]:
+			df_cell_data[extra_data_column]  = np.zeros((0,),dtype='int64')
+
+
+		for ix_block, block_i in enumerate(blocks_copy):
+			connectivity_i = block_i.lines if type =='lines' else block_i.faces
+			if verbose:print('the number of points in this block = ', len(block_i.points))
+			if verbose:print('the number of mesh components (triangles, lines..) in this block (sphere, or line or..) = ', len(connectivity_i)/(connectivity + 1))
+			mesh_components = connectivity_i.reshape((-1,connectivity + 1))
+			mesh_components[:,1:] = mesh_components[:,1:] + len(vtp_points)  # we need to adjust the points indices in the the mesh_components
+
+			for extra_data, value in df_cell_data.items():
+				value_append = np.full((len(mesh_components),), df_input.at[ix_block,extra_data])  #the data we will add to Cell  (for visualisation and selection in paraview)
+				df_cell_data[extra_data] = np.concatenate((value,value_append))
+			vtp_points = np.concatenate((vtp_points,block_i.points))
+			vtp_mesh_components = np.concatenate((vtp_mesh_components,mesh_components.reshape(-1,)))
+	
+	#classpyvista.PolyData(var_inp=None, faces=None, n_faces=None, lines=None, n_lines=None, deep=False)
+	if connectivity==1:
+		pv_mesh = pv.PolyData(vtp_points)
+	elif connectivity==2:
+		pv_mesh = pv.PolyData(vtp_points, lines = vtp_mesh_components) # pyvista bug , turns it into verts instead of lines (e.g 6 verts(=points) instead of 3 lines)
+		#pv_mesh = pv.PolyData(vtp_points, vtp_mesh_components)
+	else:
+		pv_mesh = pv.PolyData(vtp_points, vtp_mesh_components) # faces= does not work for some reason
+
+	if output_file:
+		pv_mesh.save(output_file, binary=False)
+	else:
+		return pv_mesh 
+
+	#add the extra cell data arrays
+	poly_mesh = read_vtp_file(output_file)
+	field_type = "POINT" if type=='vertices' else "CELL"
+	for extra_data_column in df_input.columns[ix_extra_data:]:
+		poly_mesh = add_array(poly_mesh,df_cell_data[extra_data_column], extra_data_column, field_type=field_type,dtype='int')
+	pv_mesh_added = pv.wrap(poly_mesh)
+	pv_mesh_added.save(output_file, binary=False)
+	if verbose:print('Final output vtp file is written to ',output_file)
+
+	return poly_mesh
+

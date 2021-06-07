@@ -1,4 +1,4 @@
-c99e28b74383
+b70e941f635f
 STEP0-SETUP------------------------------------------------------------------------------------------------------------
 param_xml_object from location DATA/XML/testinfra_sdt_test.xml is used
 SDT_MAIN.py:all info will be written to :  /home/docker/DATA/OUTPUT/sdt_test/
@@ -8,779 +8,1507 @@ file loaded->TL1_emb1.tif, with input_shape=(18, 27, 441, 276)uint16 from locati
 /home/docker/DATA/INPUT/testrun/TL1_emb1.tif
 
 *processing stack number  1 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+file sliced to shape=(27, 441, 276)
 
 **starting the ORIGINAL filter on stack 1
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the flip filter on stack 1
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the frangi filter on stack 1
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the scale_max filter on stack 1
+***working in 3D~
+output>> float64
 
 **starting the write_output filter on stack 1
+***working in 3D~
+output>> float64
 
 **starting the collect_Otsu filter on stack 1
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the collect_stats filter on stack 1
+***working in 3D~
+output>> float64
 
 **starting the reconstruction filter on stack 1
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the thrabs filter on stack 1
-~~~~~~~~~~~~~~~~~~~~~~~~~~~<string>:6: RuntimeWarning: Converting input from bool to <class 'numpy.uint8'> for compatibility.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> bool
+<string>:6: RuntimeWarning: Converting input from bool to <class 'numpy.uint8'> for compatibility.
 
 **starting the write_output filter on stack 1
+***working in 3D~
+output>> bool
 
 **starting the RmSmObj3D filter on stack 1
+***working in 3D~
+output>> bool
 
 **starting the skeletonize filter on stack 1
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the write_output_no_signal_filtered filter on stack 1
+***working in 3D~
+output>> uint16
 
 **starting the active_contour filter on stack 1
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the exterior_mask filter on stack 1
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the write_output filter on stack 1
+***working in 3D~
+output>> uint16
 
 **starting the blend_z_membrane filter on stack 1
+***working in 3D~
+using the masked image for peak detection..
+50.15501284854245 is the max of the preprocessed stack so peak threshold for the stack will be set at 30.594557837610893
+1 peaks detected
+a_z_metric = [ 0.  0.  0. 15.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.
+  0.  0.  0.  0.  0.  0.  0.  0.  0.]
+ix_min=3, ix_max = 4. top-bottom mode : Peaks are only kept in index-interval [4,3]
+output>> float32
 
 **starting the write_output_no_signal_filtered filter on stack 1
+***working in 3D~
+output>> float32
 None
 *processing stack number  2 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+file sliced to shape=(27, 441, 276)
 
 **starting the ORIGINAL filter on stack 2
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the flip filter on stack 2
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the frangi filter on stack 2
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the scale_max filter on stack 2
+***working in 3D~
+output>> float64
 
 **starting the write_output filter on stack 2
+***working in 3D~
+output>> float64
 
 **starting the collect_Otsu filter on stack 2
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the collect_stats filter on stack 2
+***working in 3D~
+output>> float64
 
 **starting the reconstruction filter on stack 2
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the thrabs filter on stack 2
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> bool
+
 **starting the write_output filter on stack 2
+***working in 3D~
+output>> bool
 
 **starting the RmSmObj3D filter on stack 2
+***working in 3D~
+output>> bool
 
 **starting the skeletonize filter on stack 2
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the write_output_no_signal_filtered filter on stack 2
+***working in 3D~
+output>> uint16
 
 **starting the active_contour filter on stack 2
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the exterior_mask filter on stack 2
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the write_output filter on stack 2
+***working in 3D~
+output>> uint16
 
 **starting the blend_z_membrane filter on stack 2
+***working in 3D~
+using the masked image for peak detection..
+32.34382413396905 is the max of the preprocessed stack so peak threshold for the stack will be set at 19.72973272172112
+3 peaks detected
+a_z_metric = [ 0.          0.          0.         18.77032961 13.          0.
+  0.          0.          0.          0.          0.          0.
+  0.          0.          0.          0.          0.          0.
+  0.          0.          0.          0.          0.          0.
+  0.          0.          0.        ]
+ix_min=3, ix_max = 3. top-bottom mode : Peaks are only kept in index-interval [4,2]
+output>> float32
 
 **starting the write_output_no_signal_filtered filter on stack 2
+***working in 3D~
+output>> float32
 None
 *processing stack number  3 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+file sliced to shape=(27, 441, 276)
 
 **starting the ORIGINAL filter on stack 3
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the flip filter on stack 3
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the frangi filter on stack 3
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the scale_max filter on stack 3
+***working in 3D~
+output>> float64
 
 **starting the write_output filter on stack 3
+***working in 3D~
+output>> float64
 
 **starting the collect_Otsu filter on stack 3
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the collect_stats filter on stack 3
+***working in 3D~
+output>> float64
 
 **starting the reconstruction filter on stack 3
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the thrabs filter on stack 3
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> bool
+
 **starting the write_output filter on stack 3
+***working in 3D~
+output>> bool
 
 **starting the RmSmObj3D filter on stack 3
+***working in 3D~
+output>> bool
 
 **starting the skeletonize filter on stack 3
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the write_output_no_signal_filtered filter on stack 3
+***working in 3D~
+output>> uint16
 
 **starting the active_contour filter on stack 3
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the exterior_mask filter on stack 3
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the write_output filter on stack 3
+***working in 3D~
+output>> uint16
 
 **starting the blend_z_membrane filter on stack 3
+***working in 3D~
+using the masked image for peak detection..
+46.28940728478758 is the max of the preprocessed stack so peak threshold for the stack will be set at 28.236538443720423
+0 peaks detected
+a_z_metric = [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0.]
+ix_min=26, ix_max = 26. top-bottom mode : Peaks are only kept in index-interval [27,25]
+output>> float32
 
 **starting the write_output_no_signal_filtered filter on stack 3
+***working in 3D~
+output>> float32
 None
 *processing stack number  4 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+file sliced to shape=(27, 441, 276)
 
 **starting the ORIGINAL filter on stack 4
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the flip filter on stack 4
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the frangi filter on stack 4
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the scale_max filter on stack 4
+***working in 3D~
+output>> float64
 
 **starting the write_output filter on stack 4
+***working in 3D~
+output>> float64
 
 **starting the collect_Otsu filter on stack 4
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the collect_stats filter on stack 4
+***working in 3D~
+output>> float64
 
 **starting the reconstruction filter on stack 4
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the thrabs filter on stack 4
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> bool
+
 **starting the write_output filter on stack 4
+***working in 3D~
+output>> bool
 
 **starting the RmSmObj3D filter on stack 4
+***working in 3D~
+output>> bool
 
 **starting the skeletonize filter on stack 4
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the write_output_no_signal_filtered filter on stack 4
+***working in 3D~
+output>> uint16
 
 **starting the active_contour filter on stack 4
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the exterior_mask filter on stack 4
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the write_output filter on stack 4
+***working in 3D~
+output>> uint16
 
 **starting the blend_z_membrane filter on stack 4
+***working in 3D~
+using the masked image for peak detection..
+25.466392114551425 is the max of the preprocessed stack so peak threshold for the stack will be set at 15.53449918987637
+10 peaks detected
+a_z_metric = [ 0.          0.          0.         72.35341601  0.         13.92838828
+  0.          0.          0.          0.         11.7123581   0.
+  0.         17.          0.         15.13274595  0.          0.
+  0.          0.          0.          0.          0.          0.
+  0.          0.          0.        ]
+ix_min=3, ix_max = 16. top-bottom mode : Peaks are only kept in index-interval [4,15]
+threshold_extension logic active :0.75
+threshold_extension logic active :0.75
+threshold_extension logic active :0.75
+threshold_extension logic active :0.75
+output>> float32
 
 **starting the write_output_no_signal_filtered filter on stack 4
+***working in 3D~
+output>> float32
 None
 *processing stack number  5 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+file sliced to shape=(27, 441, 276)
 
 **starting the ORIGINAL filter on stack 5
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the flip filter on stack 5
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the frangi filter on stack 5
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the scale_max filter on stack 5
+***working in 3D~
+output>> float64
 
 **starting the write_output filter on stack 5
+***working in 3D~
+output>> float64
 
 **starting the collect_Otsu filter on stack 5
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the collect_stats filter on stack 5
+***working in 3D~
+output>> float64
 
 **starting the reconstruction filter on stack 5
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the thrabs filter on stack 5
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> bool
+
 **starting the write_output filter on stack 5
+***working in 3D~
+output>> bool
 
 **starting the RmSmObj3D filter on stack 5
+***working in 3D~
+output>> bool
 
 **starting the skeletonize filter on stack 5
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the write_output_no_signal_filtered filter on stack 5
+***working in 3D~
+output>> uint16
 
 **starting the active_contour filter on stack 5
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the exterior_mask filter on stack 5
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the write_output filter on stack 5
+***working in 3D~
+output>> uint16
 
 **starting the blend_z_membrane filter on stack 5
+***working in 3D~
+using the masked image for peak detection..
+20.094877065385443 is the max of the preprocessed stack so peak threshold for the stack will be set at 12.25787500988512
+23 peaks detected
+a_z_metric = [  0.           0.           0.         145.08650432   6.70820393
+  10.19803903   0.           0.           0.           0.
+  12.36931688  13.6080613   20.76785033  69.5373177    0.
+   0.           0.           0.           0.           0.
+   0.           0.           0.           0.           0.
+   0.           0.        ]
+ix_min=3, ix_max = 13. top-bottom mode : Peaks are only kept in index-interval [4,12]
+threshold_extension logic active :0.75
+threshold_extension logic active :0.75
+threshold_extension logic active :0.75
+threshold_extension logic active :0.75
+threshold_extension logic active :0.75
+output>> float32
 
 **starting the write_output_no_signal_filtered filter on stack 5
+***working in 3D~
+output>> float32
 None
 *processing stack number  6 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+file sliced to shape=(27, 441, 276)
 
 **starting the ORIGINAL filter on stack 6
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the flip filter on stack 6
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the frangi filter on stack 6
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the scale_max filter on stack 6
+***working in 3D~
+output>> float64
 
 **starting the write_output filter on stack 6
+***working in 3D~
+output>> float64
 
 **starting the collect_Otsu filter on stack 6
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the collect_stats filter on stack 6
+***working in 3D~
+output>> float64
 
 **starting the reconstruction filter on stack 6
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the thrabs filter on stack 6
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> bool
+
 **starting the write_output filter on stack 6
+***working in 3D~
+output>> bool
 
 **starting the RmSmObj3D filter on stack 6
+***working in 3D~
+output>> bool
 
 **starting the skeletonize filter on stack 6
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the write_output_no_signal_filtered filter on stack 6
+***working in 3D~
+output>> uint16
 
 **starting the active_contour filter on stack 6
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the exterior_mask filter on stack 6
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the write_output filter on stack 6
+***working in 3D~
+output>> uint16
 
 **starting the blend_z_membrane filter on stack 6
+***working in 3D~
+using the masked image for peak detection..
+21.776073041146415 is the max of the preprocessed stack so peak threshold for the stack will be set at 13.283404555099313
+11 peaks detected
+a_z_metric = [ 0.          0.          0.         80.56908277  6.70820393  0.
+  0.          0.          7.          0.          0.         13.12171225
+  9.43398113 12.36931688  0.          0.          0.          0.
+  0.          0.          0.          0.          0.          0.
+  0.          0.          0.        ]
+ix_min=3, ix_max = 14. top-bottom mode : Peaks are only kept in index-interval [4,13]
+threshold_extension logic active :0.75
+threshold_extension logic active :0.75
+threshold_extension logic active :0.75
+threshold_extension logic active :0.75
+threshold_extension logic active :0.75
+output>> float32
 
 **starting the write_output_no_signal_filtered filter on stack 6
+***working in 3D~
+output>> float32
 None
 *processing stack number  7 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+file sliced to shape=(27, 441, 276)
 
 **starting the ORIGINAL filter on stack 7
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the flip filter on stack 7
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the frangi filter on stack 7
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the scale_max filter on stack 7
+***working in 3D~
+output>> float64
 
 **starting the write_output filter on stack 7
+***working in 3D~
+output>> float64
 
 **starting the collect_Otsu filter on stack 7
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the collect_stats filter on stack 7
+***working in 3D~
+output>> float64
 
 **starting the reconstruction filter on stack 7
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the thrabs filter on stack 7
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> bool
+
 **starting the write_output filter on stack 7
+***working in 3D~
+output>> bool
 
 **starting the RmSmObj3D filter on stack 7
+***working in 3D~
+output>> bool
 
 **starting the skeletonize filter on stack 7
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the write_output_no_signal_filtered filter on stack 7
+***working in 3D~
+output>> uint16
 
 **starting the active_contour filter on stack 7
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the exterior_mask filter on stack 7
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the write_output filter on stack 7
+***working in 3D~
+output>> uint16
 
 **starting the blend_z_membrane filter on stack 7
+***working in 3D~
+using the masked image for peak detection..
+23.499141875607524 is the max of the preprocessed stack so peak threshold for the stack will be set at 14.334476544120589
+3 peaks detected
+a_z_metric = [ 0.          0.          0.         10.          0.          0.
+  0.          0.          0.          0.         11.05347603  0.
+  0.         18.55207084  0.          0.          0.          0.
+  0.          0.          0.          0.          0.          0.
+  0.          0.          0.        ]
+ix_min=3, ix_max = 14. top-bottom mode : Peaks are only kept in index-interval [4,13]
+threshold_extension logic active :0.75
+threshold_extension logic active :0.75
+output>> float32
 
 **starting the write_output_no_signal_filtered filter on stack 7
+***working in 3D~
+output>> float32
 None
 *processing stack number  8 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+file sliced to shape=(27, 441, 276)
 
 **starting the ORIGINAL filter on stack 8
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the flip filter on stack 8
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the frangi filter on stack 8
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the scale_max filter on stack 8
+***working in 3D~
+output>> float64
 
 **starting the write_output filter on stack 8
+***working in 3D~
+output>> float64
 
 **starting the collect_Otsu filter on stack 8
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the collect_stats filter on stack 8
+***working in 3D~
+output>> float64
 
 **starting the reconstruction filter on stack 8
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the thrabs filter on stack 8
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> bool
+
 **starting the write_output filter on stack 8
+***working in 3D~
+output>> bool
 
 **starting the RmSmObj3D filter on stack 8
+***working in 3D~
+output>> bool
 
 **starting the skeletonize filter on stack 8
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the write_output_no_signal_filtered filter on stack 8
+***working in 3D~
+output>> uint16
 
 **starting the active_contour filter on stack 8
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the exterior_mask filter on stack 8
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the write_output filter on stack 8
+***working in 3D~
+output>> uint16
 
 **starting the blend_z_membrane filter on stack 8
+***working in 3D~
+using the masked image for peak detection..
+25.19681783079614 is the max of the preprocessed stack so peak threshold for the stack will be set at 15.370058876785645
+8 peaks detected
+a_z_metric = [ 0.          0.          0.         10.44889144 22.39507599 29.98987407
+  0.         20.89644876  0.          0.          0.          0.
+  0.          0.          0.          0.          0.          0.
+  0.          0.          0.          0.          0.          0.
+  0.          0.          0.        ]
+ix_min=5, ix_max = 7. top-bottom mode : Peaks are only kept in index-interval [6,6]
+output>> float32
 
 **starting the write_output_no_signal_filtered filter on stack 8
+***working in 3D~
+output>> float32
 None
 *processing stack number  9 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+file sliced to shape=(27, 441, 276)
 
 **starting the ORIGINAL filter on stack 9
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the flip filter on stack 9
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the frangi filter on stack 9
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the scale_max filter on stack 9
+***working in 3D~
+output>> float64
 
 **starting the write_output filter on stack 9
+***working in 3D~
+output>> float64
 
 **starting the collect_Otsu filter on stack 9
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the collect_stats filter on stack 9
+***working in 3D~
+output>> float64
 
 **starting the reconstruction filter on stack 9
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the thrabs filter on stack 9
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> bool
+
 **starting the write_output filter on stack 9
+***working in 3D~
+output>> bool
 
 **starting the RmSmObj3D filter on stack 9
+***working in 3D~
+output>> bool
 
 **starting the skeletonize filter on stack 9
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the write_output_no_signal_filtered filter on stack 9
+***working in 3D~
+output>> uint16
 
 **starting the active_contour filter on stack 9
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the exterior_mask filter on stack 9
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the write_output filter on stack 9
+***working in 3D~
+output>> uint16
 
 **starting the blend_z_membrane filter on stack 9
+***working in 3D~
+using the masked image for peak detection..
+30.67955610853167 is the max of the preprocessed stack so peak threshold for the stack will be set at 18.71452922620432
+2 peaks detected
+a_z_metric = [ 0.          0.          0.          0.         12.          0.
+ 20.52265412  0.          0.          0.          0.          0.
+  0.          0.          0.          0.          0.          0.
+  0.          0.          0.          0.          0.          0.
+  0.          0.          0.        ]
+ix_min=4, ix_max = 7. top-bottom mode : Peaks are only kept in index-interval [5,6]
+threshold_extension logic active :0.75
+output>> float32
 
 **starting the write_output_no_signal_filtered filter on stack 9
+***working in 3D~
+output>> float32
 None
 *processing stack number  10 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+file sliced to shape=(27, 441, 276)
 
 **starting the ORIGINAL filter on stack 10
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the flip filter on stack 10
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the frangi filter on stack 10
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the scale_max filter on stack 10
+***working in 3D~
+output>> float64
 
 **starting the write_output filter on stack 10
+***working in 3D~
+output>> float64
 
 **starting the collect_Otsu filter on stack 10
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the collect_stats filter on stack 10
+***working in 3D~
+output>> float64
 
 **starting the reconstruction filter on stack 10
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the thrabs filter on stack 10
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> bool
+
 **starting the write_output filter on stack 10
+***working in 3D~
+output>> bool
 
 **starting the RmSmObj3D filter on stack 10
+***working in 3D~
+output>> bool
 
 **starting the skeletonize filter on stack 10
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the write_output_no_signal_filtered filter on stack 10
+***working in 3D~
+output>> uint16
 
 **starting the active_contour filter on stack 10
 ~~~~~~~~~~~~~~~snake did not converge.  ix=15 will fallback to previous slice
-~~~~~~~~~~~~
+~~~~~~~~~~~~output>> uint16
+
 **starting the exterior_mask filter on stack 10
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the write_output filter on stack 10
+***working in 3D~
+output>> uint16
 
 **starting the blend_z_membrane filter on stack 10
+***working in 3D~
+using the masked image for peak detection..
+16.611376087255913 is the max of the preprocessed stack so peak threshold for the stack will be set at 10.132939413226106
+19 peaks detected
+a_z_metric = [ 0.          0.          0.          0.         38.46476871 12.48588677
+ 15.0054495  11.05347603  9.44348094  0.          0.          0.
+ 47.9209338  68.95565117 26.46337631  0.          0.          0.
+ 31.82766093 13.34838313  0.          0.          0.          0.
+  0.          0.          0.        ]
+ix_min=4, ix_max = 19. top-bottom mode : Peaks are only kept in index-interval [5,18]
+threshold_extension logic active :0.75
+threshold_extension logic active :0.75
+threshold_extension logic active :0.75
+threshold_extension logic active :0.75
+threshold_extension logic active :0.75
+threshold_extension logic active :0.75
+threshold_extension logic active :0.75
+threshold_extension logic active :0.75
+output>> float32
 
 **starting the write_output_no_signal_filtered filter on stack 10
+***working in 3D~
+output>> float32
 None
 *processing stack number  11 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+file sliced to shape=(27, 441, 276)
 
 **starting the ORIGINAL filter on stack 11
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the flip filter on stack 11
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the frangi filter on stack 11
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the scale_max filter on stack 11
+***working in 3D~
+output>> float64
 
 **starting the write_output filter on stack 11
+***working in 3D~
+output>> float64
 
 **starting the collect_Otsu filter on stack 11
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the collect_stats filter on stack 11
+***working in 3D~
+output>> float64
 
 **starting the reconstruction filter on stack 11
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the thrabs filter on stack 11
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> bool
+
 **starting the write_output filter on stack 11
+***working in 3D~
+output>> bool
 
 **starting the RmSmObj3D filter on stack 11
+***working in 3D~
+output>> bool
 
 **starting the skeletonize filter on stack 11
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the write_output_no_signal_filtered filter on stack 11
+***working in 3D~
+output>> uint16
 
 **starting the active_contour filter on stack 11
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the exterior_mask filter on stack 11
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the write_output filter on stack 11
+***working in 3D~
+output>> uint16
 
 **starting the blend_z_membrane filter on stack 11
+***working in 3D~
+using the masked image for peak detection..
+16.818917591487793 is the max of the preprocessed stack so peak threshold for the stack will be set at 10.259539730807553
+15 peaks detected
+a_z_metric = [ 0.          0.          0.         22.88681616 15.02703444 21.45703989
+  9.05538514 14.14213562  0.          0.          0.          0.
+ 52.39719381 41.15826257  0.          0.          0.          0.
+  0.          0.          0.          0.          0.          0.
+  0.          0.          0.        ]
+ix_min=3, ix_max = 12. top-bottom mode : Peaks are only kept in index-interval [4,11]
+threshold_extension logic active :0.75
+threshold_extension logic active :0.75
+threshold_extension logic active :0.75
+threshold_extension logic active :0.75
+output>> float32
 
 **starting the write_output_no_signal_filtered filter on stack 11
+***working in 3D~
+output>> float32
 None
 *processing stack number  12 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+file sliced to shape=(27, 441, 276)
 
 **starting the ORIGINAL filter on stack 12
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the flip filter on stack 12
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the frangi filter on stack 12
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the scale_max filter on stack 12
+***working in 3D~
+output>> float64
 
 **starting the write_output filter on stack 12
+***working in 3D~
+output>> float64
 
 **starting the collect_Otsu filter on stack 12
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the collect_stats filter on stack 12
+***working in 3D~
+output>> float64
 
 **starting the reconstruction filter on stack 12
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the thrabs filter on stack 12
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> bool
+
 **starting the write_output filter on stack 12
+***working in 3D~
+output>> bool
 
 **starting the RmSmObj3D filter on stack 12
+***working in 3D~
+output>> bool
 
 **starting the skeletonize filter on stack 12
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the write_output_no_signal_filtered filter on stack 12
+***working in 3D~
+output>> uint16
 
 **starting the active_contour filter on stack 12
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the exterior_mask filter on stack 12
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the write_output filter on stack 12
+***working in 3D~
+output>> uint16
 
 **starting the blend_z_membrane filter on stack 12
+***working in 3D~
+using the masked image for peak detection..
+18.76111102674567 is the max of the preprocessed stack so peak threshold for the stack will be set at 11.444277726314859
+7 peaks detected
+a_z_metric = [ 0.          0.          0.          0.          0.          0.
+  0.          9.90854844  0.          0.          0.         14.4630333
+ 77.93019075 15.23154621  0.          0.          0.          0.
+  0.          0.          0.          0.          0.          0.
+  0.          0.          0.        ]
+ix_min=7, ix_max = 12. top-bottom mode : Peaks are only kept in index-interval [8,11]
+threshold_extension logic active :0.75
+output>> float32
 
 **starting the write_output_no_signal_filtered filter on stack 12
+***working in 3D~
+output>> float32
 None
 *processing stack number  13 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+file sliced to shape=(27, 441, 276)
 
 **starting the ORIGINAL filter on stack 13
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the flip filter on stack 13
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the frangi filter on stack 13
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the scale_max filter on stack 13
+***working in 3D~
+output>> float64
 
 **starting the write_output filter on stack 13
+***working in 3D~
+output>> float64
 
 **starting the collect_Otsu filter on stack 13
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the collect_stats filter on stack 13
+***working in 3D~
+output>> float64
 
 **starting the reconstruction filter on stack 13
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the thrabs filter on stack 13
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> bool
+
 **starting the write_output filter on stack 13
+***working in 3D~
+output>> bool
 
 **starting the RmSmObj3D filter on stack 13
+***working in 3D~
+output>> bool
 
 **starting the skeletonize filter on stack 13
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the write_output_no_signal_filtered filter on stack 13
+***working in 3D~
+output>> uint16
 
 **starting the active_contour filter on stack 13
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~snake did not converge.  ix=25 will fallback to previous slice
+~~output>> uint16
+
 **starting the exterior_mask filter on stack 13
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the write_output filter on stack 13
+***working in 3D~
+output>> uint16
 
 **starting the blend_z_membrane filter on stack 13
+***working in 3D~
+using the masked image for peak detection..
+17.558149083036383 is the max of the preprocessed stack so peak threshold for the stack will be set at 10.710470940652193
+7 peaks detected
+a_z_metric = [ 0.          0.          0.          0.          0.          0.
+  9.48683298 10.44030651  0.          0.          0.         25.01999201
+ 59.03815136  0.          0.          0.          0.          0.
+  0.          0.          0.          0.          0.          0.
+  0.          0.          0.        ]
+ix_min=7, ix_max = 12. top-bottom mode : Peaks are only kept in index-interval [8,11]
+threshold_extension logic active :0.75
+output>> float32
 
 **starting the write_output_no_signal_filtered filter on stack 13
+***working in 3D~
+output>> float32
 None
 *processing stack number  14 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+file sliced to shape=(27, 441, 276)
 
 **starting the ORIGINAL filter on stack 14
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the flip filter on stack 14
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the frangi filter on stack 14
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the scale_max filter on stack 14
+***working in 3D~
+output>> float64
 
 **starting the write_output filter on stack 14
+***working in 3D~
+output>> float64
 
 **starting the collect_Otsu filter on stack 14
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the collect_stats filter on stack 14
+***working in 3D~
+output>> float64
 
 **starting the reconstruction filter on stack 14
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the thrabs filter on stack 14
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> bool
+
 **starting the write_output filter on stack 14
+***working in 3D~
+output>> bool
 
 **starting the RmSmObj3D filter on stack 14
+***working in 3D~
+output>> bool
 
 **starting the skeletonize filter on stack 14
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the write_output_no_signal_filtered filter on stack 14
+***working in 3D~
+output>> uint16
 
 **starting the active_contour filter on stack 14
 ~~~~~~~~~~~~~~~snake did not converge.  ix=15 will fallback to previous slice
-~~~~~~~~~~~~
+~~~~~~~~~~~~output>> uint16
+
 **starting the exterior_mask filter on stack 14
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the write_output filter on stack 14
+***working in 3D~
+output>> uint16
 
 **starting the blend_z_membrane filter on stack 14
+***working in 3D~
+using the masked image for peak detection..
+18.488183481425544 is the max of the preprocessed stack so peak threshold for the stack will be set at 11.277791923669582
+9 peaks detected
+a_z_metric = [ 0.          0.          0.          0.          0.          0.
+ 10.19803903  0.          0.          0.         18.         48.78589449
+ 53.15584336  0.          0.          0.          0.          0.
+  0.          0.          0.          0.          0.          0.
+  0.          0.          0.        ]
+ix_min=6, ix_max = 12. top-bottom mode : Peaks are only kept in index-interval [7,11]
+threshold_extension logic active :0.75
+threshold_extension logic active :0.75
+output>> float32
 
 **starting the write_output_no_signal_filtered filter on stack 14
+***working in 3D~
+output>> float32
 None
 *processing stack number  15 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+file sliced to shape=(27, 441, 276)
 
 **starting the ORIGINAL filter on stack 15
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the flip filter on stack 15
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the frangi filter on stack 15
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the scale_max filter on stack 15
+***working in 3D~
+output>> float64
 
 **starting the write_output filter on stack 15
+***working in 3D~
+output>> float64
 
 **starting the collect_Otsu filter on stack 15
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the collect_stats filter on stack 15
+***working in 3D~
+output>> float64
 
 **starting the reconstruction filter on stack 15
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the thrabs filter on stack 15
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> bool
+
 **starting the write_output filter on stack 15
+***working in 3D~
+output>> bool
 
 **starting the RmSmObj3D filter on stack 15
+***working in 3D~
+output>> bool
 
 **starting the skeletonize filter on stack 15
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the write_output_no_signal_filtered filter on stack 15
+***working in 3D~
+output>> uint16
 
 **starting the active_contour filter on stack 15
 ~~~~~~~~~~~~~~snake did not converge.  ix=14 will fallback to previous slice
-~~~~~~~~~~~~~
+~~~~~~~~~~~~~output>> uint16
+
 **starting the exterior_mask filter on stack 15
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the write_output filter on stack 15
+***working in 3D~
+output>> uint16
 
 **starting the blend_z_membrane filter on stack 15
+***working in 3D~
+using the masked image for peak detection..
+16.37110853856547 is the max of the preprocessed stack so peak threshold for the stack will be set at 9.986376208524936
+19 peaks detected
+a_z_metric = [ 0.          0.          0.         13.89244399 76.452564   15.1386701
+  9.21954446  0.          0.          0.         34.09164411 54.54769124
+ 40.29748873  0.          0.          0.          0.          0.
+  0.          0.          0.          0.          0.          0.
+  0.          0.          0.        ]
+ix_min=4, ix_max = 11. top-bottom mode : Peaks are only kept in index-interval [5,10]
+threshold_extension logic active :0.75
+threshold_extension logic active :0.75
+threshold_extension logic active :0.75
+output>> float32
 
 **starting the write_output_no_signal_filtered filter on stack 15
+***working in 3D~
+output>> float32
 None
 *processing stack number  16 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+file sliced to shape=(27, 441, 276)
 
 **starting the ORIGINAL filter on stack 16
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the flip filter on stack 16
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the frangi filter on stack 16
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the scale_max filter on stack 16
+***working in 3D~
+output>> float64
 
 **starting the write_output filter on stack 16
+***working in 3D~
+output>> float64
 
 **starting the collect_Otsu filter on stack 16
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the collect_stats filter on stack 16
+***working in 3D~
+output>> float64
 
 **starting the reconstruction filter on stack 16
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the thrabs filter on stack 16
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> bool
+
 **starting the write_output filter on stack 16
+***working in 3D~
+output>> bool
 
 **starting the RmSmObj3D filter on stack 16
+***working in 3D~
+output>> bool
 
 **starting the skeletonize filter on stack 16
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the write_output_no_signal_filtered filter on stack 16
+***working in 3D~
+output>> uint16
 
 **starting the active_contour filter on stack 16
 ~~~~~~~~~~~~~~~~snake did not converge.  ix=16 will fallback to previous slice
-~~~~~~~~~~~
+~~~~~~~~~~~output>> uint16
+
 **starting the exterior_mask filter on stack 16
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the write_output filter on stack 16
+***working in 3D~
+output>> uint16
 
 **starting the blend_z_membrane filter on stack 16
+***working in 3D~
+using the masked image for peak detection..
+15.726963797304464 is the max of the preprocessed stack so peak threshold for the stack will be set at 9.593447916355723
+15 peaks detected
+a_z_metric = [ 0.          0.          0.         49.35738826 26.          8.24621125
+  0.         13.6080613   0.          0.         41.69006658 28.077632
+ 10.63014581  0.          0.          0.          0.          0.
+  0.          0.          0.          0.          0.          0.
+  0.          0.          0.        ]
+ix_min=3, ix_max = 10. top-bottom mode : Peaks are only kept in index-interval [4,9]
+threshold_extension logic active :0.75
+threshold_extension logic active :0.75
+threshold_extension logic active :0.75
+output>> float32
 
 **starting the write_output_no_signal_filtered filter on stack 16
+***working in 3D~
+output>> float32
 None
 *processing stack number  17 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+file sliced to shape=(27, 441, 276)
 
 **starting the ORIGINAL filter on stack 17
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the flip filter on stack 17
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the frangi filter on stack 17
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the scale_max filter on stack 17
+***working in 3D~
+output>> float64
 
 **starting the write_output filter on stack 17
+***working in 3D~
+output>> float64
 
 **starting the collect_Otsu filter on stack 17
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the collect_stats filter on stack 17
+***working in 3D~
+output>> float64
 
 **starting the reconstruction filter on stack 17
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the thrabs filter on stack 17
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> bool
+
 **starting the write_output filter on stack 17
+***working in 3D~
+output>> bool
 
 **starting the RmSmObj3D filter on stack 17
+***working in 3D~
+output>> bool
 
 **starting the skeletonize filter on stack 17
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the write_output_no_signal_filtered filter on stack 17
+***working in 3D~
+output>> uint16
 
 **starting the active_contour filter on stack 17
 ~~~~~~~~~~~~~snake did not converge.  ix=13 will fallback to previous slice
-~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~output>> uint16
+
 **starting the exterior_mask filter on stack 17
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the write_output filter on stack 17
+***working in 3D~
+output>> uint16
 
 **starting the blend_z_membrane filter on stack 17
+***working in 3D~
+using the masked image for peak detection..
+15.677778083216431 is the max of the preprocessed stack so peak threshold for the stack will be set at 9.563444630762023
+21 peaks detected
+a_z_metric = [  0.           0.           0.         167.48465995   9.
+   0.          11.18033989   0.           0.           0.
+  11.18033989  43.14617301  20.73373394   0.           0.
+   0.           0.           0.           0.           0.
+   0.           0.           0.           0.           0.
+   0.           0.        ]
+ix_min=3, ix_max = 11. top-bottom mode : Peaks are only kept in index-interval [4,10]
+threshold_extension logic active :0.75
+threshold_extension logic active :0.75
+threshold_extension logic active :0.75
+output>> float32
 
 **starting the write_output_no_signal_filtered filter on stack 17
+***working in 3D~
+output>> float32
 None
 *processing stack number  18 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+file sliced to shape=(27, 441, 276)
 
 **starting the ORIGINAL filter on stack 18
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the flip filter on stack 18
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the frangi filter on stack 18
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the scale_max filter on stack 18
+***working in 3D~
+output>> float64
 
 **starting the write_output filter on stack 18
+***working in 3D~
+output>> float64
 
 **starting the collect_Otsu filter on stack 18
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the collect_stats filter on stack 18
+***working in 3D~
+output>> float64
 
 **starting the reconstruction filter on stack 18
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> float64
+
 **starting the thrabs filter on stack 18
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> bool
+
 **starting the write_output filter on stack 18
+***working in 3D~
+output>> bool
 
 **starting the RmSmObj3D filter on stack 18
+***working in 3D~
+output>> bool
 
 **starting the skeletonize filter on stack 18
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the write_output_no_signal_filtered filter on stack 18
+***working in 3D~
+output>> uint16
 
 **starting the active_contour filter on stack 18
 ~~~~~~~~~~~~~snake did not converge.  ix=13 will fallback to previous slice
 ~snake did not converge.  ix=14 will fallback to previous slice
-~~~~~~~~~~~~~
+~~~~~~~~~~~~~output>> uint16
+
 **starting the exterior_mask filter on stack 18
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~output>> uint16
+
 **starting the write_output filter on stack 18
+***working in 3D~
+output>> uint16
 
 **starting the blend_z_membrane filter on stack 18
+***working in 3D~
+using the masked image for peak detection..
+16.443906797394366 is the max of the preprocessed stack so peak threshold for the stack will be set at 10.030783146410563
+13 peaks detected
+a_z_metric = [  0.           0.           0.         126.37873421   9.21954446
+   0.           0.           0.           0.           0.
+   0.          42.8597515    0.           0.           0.
+   0.           0.           0.           0.           0.
+   0.           0.           0.           0.           0.
+   0.           0.        ]
+ix_min=3, ix_max = 11. top-bottom mode : Peaks are only kept in index-interval [4,10]
+threshold_extension logic active :0.75
+output>> float32
 
 **starting the write_output_no_signal_filtered filter on stack 18
+***working in 3D~
+output>> float32
 None
+*TIF file written->frangi, with shape=(18, 27, 441, 276)float32 to location
+/home/docker/DATA/OUTPUT/sdt_test/002_preprocessing/frangi.tif
+
+/home/docker/miniconda3/lib/python3.7/site-packages/skimage/util/dtype.py:476: UserWarning: Downcasting int64 to uint16 without scaling because max value 1 fits in uint16
+  return _convert(image, np.uint16, force_copy)
+*TIF file written->threshold, with shape=(18, 27, 441, 276)uint16 to location
+/home/docker/DATA/OUTPUT/sdt_test/002_preprocessing/threshold.tif
+
+*TIF file written->membranes, with shape=(18, 27, 441, 276)uint16 to location
+/home/docker/DATA/OUTPUT/sdt_test/002_preprocessing/membranes.tif
+
+*TIF file written->exterior_mask, with shape=(18, 27, 441, 276)uint16 to location
+/home/docker/DATA/OUTPUT/sdt_test/002_preprocessing/exterior_mask.tif
+
+/home/docker/miniconda3/lib/python3.7/site-packages/skimage/util/dtype.py:476: UserWarning: Downcasting int64 to uint16 without scaling because max value 3 fits in uint16
+  return _convert(image, np.uint16, force_copy)
+*TIF file written->membranes_blend_z, with shape=(18, 27, 441, 276)uint16 to location
+/home/docker/DATA/OUTPUT/sdt_test/002_preprocessing/membranes_blend_z.tif
+
 excel dds output/home/docker/DATA/OUTPUT/sdt_test/002_preprocessing/log_preprocess.xlsx
 All preprocess data written to : 
 /home/docker/DATA/OUTPUT/sdt_test/002_preprocessing/
+runtime_preProcess =  368.0849618911743
 STEP2-SPHERES_DT------------------------------------------------------------------------------------------------------
-Processing stack 1
-|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
-___Cluster stats (after filtering) : 7 TOTAL, of which 0 GT_seeded, 0 seeded, 0 filtered (current stack)
 creating a subdir1 /home/docker/DATA/OUTPUT/sdt_test/003_spheresDT
+Processing stack 1
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
+___Cluster stats (after filtering) : 7 TOTAL, of which 0 GT_seeded, 0 seeded, 0 filtered (current stack)
 
 Processing stack 2
-||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
-___Cluster stats (after filtering) : 9 TOTAL, of which 0 GT_seeded, 7 seeded, 0 filtered (current stack)
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
+___Cluster stats (after filtering) : 8 TOTAL, of which 0 GT_seeded, 7 seeded, 0 filtered (current stack)
 ###write excel validation (append stack)
 Processing stack 3
-|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
-___Cluster stats (after filtering) : 11 TOTAL, of which 0 GT_seeded, 7 seeded, 0 filtered (current stack)
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
+___Cluster stats (after filtering) : 10 TOTAL, of which 0 GT_seeded, 7 seeded, 0 filtered (current stack)
 ###write excel validation (append stack)
 Processing stack 4
-|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
-___Cluster stats (after filtering) : 13 TOTAL, of which 0 GT_seeded, 7 seeded, 0 filtered (current stack)
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
+___Cluster stats (after filtering) : 12 TOTAL, of which 0 GT_seeded, 7 seeded, 1 filtered (current stack)
 ###write excel validation (append stack)
 Processing stack 5
-|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
-___Cluster stats (after filtering) : 11 TOTAL, of which 0 GT_seeded, 8 seeded, 0 filtered (current stack)
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
+___Cluster stats (after filtering) : 10 TOTAL, of which 0 GT_seeded, 8 seeded, 1 filtered (current stack)
 ###write excel validation (append stack)
 Processing stack 6
-|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
-___Cluster stats (after filtering) : 12 TOTAL, of which 0 GT_seeded, 8 seeded, 0 filtered (current stack)
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
+___Cluster stats (after filtering) : 13 TOTAL, of which 0 GT_seeded, 8 seeded, 1 filtered (current stack)
 ###write excel validation (append stack)
 Processing stack 7
-||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
-___Cluster stats (after filtering) : 16 TOTAL, of which 0 GT_seeded, 8 seeded, 0 filtered (current stack)
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
+___Cluster stats (after filtering) : 15 TOTAL, of which 0 GT_seeded, 8 seeded, 0 filtered (current stack)
 ###write excel validation (append stack)
 Processing stack 8
 ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
-___Cluster stats (after filtering) : 14 TOTAL, of which 0 GT_seeded, 8 seeded, 0 filtered (current stack)
+___Cluster stats (after filtering) : 15 TOTAL, of which 0 GT_seeded, 8 seeded, 0 filtered (current stack)
 ###write excel validation (append stack)
 Processing stack 9
-|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
-___Cluster stats (after filtering) : 12 TOTAL, of which 0 GT_seeded, 8 seeded, 0 filtered (current stack)
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
+___Cluster stats (after filtering) : 10 TOTAL, of which 0 GT_seeded, 8 seeded, 0 filtered (current stack)
 ###write excel validation (append stack)
 Processing stack 10
 ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
-___Cluster stats (after filtering) : 12 TOTAL, of which 0 GT_seeded, 8 seeded, 0 filtered (current stack)
+___Cluster stats (after filtering) : 13 TOTAL, of which 0 GT_seeded, 8 seeded, 0 filtered (current stack)
 ###write excel validation (append stack)
 Processing stack 11
-||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
 ___Cluster stats (after filtering) : 13 TOTAL, of which 0 GT_seeded, 9 seeded, 0 filtered (current stack)
 ###write excel validation (append stack)
 Processing stack 12
 ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
-___Cluster stats (after filtering) : 14 TOTAL, of which 0 GT_seeded, 9 seeded, 0 filtered (current stack)
+___Cluster stats (after filtering) : 16 TOTAL, of which 0 GT_seeded, 9 seeded, 0 filtered (current stack)
 ###write excel validation (append stack)
 Processing stack 13
-||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
-___Cluster stats (after filtering) : 19 TOTAL, of which 0 GT_seeded, 10 seeded, 0 filtered (current stack)
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
+___Cluster stats (after filtering) : 17 TOTAL, of which 0 GT_seeded, 9 seeded, 0 filtered (current stack)
 ###write excel validation (append stack)
 Processing stack 14
-||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
-___Cluster stats (after filtering) : 20 TOTAL, of which 0 GT_seeded, 13 seeded, 0 filtered (current stack)
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
+___Cluster stats (after filtering) : 19 TOTAL, of which 0 GT_seeded, 12 seeded, 0 filtered (current stack)
 ###write excel validation (append stack)
 Processing stack 15
-|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
-___Cluster stats (after filtering) : 17 TOTAL, of which 0 GT_seeded, 13 seeded, 0 filtered (current stack)
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
+___Cluster stats (after filtering) : 16 TOTAL, of which 0 GT_seeded, 13 seeded, 0 filtered (current stack)
 ###write excel validation (append stack)
 Processing stack 16
-|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
-___Cluster stats (after filtering) : 19 TOTAL, of which 0 GT_seeded, 13 seeded, 0 filtered (current stack)
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
+___Cluster stats (after filtering) : 18 TOTAL, of which 0 GT_seeded, 13 seeded, 0 filtered (current stack)
 ###write excel validation (append stack)
 Processing stack 17
-|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
-___Cluster stats (after filtering) : 17 TOTAL, of which 0 GT_seeded, 14 seeded, 0 filtered (current stack)
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
+___Cluster stats (after filtering) : 17 TOTAL, of which 0 GT_seeded, 13 seeded, 0 filtered (current stack)
 ###write excel validation (append stack)
 Processing stack 18
-|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
-___Cluster stats (after filtering) : 22 TOTAL, of which 0 GT_seeded, 14 seeded, 0 filtered (current stack)
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-
+___Cluster stats (after filtering) : 21 TOTAL, of which 0 GT_seeded, 13 seeded, 0 filtered (current stack)
 ###write excel validation (append stack)
 ...update_lineage_names...
 ###write_excel_summary_4D
-/home/docker/miniconda3/lib/python3.7/site-packages/skimage/util/dtype.py:525: UserWarning: Downcasting uint16 to uint8 without scaling because max value 255 fits in uint8
+/home/docker/miniconda3/lib/python3.7/site-packages/skimage/util/dtype.py:525: UserWarning: Downcasting int16 to uint8 without scaling because max value 255 fits in uint8
   return _convert(image, np.uint8, force_copy)
 0 datamodel inconsistencies found across all stacks
+runtime_spheresDT =  305.4029405117035
 STEP3-LINEAGER_FEEDER------------------------------------------------------------------------------------------------------
 ||||||||||||||||||  - making image sequence
 file loaded->/home/docker/DATA/INPUT/testrun/TL1_emb1.tif, with input_shape=(18, 27, 441, 276)uint16 from location
@@ -809,16 +1537,16 @@ file loaded->/home/docker/DATA/OUTPUT/sdt_test/003_spheresDT/raw_clusterview.tif
 15
 16
 17
-/home/docker/DATA/OUTPUT/sdt_test/006_CTC_TRA/01_RES/res_track.txt items 21
+/home/docker/DATA/OUTPUT/sdt_test/006_CTC_TRA/01_RES/res_track.txt items 19
 1 0 1 0
 
 2 0 17 0
 
 3 0 10 0
 
-4 0 9 0
+4 0 10 0
 
-5 0 10 0
+5 0 11 0
 
 6 0 17 0
 
@@ -828,29 +1556,25 @@ file loaded->/home/docker/DATA/OUTPUT/sdt_test/003_spheresDT/raw_clusterview.tif
 
 9 2 7 1
 
-10 8 17 9
-
 11 8 17 9
 
-12 10 17 4
+12 8 17 9
 
-13 10 17 4
+13 11 17 3
 
-14 11 17 3
+14 11 17 4
 
-15 11 17 5
+15 11 17 7
 
-16 11 13 7
+16 11 17 3
 
-17 11 17 3
+17 11 17 4
 
-18 11 17 5
+18 11 17 7
 
-19 11 17 7
+19 12 17 5
 
-20 14 17 16
-
-21 14 17 16
+20 12 17 5
 
 the end : excel
 #load the Cell nuclei for validation
@@ -909,7 +1633,7 @@ the end : excel
 
 the end , GT
 DEBUG cmd_TRA = /home/docker/SCRIPT/TRAMeasure /home/docker/DATA/OUTPUT/sdt_test/006_CTC_TRA/ 01
-TRA measure: 0.980715
+TRA measure: 0.987143
 DEBUG after executing TRA
 STEP5-mpacts_input_generator-----------------------------------------------------------------------------------------------------
 02_green_t1

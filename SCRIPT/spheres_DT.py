@@ -12,7 +12,7 @@ import time
 import pandas as pd
 import os
 import shutil
-import linecache
+#import linecache
 import tracemalloc
 from skimage.exposure import adjust_gamma
 #tracking memory allocation  : https://stackoverflow.com/questions/552744/how-do-i-profile-memory-usage-in-python
@@ -22,32 +22,31 @@ from skimage.exposure import adjust_gamma
 def spheres_DT(param_xml,filehandler):
 	#>>>>>FUNCTIONS>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	
-	def display_top(snapshot, key_type='lineno', limit=3):
-		if prm['verbose']:print("###tracemalloc report for SpheresDT.py")
-		snapshot = snapshot.filter_traces((
-			tracemalloc.Filter(False, "<frozen importlib._bootstrap>"),
-			tracemalloc.Filter(False, "<unknown>"),
-		))
-		top_stats = snapshot.statistics(key_type)
+	# def display_top(snapshot, key_type='lineno', limit=3):
+	# 	if prm['verbose']:print("###tracemalloc report for SpheresDT.py")
+	# 	snapshot = snapshot.filter_traces((
+	# 		tracemalloc.Filter(False, "<frozen importlib._bootstrap>"),
+	# 		tracemalloc.Filter(False, "<unknown>"),
+	# 	))
+	# 	top_stats = snapshot.statistics(key_type)
 
-		print("Top %s lines" % limit)
-		for index, stat in enumerate(top_stats[:limit], 1):
-			frame = stat.traceback[0]
-			# replace "/path/to/module/file.py" with "module/file.py"
-			filename = os.sep.join(frame.filename.split(os.sep)[-2:])
-			print("#%s: %s:%s: %.1f KiB"
-				  % (index, filename, frame.lineno, stat.size / 1024))
-			line = linecache.getline(frame.filename, frame.lineno).strip()
-			if line:
-				print('    %s' % line)
+	# 	print("Top %s lines" % limit)
+	# 	for index, stat in enumerate(top_stats[:limit], 1):
+	# 		frame = stat.traceback[0]
+	# 		# replace "/path/to/module/file.py" with "module/file.py"
+	# 		filename = os.sep.join(frame.filename.split(os.sep)[-2:])
+	# 		print("#%s: %s:%s: %.1f KiB"
+	# 			  % (index, filename, frame.lineno, stat.size / 1024))
+	# 		line = linecache.getline(frame.filename, frame.lineno).strip()
+	# 		if line:
+	# 			print('    %s' % line)
 
-		other = top_stats[limit:]
-		if other:
-			size = sum(stat.size for stat in other)
-			print("%s other: %.1f KiB" % (len(other), size / 1024))
-		total = sum(stat.size for stat in top_stats)
-		print("Total allocated size: %.1f KiB" % (total / 1024))
-	
+	# 	other = top_stats[limit:]
+	# 	if other:
+	# 		size = sum(stat.size for stat in other)
+	# 		print("%s other: %.1f KiB" % (len(other), size / 1024))
+	# 	total = sum(stat.size for stat in top_stats)
+	# 	print("Total allocated size: %.1f KiB" % (total / 1024))
 	
 
 	def initialize_class_variables():
@@ -222,9 +221,10 @@ def spheres_DT(param_xml,filehandler):
 		else:
 			a_slice_tif =  slice_tif(na_tif=a_extra_channel,ix_slice_time= [i-1 for i in prm['l_stack_raw']],verbose=False,RGB=True,trim_1D=False)
 
-		make_brighter=True
+		make_brighter=True #causes memory crash for big timelapses,so go stack by stack
 		if make_brighter:
-			a_slice_tif = adjust_gamma(a_slice_tif, gamma=0.5)
+			for ix,i in enumerate(a_slice_tif):
+				a_slice_tif[ix,:] = adjust_gamma(i, gamma=0.5)
 
 		return a_slice_tif
 	
@@ -307,14 +307,15 @@ def spheres_DT(param_xml,filehandler):
 		return
 	
 	############################################################################################################################
-	tracemalloc.start()
-	
+	#tracemalloc.start()
+	tic = time.time() 
 	#set parms
 	prm = read_parms(param_xml)
 	set_process_parameters_unparameterized(prm)
 	
 	#fill in general load and save info
 	filehandler.extend_save_info(extra_dir_1='003_spheresDT',from_root=True)
+	filehandler.clear_save_dir()
 
 	initialize_class_variables()
 	
@@ -425,6 +426,7 @@ def spheres_DT(param_xml,filehandler):
 		append_labelling_chronology_to_txt_log()
 	feat_tracker.write_excel_summary_4D_v2(filehandler)
 	Stack.save_4D_RGBA_clusterview(filehandler,nb_channels=1,extra_channel=get_extra_channel())
+	#Stack.save_4D_RGBA_clusterview(filehandler,nb_channels=1)
 	Stack.agg_temp_viz_files(filehandler,search_string='raw_clusterview')
 	Stack.agg_temp_viz_files(filehandler,search_string='labelview')
 	#Stack.save_4D_clusterview(filehandler)
@@ -436,5 +438,7 @@ def spheres_DT(param_xml,filehandler):
 	
 	# snapshot = tracemalloc.take_snapshot()
 	# display_top(snapshot,limit=10)
+	toc = time.time()
+	print('runtime_spheresDT = ', toc-tic)
 
 	return

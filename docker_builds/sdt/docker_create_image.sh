@@ -14,7 +14,7 @@ DOCKER_CONTAINER_NAME=$SDT_CONTAINER
 
 
 #step 1 : BUILD IMAGE (put yourself in folder of dockerimage)
-docker build -t $DOCKER_IMAGE_NAME $DOCKER_IMAGE_FOLDER
+docker build -t $DOCKER_IMAGE_NAME $DOCKER_IMAGE_FOLDER  
 
 
 #remove container if exist

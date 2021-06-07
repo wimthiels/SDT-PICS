@@ -21,10 +21,13 @@ def read_parms():
 	param_xml.repr_prm()
 	return param_xml.prm
 
-
+import time;tic = time.time() 
 prm = read_parms()
 
 d_path_mesh = {}
+for f in prm['output_folder_meshes'].glob('*.stl'): # clear outputfolder stl's
+		os.remove(str(f))
+
 for path in prm['output_folder_meshes'].glob('*.off'):  #this script works on the output folder of the CGAL meshing
 
 	if verbose:print(' post processing mesh : {}'.format(path.name),flush=True,end="")
@@ -47,6 +50,15 @@ for path in prm['output_folder_meshes'].glob('*.off'):  #this script works on th
 	try:
 		_meshfix.clean_from_file(str(f_out), str(f_out))   #repairing, just in case
 		if verbose:print(' -> repaired'.format(path.name),flush=True,end="")
+
+		#in very rare ocassions the mesh normals are pointing inwards (spot by negative volume)
+		tmh_mesh = trimesh.load_mesh(str(f_out),process=False)
+		if tmh_mesh.volume < 0:
+			print(" -> fix inversion")
+			trimesh.repair.fix_inversion(tmh_mesh)
+			tmh_mesh.export(str(f_out),file_type='stl')
 	except:
 		print('something went wrong with _meshfix on {0}. continue'.format(f_name))
 	if verbose:print("")
+toc = time.time()
+print('runtime_sphere_meshing = ', toc-tic)
