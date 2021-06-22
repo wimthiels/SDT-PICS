@@ -12,3 +12,8 @@ PICS = Physically Informed Cell Segmentation<br/>
 Mpacts = the mechanical simulation engine that runs PICS<br/>
 
 
+
+https://user-images.githubusercontent.com/32536010/122972998-0a369500-d391-11eb-88e2-bc207eb7c06a.mp4
+
+
+
